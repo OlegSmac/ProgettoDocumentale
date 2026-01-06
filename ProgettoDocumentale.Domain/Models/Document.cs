@@ -8,8 +8,6 @@ namespace ProgettoDocumentale.Domain.Models
 {
     public class Document : AuditableEntity
     {
-        public int Id { get; set; }
-        
         public int InstitutionId { get; set; }
         public Institution Institution { get; set; }
 

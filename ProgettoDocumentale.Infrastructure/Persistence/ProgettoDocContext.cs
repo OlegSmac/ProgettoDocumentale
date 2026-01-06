@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,12 +14,26 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
         private readonly ICurrentUserService _currentUserService;
         private readonly IDateTime _dateTime;
 
-        public ProgettoDocContext(DbContextOptions<ProgettoDocContext> options,
-            IDateTime dateTime,
-            ICurrentUserService currentUserService) : base(options) 
+        public ProgettoDocContext()
         {
-            _currentUserService = currentUserService;
+        }
+
+        public ProgettoDocContext(IDateTime dateTime, ICurrentUserService currentUserService)
+        {
             _dateTime = dateTime;
+            _currentUserService = currentUserService;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                var cs = ConfigurationManager
+                    .ConnectionStrings["ProgettoDocumentaleDb"]
+                    .ConnectionString;
+
+                optionsBuilder.UseSqlServer(cs);
+            }
         }
 
         public DbSet<User> Users { get; set; }
