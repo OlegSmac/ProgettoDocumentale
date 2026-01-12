@@ -12,6 +12,7 @@ namespace ProgettoDocumentale.Domain.Models
         public Institution Institution { get; set; }
 
         public string UserName { get; set; }
+        public string PasswordHash { get; set; }
         public string Email { get; set; }
         public bool IsEnabled { get; set; }
         public string Name { get; set; }

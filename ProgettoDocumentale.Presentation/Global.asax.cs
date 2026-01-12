@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using ProgettoDocumentale.Presentation.App_Start;
 
 namespace ProgettoDocumentale.Presentation
 {
@@ -16,6 +17,8 @@ namespace ProgettoDocumentale.Presentation
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            DependencyConfig.RegisterDependencies();
         }
     }
 }

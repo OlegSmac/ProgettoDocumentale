@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Progetto Documentale</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -20,6 +20,28 @@
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <span class="nav-link">Hello, @User.Identity.Name</span>
+                        </li>
+
+                        <li class="nav-item">
+                            @using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-link nav-link">
+                                    Logout
+                                </button>
+                            }
+                        </li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Login", "Login", "Account", null, new { @class = "nav-link" })</li>
+                    }
+
                 </ul>
             </div>
         </div>

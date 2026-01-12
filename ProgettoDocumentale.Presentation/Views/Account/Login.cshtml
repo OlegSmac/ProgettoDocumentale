@@ -1,0 +1,53 @@
+@model ProgettoDocumentale.Presentation.Models.Account.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/css")
+
+    <style>
+        body {
+            background: linear-gradient(90deg, rgba(223,223,223,1) 0%, rgba(179,179,179,1) 50%, rgba(223,223,223,1) 100%);
+        }
+    </style>
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+
+    <div class="container-fluid shadow p-4 bg-white rounded-2" style="max-width: 420px;">
+        <h2 class="text-center mb-4">Login</h2>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "needs-validation" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group mb-3 w-100">
+                @Html.LabelFor(m => m.UserName, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", style = "width:100%; max-width:100%; box-sizing:border-box;", autocomplete = "username" })
+                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", style = "width:100%; max-width:100%; box-sizing:border-box;", autocomplete = "current-password" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn btn-secondary w-100">Login</button>
+        }
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>
