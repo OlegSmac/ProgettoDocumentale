@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Application.Common.Interfaces

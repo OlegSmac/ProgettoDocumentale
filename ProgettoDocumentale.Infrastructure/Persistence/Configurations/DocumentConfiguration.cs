@@ -1,36 +1,43 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using System.Data.Entity.ModelConfiguration;
 using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Infrastructure.Persistence.Configurations
 {
-    public class DocumentConfiguration : IEntityTypeConfiguration<Document>
+    public class DocumentConfiguration : EntityTypeConfiguration<Document>
     {
-        public void Configure(EntityTypeBuilder<Document> builder)
+        public DocumentConfiguration()
         {
-            builder.HasKey(x => x.Id);
+            HasKey(x => x.Id);
 
-            builder.Property(x => x.Name)
+            Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(260);
 
-            builder.HasIndex(x => x.InstitutionId);
-            builder.HasOne(x => x.Institution)
+            Property(x => x.SavedPath)
+                .HasMaxLength(3000);
+
+            Property(x => x.AdditionalInfo)
+                .HasMaxLength(1000);
+
+            HasRequired(x => x.Institution)
                 .WithMany(i => i.Documents)
                 .HasForeignKey(x => x.InstitutionId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WillCascadeOnDelete(false);
 
-            builder.HasIndex(x => x.UserId);
-            builder.HasOne(x => x.User)
+            HasRequired(x => x.User)
                 .WithMany(u => u.Documents)
                 .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WillCascadeOnDelete(false);
 
-            builder.HasIndex(x => x.TypeId);
-            builder.HasOne(x => x.Type)
+            HasRequired(x => x.Type)
                 .WithMany(t => t.Documents)
                 .HasForeignKey(x => x.TypeId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WillCascadeOnDelete(false);
+
+            HasRequired(x => x.Project)
+                .WithMany(t => t.Documents)
+                .HasForeignKey(x => x.ProjectId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

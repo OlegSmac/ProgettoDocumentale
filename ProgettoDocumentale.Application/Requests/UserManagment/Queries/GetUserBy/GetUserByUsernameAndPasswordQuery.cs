@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 using ProgettoDocumentale.Application.Abstractions;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.DTOs.User;
@@ -36,8 +36,8 @@ namespace ProgettoDocumentale.Application.Requests.UserManagment.Queries.GetUser
             {
                 var user = await _context.Users
                     .Include(u => u.UserRoles) //isn't it done automatically?
-                    .ThenInclude(ur => ur.Role)
-                    .FirstOrDefaultAsync(u => u.UserName.ToLower() == request.UserName.ToLower(), cancellationToken);
+                    .Include("UserRoles.Role")
+                    .FirstOrDefaultAsync(u => u.UserName == request.UserName, cancellationToken);
 
                 if (user == null)
                 {

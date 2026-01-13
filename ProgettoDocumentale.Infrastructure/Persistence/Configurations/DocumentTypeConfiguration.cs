@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using System.Data.Entity.ModelConfiguration;
 using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Infrastructure.Persistence.Configurations
 {
-    public class DocumentTypeConfiguration : IEntityTypeConfiguration<DocumentType>
+    public class DocumentTypeConfiguration : EntityTypeConfiguration<DocumentType>
     {
-        public void Configure(EntityTypeBuilder<DocumentType> builder)
+        public DocumentTypeConfiguration()
         {
-            builder.HasKey(x => x.Id);
+            HasKey(x => x.Id);
 
-            builder.HasIndex(x => x.Code);
-            builder.HasIndex(x => x.Name);
+            Property(x => x.Code)
+                .HasMaxLength(5);
+
+            Property(x => x.Name)
+                .HasMaxLength(255);
+
+            Property(x => x.TypeDscr)
+                .HasMaxLength(500);
         }
     }
 }

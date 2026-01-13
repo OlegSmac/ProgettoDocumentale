@@ -1,20 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using System.Data.Entity.ModelConfiguration;
 using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Infrastructure.Persistence.Configurations
 {
-    public class RoleConfiguration : IEntityTypeConfiguration<Role>
+    public class RoleConfiguration : EntityTypeConfiguration<Role>
     {
-        public void Configure(EntityTypeBuilder<Role> builder)
+        public RoleConfiguration()
         {
-            builder.HasKey(x => x.Id);
+            HasKey(x => x.Id);
 
-            builder.Property(x => x.Name)
+            Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(64);
+                .HasMaxLength(32);
 
-            builder.HasIndex(x => x.Name).IsUnique();
+            HasIndex(x => x.Name)
+                .IsUnique();
         }
     }
 }

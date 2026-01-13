@@ -1,49 +1,41 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using System.Data.Entity.ModelConfiguration;
 using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Infrastructure.Persistence.Configurations
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class UserConfiguration : EntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public UserConfiguration()
         {
-            builder.HasKey(x => x.Id);
+            HasKey(x => x.Id);
 
-            builder.Property(x => x.UserName)
+            Property(x => x.UserName)
                 .IsRequired()
                 .HasMaxLength(32);
 
-            builder.HasIndex(x => x.UserName)
-                .IsUnique();
-
-            builder.Property(x => x.Email)
+            Property(x => x.Email)
                 .IsRequired()
                 .HasMaxLength(254);
 
-            builder.HasIndex(x => x.Email)
-                .IsUnique();
-
-            builder.Property(x => x.Name)
+            Property(x => x.Name)
                 .HasMaxLength(100);
 
-            builder.Property(x => x.Surname)
+            Property(x => x.Surname)
                 .HasMaxLength(100);
 
-            builder.Property(x => x.Patronymic)
+            Property(x => x.Patronymic)
                 .HasMaxLength(100);
 
-            builder.Property(x => x.IsEnabled)
+            Property(x => x.IsEnabled)
                 .IsRequired();
 
-            builder.Property(x => x.InstitutionId)
+            Property(x => x.InstitutionId)
                 .IsRequired();
 
-            builder.HasIndex(x => x.InstitutionId);
-            builder.HasOne(x => x.Institution)
+            HasRequired(x => x.Institution)
                 .WithMany(i => i.Users)
                 .HasForeignKey(x => x.InstitutionId)
-                .OnDelete(DeleteBehavior.Restrict);        
+                .WillCascadeOnDelete(false);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Domain.Models;
 
@@ -14,26 +14,14 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
         private readonly ICurrentUserService _currentUserService;
         private readonly IDateTime _dateTime;
 
-        public ProgettoDocContext()
+        public ProgettoDocContext() : base("name=ProgettoDocumentaleDb")
         {
         }
 
-        public ProgettoDocContext(IDateTime dateTime, ICurrentUserService currentUserService)
+        public ProgettoDocContext(IDateTime dateTime, ICurrentUserService currentUserService) : base("name=ProgettoDocumentaleDb")
         {
             _dateTime = dateTime;
             _currentUserService = currentUserService;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                var cs = ConfigurationManager
-                    .ConnectionStrings["ProgettoDocumentaleDb"]
-                    .ConnectionString;
-
-                optionsBuilder.UseSqlServer(cs);
-            }
         }
 
         public DbSet<User> Users { get; set; }
@@ -68,9 +56,9 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
             return await base.SaveChangesAsync(cancellationToken);
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.Configurations.AddFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(modelBuilder);
         }
