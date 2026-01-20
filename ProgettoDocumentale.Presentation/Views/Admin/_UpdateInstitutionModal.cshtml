@@ -1,0 +1,54 @@
+@model ProgettoDocumentale.Application.Requests.Institutions.ViewModels.UpdateInstitutionRequestData
+
+<div class="modal-content" data-success="@(ViewBag.Success == true ? "1" : "0")">
+    <div class="modal-header">
+        <h5 class="modal-title">Update institution</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    @using (Ajax.BeginForm("UpdateInstitution", "Admin", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "handleCreateUpdateInstitution"
+    }, new { id = "institutionForm" }))
+    {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)         
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.InstCode, "Institution code")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextBoxFor(m => m.InstCode, "Inst code", new { @class = "form-control bg-secondary bg-opacity-25", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.InstCode, "", new { @class = "text-danger validation-message", data_valmsg_for = "InstCode" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.Name, "Name")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger validation-message", data_valmsg_for = "Name" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.AdditionalInfo, "Additional info")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextAreaFor(m => m.AdditionalInfo, 3, 1, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AdditionalInfo, "", new { @class = "text-danger validation-message", data_valmsg_for = "AdditionalInfo" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+    }
+</div>

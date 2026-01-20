@@ -7,13 +7,14 @@ using System.Web;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
+using FluentValidation;
 using MediatR;
 using Microsoft.Owin.Security;
 using ProgettoDocumentale.Application.Abstractions;
 using ProgettoDocumentale.Application.Common.Interfaces;
-using ProgettoDocumentale.Application.Requests.UserManagment.Queries.GetUserBy;
 using ProgettoDocumentale.Application.Services;
 using ProgettoDocumentale.Infrastructure.Persistence;
+using ProgettoDocumentale.Infrastructure.Services;
 
 namespace ProgettoDocumentale.Presentation.App_Start
 {
@@ -30,7 +31,7 @@ namespace ProgettoDocumentale.Presentation.App_Start
 
             builder.RegisterType<Mediator>()
                 .As<IMediator>()
-                .InstancePerLifetimeScope();
+                .InstancePerRequest();
 
             builder.Register<ServiceFactory>(ctx =>
             {
@@ -42,20 +43,24 @@ namespace ProgettoDocumentale.Presentation.App_Start
                .AsClosedTypesOf(typeof(IRequestHandler<,>))
                .InstancePerLifetimeScope();
 
-            builder.RegisterType<PasswordEncryptionService>()
-               .As<IPasswordEncryptionService>()
-               .SingleInstance();
+            builder.RegisterType<DateTimeService>()
+                .As<IDateTime>()
+                .SingleInstance();
 
-            builder.RegisterType<ProgettoDocContext>()
-               .As<IProgettoDocContext>()
-               .InstancePerLifetimeScope();
+            builder.RegisterType<CurrentUserService>()
+                .As<ICurrentUserService>()
+                .InstancePerRequest();
 
-            //builder.Register(c => HttpContext.Current.GetOwinContext().Authentication)
-            // .As<IAuthenticationManager>()
-            //.InstancePerRequest();
+            builder.Register(c => new ProgettoDocContext(
+                c.Resolve<IDateTime>(),
+                c.Resolve<ICurrentUserService>()
+            ))
+            .As<IProgettoDocContext>()
+            .As<System.Data.Entity.DbContext>()
+            .InstancePerRequest();
 
-            builder.RegisterAssemblyTypes(webAssembly)
-                .Where(t => t.IsClosedTypeOf(typeof(FluentValidation.IValidator<>)))
+            builder.RegisterAssemblyTypes(appAssembly)
+                .Where(t => t.GetInterfaces().Any(i => i.IsClosedTypeOf(typeof(IValidator<>))))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 

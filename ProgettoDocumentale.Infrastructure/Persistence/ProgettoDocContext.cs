@@ -15,8 +15,7 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
         private readonly IDateTime _dateTime;
 
         public ProgettoDocContext() : base("name=ProgettoDocumentaleDb")
-        {
-        }
+        { }
 
         public ProgettoDocContext(IDateTime dateTime, ICurrentUserService currentUserService) : base("name=ProgettoDocumentaleDb")
         {

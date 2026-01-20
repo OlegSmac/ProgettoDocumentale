@@ -19,8 +19,8 @@
             context.Roles.AddOrUpdate(
                 r => r.Name,
                 new Role { Name = "Admin" },
-                new Role { Name = "OperatorCedacri" },
-                new Role { Name = "OperatorBanc" }
+                new Role { Name = "CedacriOperator" },
+                new Role { Name = "BancOperator" }
             );
             context.SaveChanges();
 
@@ -47,7 +47,10 @@
                     Email = "admin@system.local",
                     IsEnabled = true,
                     InstitutionId = institution.Id,
-                    PasswordHash = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
+                    PasswordHash = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+                    Name = "admin",
+                    Surname = "admin",
+                    Patronymic = "admin"
                 };
                 context.Users.Add(adminUser);
                 context.SaveChanges();

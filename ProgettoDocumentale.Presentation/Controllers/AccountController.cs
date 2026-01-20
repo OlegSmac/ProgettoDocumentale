@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using FluentValidation;
 using MediatR;
 using Microsoft.Owin.Security;
-using ProgettoDocumentale.Application.Requests.UserManagment.Queries.GetUserBy;
-using ProgettoDocumentale.Presentation.Models.Account;
+using ProgettoDocumentale.Application.Requests.Users.Queries.GetUserBy;
+using ProgettoDocumentale.Application.Requests.Users.ViewModels;
 
 namespace ProgettoDocumentale.Presentation.Controllers
 {
@@ -19,16 +16,12 @@ namespace ProgettoDocumentale.Presentation.Controllers
     {
         private readonly IMediator _mediator;
         private IAuthenticationManager authenticationManager => HttpContext.GetOwinContext().Authentication;
-        private readonly IValidator<LoginModel> _loginValidator;
-        //private readonly IValidator<UserPasswordChangeDto> _changePaswordValidator;
-        //private readonly IValidator<UserByIdForClientDto> _updateUserByClientValidator;
+        private readonly IValidator<LoginUser> _loginValidator;        
 
-        public AccountController(IMediator mediator, IValidator<LoginModel> loginValidator)//, IValidator<UserPasswordChangeDto> changePaswordValidator, IValidator<UserByIdForClientDto> updateUserByClientValidator)
+        public AccountController(IMediator mediator, IValidator<LoginUser> loginValidator)
         {
             _mediator = mediator;
-            _loginValidator = loginValidator;
-            //_changePaswordValidator = changePaswordValidator;
-            //_updateUserByClientValidator = updateUserByClientValidator;
+            _loginValidator = loginValidator;            
         }
 
         [AllowAnonymous]
@@ -45,7 +38,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<ActionResult> Login(LoginModel model)
+        public async Task<ActionResult> Login(LoginUser model)
         {
             var validatorResponse = _loginValidator.Validate(model);
 
@@ -69,6 +62,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 {
                     ModelState.AddModelError("", "Invalid Username and Password");
                     return View();
+                    //return RedirectToAction("Login","Account", model);
                 }
                 else if (user.IsEnabled == false)
                 {
@@ -91,6 +85,9 @@ namespace ProgettoDocumentale.Presentation.Controllers
                     {
                         IsPersistent = true
                     }, claim);
+
+                    if (user.Roles.Contains("Admin")) return RedirectToAction("Index", "Admin");                    
+
                     return RedirectToAction("Index", "Home");
                 }
             }

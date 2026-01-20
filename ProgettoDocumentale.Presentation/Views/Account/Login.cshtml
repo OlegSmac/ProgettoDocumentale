@@ -1,4 +1,4 @@
-@model ProgettoDocumentale.Presentation.Models.Account.LoginModel
+@model ProgettoDocumentale.Application.Requests.Users.ViewModels.LoginUser
 
 @{
     ViewBag.Title = "Login";
@@ -35,7 +35,7 @@
                 @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", style = "width:100%; max-width:100%; box-sizing:border-box;", autocomplete = "username" })
                 @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
             </div>
-
+            
             <div class="form-group mb-3">
                 @Html.LabelFor(m => m.Password, new { @class = "form-label" })
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", style = "width:100%; max-width:100%; box-sizing:border-box;", autocomplete = "current-password" })

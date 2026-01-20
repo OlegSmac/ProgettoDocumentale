@@ -8,9 +8,9 @@ using ProgettoDocumentale.Application.Abstractions;
 
 namespace ProgettoDocumentale.Application.Services
 {
-    public class PasswordEncryptionService : IPasswordEncryptionService
+    public static class PasswordEncryptionService
     {
-        public string HashPassword(string password)
+        public static string HashPassword(string password)
         {
             using (SHA256 sha = SHA256.Create())
             {
@@ -24,7 +24,7 @@ namespace ProgettoDocumentale.Application.Services
             }
         }
 
-        public bool VerifyPassword(string password, string hashedPassword)
+        public static bool VerifyPassword(string password, string hashedPassword)
         {
             password = HashPassword(password);
             return password.Equals(hashedPassword);
