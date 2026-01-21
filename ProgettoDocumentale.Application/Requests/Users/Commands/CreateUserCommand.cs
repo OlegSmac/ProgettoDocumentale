@@ -73,7 +73,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
             } 
             catch (Exception e)
             {
-                throw new Exception("CreateUserCommand exception " + e.Message);
+                throw new Exception(e.Message);
             }
         }
     }

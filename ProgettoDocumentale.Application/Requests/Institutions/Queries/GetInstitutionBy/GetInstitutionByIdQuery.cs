@@ -37,7 +37,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInsti
             }
             catch (Exception e)
             {
-                throw new Exception("GetInstitutionByIdQuery exception " + e.Message);
+                throw new Exception(e.Message);
             }
         }
     }

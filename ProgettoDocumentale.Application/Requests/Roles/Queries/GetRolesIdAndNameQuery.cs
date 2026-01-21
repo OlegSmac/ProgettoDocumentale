@@ -33,7 +33,7 @@ namespace ProgettoDocumentale.Application.Requests.Roles.Queries
             }
             catch (Exception e)
             {
-                throw new Exception("GetRolesIdAndNameQuery exception " + e.Message);
+                throw new Exception(e.Message);
             }
         }
     }

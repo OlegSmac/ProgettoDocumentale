@@ -2,13 +2,12 @@
     ViewBag.Title = "Admin page";
 }
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
-
 @section styles {
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-contextmenu@2.9.2/dist/jquery.contextMenu.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="~/Content/all.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/Content/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="~/Content/jquery.contextMenu.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap-select.min.css" />
 }
 
 <div class="container-fluid">
@@ -142,10 +141,10 @@
 </style>
 
 @section scripts {
-    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-contextmenu@2.9.2/dist/jquery.contextMenu.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-contextmenu@2.9.2/dist/jquery.ui.position.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+    <script src="~/Scripts/dataTables.min.js"></script>
+    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
+    <script src="~/Scripts/jquery.ui.position.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
 
     <script src="~/Scripts/Modal/OpenModal.js"></script>
     <script src="~/Scripts/Modal/RolesSelection.js"></script>
@@ -154,6 +153,7 @@
     <script src="~/Scripts/Institution/RemoveInstitution.js"></script>
 
     <script src="~/Scripts/User/HandleCreateUpdateUser.js"></script>
+    <script src="~/Scripts/User/HandleResetPassword.js"></script>
 
     <script>
         var institutionTable;
@@ -181,9 +181,9 @@
                 },
                 columns: [
                     { data: "Id", title: "Id", name: "Id", visible: false },
-                    { data: "InstCode", title: "InstCode", name: "InstCode", autoWidth: true },
+                    { data: "InstCode", title: "Inst Code", name: "InstCode", autoWidth: true },
                     { data: "Name", title: "Name", name: "Name", autoWidth: true },
-                    { data: "AdditionalInfo", title: "AdditionalInfo", name: "AdditionalInfo", autoWidth: true }
+                    { data: "AdditionalInfo", title: "Additional Info", name: "AdditionalInfo", autoWidth: true }
                 ],
                 pagingType: "full_numbers",
                 language: {

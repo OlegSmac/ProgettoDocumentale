@@ -47,7 +47,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Queries.GetUsers
             }
             catch (Exception e)
             {
-                throw new Exception("GetPagedUsersQuery exception " + e.Message);
+                throw new Exception(e.Message);
             }
         }
     }

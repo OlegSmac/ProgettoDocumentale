@@ -46,7 +46,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Queries.GetUserBy
             }
             catch (Exception e)
             {
-                throw new Exception("GetUserByUsernameAndPasswordQuery exception " + e.Message);
+                throw new Exception(e.Message);
             }
         }
     }

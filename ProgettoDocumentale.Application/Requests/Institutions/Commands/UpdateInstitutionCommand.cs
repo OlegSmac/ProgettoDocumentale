@@ -47,7 +47,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Commands
             }
             catch (Exception e)
             {
-                throw new Exception("UpdateInstitutionCommand exception " + e.Message);
+                throw new Exception(e.Message);
             }
         }
     }

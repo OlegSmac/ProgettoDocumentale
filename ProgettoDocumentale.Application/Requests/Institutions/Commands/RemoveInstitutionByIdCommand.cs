@@ -38,7 +38,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Commands
             }
             catch (Exception e)
             {
-                throw new Exception("RemoveInstitutionByIdCommand exception " + e.Message);
+                throw new Exception(e.Message);
             }
         }
     }

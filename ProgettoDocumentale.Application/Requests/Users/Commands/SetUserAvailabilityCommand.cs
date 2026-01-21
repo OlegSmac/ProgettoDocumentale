@@ -40,7 +40,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
             }
             catch (Exception e)
             {
-                throw new Exception("SetUserAvailabilityCommand exception " + e.Message);
+                throw new Exception(e.Message);
             }
         }
     }
