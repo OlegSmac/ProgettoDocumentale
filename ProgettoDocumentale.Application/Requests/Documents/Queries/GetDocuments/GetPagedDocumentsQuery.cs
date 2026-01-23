@@ -8,32 +8,31 @@ using System.Threading.Tasks;
 using MediatR;
 using ProgettoDocumentale.Application.Common.Extensions;
 using ProgettoDocumentale.Application.Common.Interfaces;
+using ProgettoDocumentale.Application.Common.Mappers;
 using ProgettoDocumentale.Application.Common.TableParameters;
-using ProgettoDocumentale.Application.Conmmon.Mappers;
-using ProgettoDocumentale.Application.Requests.Institutions.DTOs;
+using ProgettoDocumentale.Application.Requests.Documents.DTOs;
 
-namespace ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInstitutions
+namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocuments
 {
-    public class GetPagedInstitutionsQuery : IRequest<IEnumerable<InstitutionDTO>>
+    public class GetPagedDocumentsQuery : IRequest<IEnumerable<DocumentDTO>>
     {
         public DataTableParameters Parameters { get; set; }
     }
 
-    public class GetPagedInstitutionsQueryHandler : IRequestHandler<GetPagedInstitutionsQuery, IEnumerable<InstitutionDTO>>
+    public class GetPagedDocumentsQueryHandler : IRequestHandler<GetPagedDocumentsQuery, IEnumerable<DocumentDTO>>
     {
         private readonly IProgettoDocContext _context;
 
-        public GetPagedInstitutionsQueryHandler(IProgettoDocContext context)
+        public GetPagedDocumentsQueryHandler(IProgettoDocContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<InstitutionDTO>> Handle(GetPagedInstitutionsQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<DocumentDTO>> Handle(GetPagedDocumentsQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var query = _context.Institutions
-                    .Select(InstitutionMapper.ToDtoExpr())
+            try {
+                var query = _context.Documents
+                    .Select(DocumentMapper.ToDtoExpr())
                     .Search(request.Parameters)
                     .OrderBy(request.Parameters)
                     .Page(request.Parameters);                

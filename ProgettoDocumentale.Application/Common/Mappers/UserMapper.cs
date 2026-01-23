@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Security;
+using ProgettoDocumentale.Application.Requests.Projects.DTOs;
 using ProgettoDocumentale.Application.Requests.Users.DTOs;
 using ProgettoDocumentale.Application.Requests.Users.ViewModels;
 using ProgettoDocumentale.Domain.Models;
@@ -45,6 +47,23 @@ namespace ProgettoDocumentale.Application.Common.Mappers
                 Patronymic = req.Patronymic
             };
         }
+
+        public static Expression<Func<User, UserDTO>> ToDtoExpr() => user => new UserDTO
+        {
+            Id = user.Id,
+            InstitutionId = user.InstitutionId,
+            UserName = user.UserName,
+            PasswordHash = user.PasswordHash,
+            Email = user.Email,
+            IsEnabled = user.IsEnabled,
+            Name = user.Name,
+            Surname = user.Surname,
+            Patronymic = user.Patronymic,
+            Roles = user.UserRoles
+                    .Where(ur => ur.Role != null)
+                    .Select(ur => ur.Role.Name)
+                    .ToList()
+        };
 
     }
 }

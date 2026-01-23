@@ -166,14 +166,30 @@
     <Compile Include="Common\Interfaces\ICurrentUserService.cs" />
     <Compile Include="Common\Interfaces\IDateTime.cs" />
     <Compile Include="Common\Interfaces\IProgettoDocContext.cs" />
+    <Compile Include="Common\Mappers\DocumentMapper.cs" />
+    <Compile Include="Common\Mappers\ProjectMapper.cs" />
     <Compile Include="Common\TableParameters\DataTableColumn.cs" />
     <Compile Include="Common\TableParameters\DataTableOrder.cs" />
     <Compile Include="Common\TableParameters\DataTableParameters.cs" />
     <Compile Include="Common\TableParameters\DataTableSearch.cs" />
     <Compile Include="Common\DTOs\IdNameDTO.cs" />
+    <Compile Include="Requests\Documents\DTOs\DocumentDTO.cs" />
+    <Compile Include="Requests\Documents\Queries\GetDocuments\GetPagedDocumentsQuery.cs" />
     <Compile Include="Requests\Institutions\DTOs\InstitutionDTO.cs" />
     <Compile Include="Requests\Institutions\ViewModels\CreateInstitutionValidator.cs" />
     <Compile Include="Requests\Institutions\ViewModels\UpdateInstitutionValidator.cs" />
+    <Compile Include="Requests\Projects\Commands\CreateProjectCommand.cs" />
+    <Compile Include="Requests\Projects\Commands\RemoveProjectByIdCommand.cs" />
+    <Compile Include="Requests\Projects\Commands\UpdateProjectCommand.cs" />
+    <Compile Include="Requests\Projects\DTOs\InstitutionProjectsTreeDTO.cs" />
+    <Compile Include="Requests\Projects\DTOs\ProjectDTO.cs" />
+    <Compile Include="Requests\Projects\Queries\GetProjectBy\GetProjectByIdQuery.cs" />
+    <Compile Include="Requests\Projects\Queries\GetProjects\GetPagedProjectsQuery.cs" />
+    <Compile Include="Requests\Projects\Queries\GetProjects\GetProjectsHierarchyQuery.cs" />
+    <Compile Include="Requests\Projects\ViewModels\CreateProjectRequestData.cs" />
+    <Compile Include="Requests\Projects\ViewModels\CreateProjectValidator.cs" />
+    <Compile Include="Requests\Projects\ViewModels\UpdateProjectRequestData.cs" />
+    <Compile Include="Requests\Projects\ViewModels\UpdateProjectValidator.cs" />
     <Compile Include="Requests\Users\DTOs\UserDTO.cs" />
     <Compile Include="Common\Mappers\InstitutionMapper.cs" />
     <Compile Include="Common\Mappers\UserMapper.cs" />
@@ -214,7 +230,10 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Requests\Documents\Commands\" />
+    <Folder Include="Requests\Documents\ViewModels\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

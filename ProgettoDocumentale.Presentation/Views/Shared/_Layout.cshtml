@@ -23,15 +23,18 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav me-auto">
                     @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            @Html.ActionLink("Dashboard", "Index", "Home", null, new { @class = "nav-link" })
-                        </li>
-
+                    {                       
                         if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
                                 @Html.ActionLink("Admin", "Index", "Admin", null, new { @class = "nav-link" })
+                            </li>
+                        }
+
+                        if (User.IsInRole("CedacriOperator"))
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("CedacriOperator", "Index", "CedacriOperator", null, new { @class = "nav-link" })
                             </li>
                         }
                     }

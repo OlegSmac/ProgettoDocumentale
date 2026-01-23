@@ -249,6 +249,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CedacriOperatorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -268,6 +269,7 @@
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\dataTables.js" />
     <Content Include="Scripts\dataTables.min.js" />
+    <Content Include="Scripts\formatNetDate.js" />
     <Content Include="Scripts\i18n\defaults-am_ET.js" />
     <Content Include="Scripts\i18n\defaults-am_ET.min.js" />
     <Content Include="Scripts\i18n\defaults-ar_AR.js" />
@@ -440,6 +442,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Project\HandleCreateUpdateProject.js" />
+    <Content Include="Scripts\Project\LoadProjectsHierarchy.js" />
+    <Content Include="Scripts\Project\RemoveProject.js" />
     <Content Include="Scripts\User\HandleCreateUpdateUser.js" />
     <Content Include="Scripts\User\HandleResetPassword.js" />
     <Content Include="Web.config" />
@@ -464,6 +469,10 @@
     <Content Include="Views\Admin\_ResetPasswordModal.cshtml" />
     <Content Include="Views\Admin\_AddInstitutionModal.cshtml" />
     <Content Include="Views\Admin\_UpdateInstitutionModal.cshtml" />
+    <Content Include="Views\CedacriOperator\Index.cshtml" />
+    <Content Include="Views\CedacriOperator\_AddProjectModal.cshtml" />
+    <Content Include="Views\CedacriOperator\_UpdateProjectModal.cshtml" />
+    <Content Include="Views\CedacriOperator\_ProjectDetailsModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

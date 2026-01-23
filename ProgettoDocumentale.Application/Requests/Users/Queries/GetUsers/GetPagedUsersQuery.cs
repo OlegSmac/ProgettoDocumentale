@@ -35,15 +35,12 @@ namespace ProgettoDocumentale.Application.Requests.Users.Queries.GetUsers
             {
                 var query = _context.Users
                     .Include(u => u.UserRoles.Select(ur => ur.Role))
-                    .AsQueryable();
-
-                query = query.Search(request.Parameters)
-                             .OrderBy(request.Parameters)
-                             .Page(request.Parameters);
-
-                var users = await query.ToListAsync(cancellationToken);
-
-                return users.Select(UserMapper.UserToUserDTO).ToList();
+                    .Select(UserMapper.ToDtoExpr())
+                    .Search(request.Parameters)
+                    .OrderBy(request.Parameters)
+                    .Page(request.Parameters);
+                
+                return await query.ToListAsync(cancellationToken);
             }
             catch (Exception e)
             {

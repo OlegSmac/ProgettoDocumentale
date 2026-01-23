@@ -48,7 +48,7 @@
              role="tabpanel"
              aria-labelledby="institutions-tab">
 
-            <table id="InstitutionDatatable" class="table-borderless row-border border-light mt-2 w-100" cellspacing="0">
+            <table id="InstitutionsDatatable" class="table-borderless row-border border-light mt-2 w-100" cellspacing="0">
                 <thead style="background-color: #2f3248; color: #ffffff" class="table-light">
                     <tr>
                         <th>Id</th>
@@ -75,7 +75,7 @@
              role="tabpanel"
              aria-labelledby="users-tab">
 
-            <table id="UserDatatable" class="table-borderless row-border border-light mt-2 w-100" cellspacing="0">
+            <table id="UsersDatatable" class="table-borderless row-border border-light mt-2 w-100" cellspacing="0">
                 <thead style="background-color: #2f3248; color: #ffffff" class="table-light">
                     <tr>
                         <th>Id</th>
@@ -142,8 +142,8 @@
 
 @section scripts {
     <script src="~/Scripts/dataTables.min.js"></script>
-    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
     <script src="~/Scripts/jquery.ui.position.min.js"></script>
+    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
     <script src="~/Scripts/bootstrap-select.min.js"></script>
 
     <script src="~/Scripts/Modal/OpenModal.js"></script>
@@ -156,16 +156,16 @@
     <script src="~/Scripts/User/HandleResetPassword.js"></script>
 
     <script>
-        var institutionTable;
-        var userTable;
+        var institutionsTable;
+        var usersTable;
 
         $(document).ready(function () {
-            userTable = initializeUserDataTable();
-            institutionTable = initializeInstitutionDataTable();
+            userTable = initializeUsersDataTable();
+            institutionTable = initializeInstitutionsDataTable();
         });
 
-        function initializeInstitutionDataTable() {
-            var table = $('#InstitutionDatatable').DataTable({
+        function initializeInstitutionsDataTable() {
+            var table = $('#InstitutionsDatatable').DataTable({
                 serverSide: true,
                 processing: true,
                 pageLength: 15,
@@ -198,7 +198,7 @@
                 }
             });
 
-            $('#InstitutionDatatable').contextMenu({
+            $('#InstitutionsDatatable').contextMenu({
                 selector: 'tbody tr',
                 trigger: 'right',
                 callback: function (key, options) {
@@ -224,8 +224,8 @@
             return table;
         }
 
-        function initializeUserDataTable() {
-            var table = $('#UserDatatable').DataTable({
+        function initializeUsersDataTable() {
+            var table = $('#UsersDatatable').DataTable({
                 serverSide: true,
                 processing: true,
                 pageLength: 15,
@@ -241,7 +241,6 @@
                 },
                 columns: [
                     { data: "Id", title: "Id", name: "Id", visible: false },
-
                     { data: "UserName", title: "Username", name: "UserName", autoWidth: true },
                     { data: "Email", title: "Email", name: "Email", autoWidth: true },
                     { data: "Name", title: "Name", name: "Name", autoWidth: true },
@@ -292,7 +291,7 @@
                 }
             });
 
-            $('#UserDatatable').contextMenu({
+            $('#UsersDatatable').contextMenu({
                 selector: 'tbody tr',
                 trigger: 'right',
                 callback: function (key, options) {

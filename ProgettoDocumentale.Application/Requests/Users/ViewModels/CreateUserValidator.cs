@@ -10,7 +10,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.ViewModels
     {
         public CreateUserValidator() 
         {
-            RuleFor(model => model.InstitutionId).NotNull().WithMessage("InstCode cannot be null")
+            RuleFor(model => model.InstitutionId).NotNull().WithMessage("Institution cannot be null")
                                 .NotEqual(-1).WithMessage("Choose institution");
 
             RuleFor(model => model.UserName).NotEmpty().WithMessage("Username cannot be empty")
