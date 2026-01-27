@@ -52,33 +52,7 @@
 
                 <div class="col-12 col-lg-3">
                     <div class="border rounded p-2 bg-white">
-                        <div class="fw-semibold mb-2">Categories</div>
-
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-1">
-                                <button type="button" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#cat1">
-                                    Projects
-                                </button>
-                                <div class="collapse" id="docCat1">
-                                    <ul class="list-unstyled ps-3 mt-1">
-                                        <li><a href="#" class="text-decoration-none">Project A</a></li>
-                                        <li><a href="#" class="text-decoration-none">Project B</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li class="mb-1">
-                                <button type="button" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#cat2">
-                                    Institutions
-                                </button>
-                                <div class="collapse" id="docCat2">
-                                    <ul class="list-unstyled ps-3 mt-1">
-                                        <li><a href="#" class="text-decoration-none">Inst 1</a></li>
-                                        <li><a href="#" class="text-decoration-none">Inst 2</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
+                        <div id="documentsHierarchy"></div>
                     </div>
                 </div>
 
@@ -201,7 +175,11 @@
     <script src="~/Scripts/formatNetDate.js"></script>
     <script src="~/Scripts/Modal/OpenModal.js"></script>
 
-    <script src="~/Scripts/Document/AddDocument.js"></script>
+    <!--<script src="~/Scripts/Document/AddDocument.js"></script>-->
+    <script src="~/scripts/Document/documentForm.js"></script>
+    <script src="~/scripts/Document/addDocumentStart.js"></script>
+    <script src="~/scripts/Document/updateDocumentStart.js"></script>
+
     <script src="~/Scripts/Document/HandleCreateUpdateDocument.js"></script>
 
     <script src="~/Scripts/Project/HandleCreateUpdateProject.js"></script>
@@ -290,7 +268,7 @@
                     { data: "Name", title: "Name", name: "Name", autoWidth: true },
                     { data: "TypeName", title: "Type", name: "TypeName", autoWidth: true },
                     {
-                        data: "UploadDate", title: "Date", name: "UploadDate", autoWidth: true, render: function (data, type) {
+                        data: "UploadDate", title: "Upload date", name: "UploadDate", autoWidth: true, render: function (data, type) {
                             if (type === "display" || type === "filter") return formatNetDate(data);
                             return data;
                         }
@@ -320,7 +298,12 @@
 
                     switch (key) {
                         case 'Update':
-                            openModal({ data: id, url: '/CedacriOperator/UpdateDocument', target: '#updateDocumentModal', content: '#updateDocumentModalContent' });
+                            openModal({
+                                data: id,
+                                url: '/CedacriOperator/GetUpdateDocument',
+                                target: '#updateDocumentModal',
+                                content: '#updateDocumentModalContent'
+                            });
                             break;
 
                         case 'Remove':

@@ -1,24 +1,23 @@
 @model ProgettoDocumentale.Application.Requests.Documents.ViewModels.UpdateDocumentRequestData
 
-<div class="modal-content" id="addDocumentModalContent" data-success="@(ViewBag.Success == true ? "1" : "0")">
+<div class="modal-content" id="updateDocumentModalContent" data-success="@(ViewBag.Success == true ? "1" : "0")">
     <div class="modal-header">
-        <h5 class="modal-title">Create document</h5>
+        <h5 class="modal-title">Update document</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
 
     @using (Ajax.BeginForm("UpdateDocument", "CedacriOperator", new AjaxOptions
     {
         HttpMethod = "POST",
-        OnSuccess = "handleCreateUpdateProject"
-    }, new { id = "projectForm" }))
+        OnSuccess = "handleCreateUpdateDocument"
+    }, new { id = "documentForm" }))
     {
         <div class="modal-body">
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
 
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                <!-- To make possible download -->
 
                 <div class="form-group row mb-2 px-4">
                     <div class="col-6 col-md-3">@Html.LabelFor(m => m.Name, "Name")</div>
@@ -41,10 +40,9 @@
                     <div class="col-12 col-md-8">
                         <select id="MacroTypeId" name="MacroTypeId" class="form-select">
                             <option value="">Select macro type</option>
-                            @foreach (var mt in (IEnumerable<dynamic>)ViewBag.MacroTypesRaw)
+                            @foreach (var mt in ViewBag.MacroTypesRaw)
                             {
-                                var selected = (Model.MacroTypeId == (int)mt.Id) ? "selected" : "";
-                                <option value="@mt.Id" data-code="@mt.Code" @selected>@mt.Name</option>
+                                <option value="@mt.Id" data-code="@mt.Code" @(Model.MacroTypeId == (int)mt.Id ? "selected" : null)>@mt.Name</option>
                             }
                         </select>
 
@@ -59,17 +57,17 @@
                         @Html.LabelFor(m => m.MicroTypeId, "Micro type")
                     </div>
                     <div class="col-12 col-md-8">
-                        @Html.DropDownListFor(m => m.MicroTypeId, (SelectList)ViewBag.MicroTypes, "Select micro type", new { @class = "form-select", id = "MicroTypeId", disabled = "disabled" })
+                        @Html.DropDownListFor(m => m.MicroTypeId, (SelectList)ViewBag.MicroTypes, "Select micro type", new { @class = "form-select", id = "MicroTypeId" })
                         @Html.ValidationMessageFor(m => m.MicroTypeId, "", new { @class = "text-danger validation-message" })
                     </div>
                 </div>
-
+                
                 <div class="form-group row mb-2 px-4" id="projectRow" style="display:none">
                     <div class="col-6 col-md-3">
                         @Html.LabelFor(m => m.ProjectId, "Project")
                     </div>
                     <div class="col-12 col-md-8">
-                        @Html.DropDownListFor(m => m.ProjectId, (SelectList)ViewBag.Projects, "Select Project", new { @class = "form-select", id = "ProjectId", disabled = "disabled" })
+                        @Html.DropDownListFor(m => m.ProjectId, (SelectList)ViewBag.Projects, "Select Project", new { @class = "form-select", id = "ProjectId" })
                         @Html.ValidationMessageFor(m => m.ProjectId, "", new { @class = "text-danger validation-message" })
                     </div>
                 </div>
@@ -94,7 +92,7 @@
         </div>
 
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Save</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
     }

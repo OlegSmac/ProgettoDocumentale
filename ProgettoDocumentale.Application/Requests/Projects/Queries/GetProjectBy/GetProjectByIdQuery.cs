@@ -33,10 +33,12 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjectBy
                 var project = await _context.Projects
                     .Include(p => p.Institution)
                     .Include(p => p.User)
+                    .Select(ProjectMapper.ToDtoExpr())
                     .FirstOrDefaultAsync(p => p.Id == request.Id);
-                if (project == null) return null;
+                
+                if (project == null) throw new Exception($"Project with id={request.Id} not found");
 
-                return ProjectMapper.ProjectToProjectDTO(project);
+                return project;
             }
             catch (Exception e)
             {

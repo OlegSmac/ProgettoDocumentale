@@ -17,9 +17,8 @@ namespace ProgettoDocumentale.Application.Requests.Documents.ViewModels
         public int MacroTypeId { get; set; } = -1;
         public int? MicroTypeId { get; set; }
         public int TypeId { get; set; } = -1;
-        public int? ProjectId { get; set; } = -1;
-        public string Name { get; set; }
-        public string SavedPath { get; set; }        
+        public int? ProjectId { get; set; }
+        public string Name { get; set; }              
         public string AdditionalInfo { get; set; }
 
         [DataType(DataType.Date)]

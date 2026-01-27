@@ -34,11 +34,12 @@ namespace ProgettoDocumentale.Application.Requests.Users.Queries.GetUserBy
                 var user = await _context.Users
                     .Include(u => u.UserRoles)
                     .Include("UserRoles.Role")
+                    .Select(UserMapper.ToDtoExpr())
                     .FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
-                if (user == null) return null;
+                if (user == null) throw new Exception($"User with id={request.Id} not found");
 
-                return UserMapper.UserToUserDTO(user);
+                return user;
             }
             catch (Exception e)
             {

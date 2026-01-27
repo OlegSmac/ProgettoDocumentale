@@ -50,10 +50,9 @@
                     <div class="col-12 col-md-8">
                         <select id="MacroTypeId" name="MacroTypeId" class="form-select">
                             <option value="">Select macro type</option>
-                            @foreach (var mt in (IEnumerable<dynamic>)ViewBag.MacroTypesRaw)
-                            {
-                                var selected = (Model.MacroTypeId == (int)mt.Id) ? "selected" : "";
-                                <option value="@mt.Id" data-code="@mt.Code" @selected>@mt.Name</option>
+                            @foreach (var mt in ViewBag.MacroTypesRaw)
+                            {                                
+                                <option value="@mt.Id" data-code="@mt.Code" @(Model.MacroTypeId == (int)mt.Id ? "selected" : null)>@mt.Name</option>
                             }
                         </select>
 

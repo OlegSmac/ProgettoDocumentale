@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using MediatR;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.Common.Mappers;
@@ -14,25 +15,28 @@ using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Application.Requests.Documents.Commands
 {
-    public class CreateDocumentCommand : IRequest<DocumentDTO>
+    public class UpdateDocumentCommand : IRequest<DocumentDTO>
     {
-        public CreateDocumentRequestData DocumentRequest { get; set; }
+        public UpdateDocumentRequestData DocumentRequest;
     }
 
-    public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, DocumentDTO>
+    public class UpdateDocumentCommandHandler : IRequestHandler<UpdateDocumentCommand, DocumentDTO>
     {
         private readonly IProgettoDocContext _context;
 
-        public CreateDocumentCommandHandler(IProgettoDocContext context)
+        public UpdateDocumentCommandHandler(IProgettoDocContext context)
         {
             _context = context;
         }
 
-        public async Task<DocumentDTO> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
+        public async Task<DocumentDTO> Handle(UpdateDocumentCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 var req = request.DocumentRequest;
+
+                var document = await _context.Documents.FirstOrDefaultAsync(d => d.Id == req.Id, cancellationToken);
+                if (document == null) throw new Exception($"Document with id={req.Id} not found");
 
                 var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == req.InstitutionId, cancellationToken);
                 if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");
@@ -49,10 +53,14 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                     if (project == null) throw new Exception($"Project with id={req.ProjectId} not found");
                 }
 
-                Document document = DocumentMapper.CreateDocumentRequestDataToDocument(req);
+                document.InstitutionId = req.InstitutionId;
+                document.TypeId = req.TypeId;
+                document.ProjectId = req.ProjectId;
                 document.UserId = user.Id;
+                document.Name = req.Name;                          
+                document.AdditionalInfo = req.AdditionalInfo;
+                document.GroupingDate = req.GroupingDate;
 
-                _context.Documents.Add(document);
                 await _context.SaveChangesAsync(cancellationToken);
 
                 return DocumentMapper.DocumentToDocumentDTO(document);
