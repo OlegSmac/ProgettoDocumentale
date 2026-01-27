@@ -310,6 +310,20 @@ namespace ProgettoDocumentale.Presentation.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveDocument(int id, CancellationToken cancellationToken)
+        {
+            var output = await _mediator.Send(new RemoveDocumentByIdCommand
+            {
+                Id = id
+            }, cancellationToken);
+
+            if (output != "removed") return Json(new { success = false, message = output });
+
+            return Json(new { success = true });
+        }
+
         #endregion
 
         #region Projects

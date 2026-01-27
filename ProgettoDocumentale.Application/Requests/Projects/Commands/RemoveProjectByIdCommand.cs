@@ -31,6 +31,12 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
                 var project = await _context.Projects.FirstOrDefaultAsync(i => i.Id == request.Id);
                 if (project == null) return $"Project with id = {request.Id} doesn't exist";
 
+                var relatedDocuments = await _context.Documents
+                    .Where(d => d.ProjectId != null && d.ProjectId == project.Id)
+                    .ToListAsync();
+
+                foreach (var doc in relatedDocuments) _context.Documents.Remove(doc);
+
                 _context.Projects.Remove(project);
                 await _context.SaveChangesAsync(cancellationToken);
 

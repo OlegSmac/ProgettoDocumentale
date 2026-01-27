@@ -273,6 +273,7 @@
     <Content Include="Scripts\Document\addDocumentStart.js" />
     <Content Include="Scripts\Document\documentForm.js" />
     <Content Include="Scripts\Document\HandleCreateUpdateDocument.js" />
+    <Content Include="Scripts\Document\RemoveDocument.js" />
     <Content Include="Scripts\Document\updateDocumentStart.js" />
     <Content Include="Scripts\formatNetDate.js" />
     <Content Include="Scripts\i18n\defaults-am_ET.js" />

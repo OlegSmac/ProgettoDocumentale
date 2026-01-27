@@ -175,6 +175,7 @@
     <Compile Include="Common\TableParameters\DataTableSearch.cs" />
     <Compile Include="Common\DTOs\IdNameDTO.cs" />
     <Compile Include="Requests\Documents\Commands\CreateDocumentCommand.cs" />
+    <Compile Include="Requests\Documents\Commands\RemoveDocumentByIdCommand.cs" />
     <Compile Include="Requests\Documents\Commands\UpdateDocumentCommand.cs" />
     <Compile Include="Requests\Documents\DTOs\DocumentDTO.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocumentBy\GetDocumentByIdQuery.cs" />
