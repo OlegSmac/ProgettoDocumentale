@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +11,10 @@ using System.Web.Mvc;
 using FluentValidation;
 using MediatR;
 using ProgettoDocumentale.Application.Common.TableParameters;
+using ProgettoDocumentale.Application.Requests.Documents.Commands;
 using ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocuments;
+using ProgettoDocumentale.Application.Requests.Documents.ViewModels;
+using ProgettoDocumentale.Application.Requests.DocumentTypes.Queries;
 using ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInstitutionBy;
 using ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInstitutions;
 using ProgettoDocumentale.Application.Requests.Projects.Commands;
@@ -24,21 +29,34 @@ namespace ProgettoDocumentale.Presentation.Controllers
     [Authorize(Roles = "CedacriOperator")]
     public class CedacriOperatorController : Controller
     {
+        private static readonly HashSet<string> AllowedExt = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".pdf", ".doc", ".docx", ".xlsx", ".png", ".jpg", ".jpeg" };
+        private const string ServReportCode = "SERV_REPORT";
+        private const string SlaReportCode = "SLA_REPORT";
+        private const string ProgettazioneCode = "PROGETTAZIONE";
+        private const int MaxBytes = 50 * 1024 * 1024;
+
         private readonly IMediator _mediator;
 
         private readonly IValidator<CreateProjectRequestData> _createProjectValidator;
         private readonly IValidator<UpdateProjectRequestData> _updateProjectValidator;
 
+        private readonly IValidator<CreateDocumentRequestData> _createDocumentValidator;
+        private readonly IValidator<UpdateDocumentRequestData> _updateDocumentValidator;     
+
         public CedacriOperatorController(IMediator mediator,
             IValidator<CreateProjectRequestData> createProjectValidator,
-            IValidator<UpdateProjectRequestData> updateProjectValidator)
+            IValidator<UpdateProjectRequestData> updateProjectValidator,
+            IValidator<CreateDocumentRequestData> createDocumentValidator,
+            IValidator<UpdateDocumentRequestData> updateDocumentValidator)
         {
             _mediator = mediator;
             _createProjectValidator = createProjectValidator;
             _updateProjectValidator = updateProjectValidator;
+            _createDocumentValidator = createDocumentValidator;
+            _updateDocumentValidator = updateDocumentValidator;
         }
 
-        public async Task<ActionResult> Index(CancellationToken cancellationToken)
+        public ActionResult Index(CancellationToken cancellationToken)
         {
             try
             {
@@ -69,6 +87,15 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 recordsTotal = parameters.TotalCount,
                 data = documents
             });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetAddDocument(CancellationToken cancellationToken)
+        {
+            var model = new CreateDocumentRequestData();
+            await LoadInstitutionsTypesProjectsAsync(model, cancellationToken);
+
+            return PartialView("_AddDocumentModal", model);
         }
 
         #endregion
@@ -167,6 +194,107 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
         #region Documents
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddDocument(CreateDocumentRequestData data, HttpPostedFileBase file, CancellationToken cancellationToken)
+        {
+            data.Username = User.Identity?.Name;
+
+            var macroTypes = await _mediator.Send(new GetMacroDocumentTypesIdNameCodeQuery(), cancellationToken);
+            var selectedMacro = macroTypes.FirstOrDefault(x => x.Id == data.MacroTypeId);
+
+            bool isSla = selectedMacro?.Code == SlaReportCode;            
+            bool isPrj = selectedMacro?.Code == ProgettazioneCode;
+            
+            if (isSla)
+            {
+                data.TypeId = data.MacroTypeId;
+                data.MicroTypeId = null;
+                data.ProjectId = null;
+            }
+            else
+            {                
+                data.TypeId = data.MicroTypeId ?? -1;
+                if (!isPrj) data.ProjectId = null;
+            }
+
+            await LoadInstitutionsTypesProjectsAsync(data, cancellationToken);
+
+            if (file == null || file.ContentLength <= 0)
+            {
+                ModelState.AddModelError(nameof(file), "Please select a file.");
+            }
+            else
+            {
+                if (file.ContentLength > MaxBytes) ModelState.AddModelError(nameof(file), "Max file size is 50 MB.");
+
+                var ext = (Path.GetExtension(file.FileName) ?? "").ToLowerInvariant();
+                if (!AllowedExt.Contains(ext)) ModelState.AddModelError(nameof(file), "Allowed formats: pdf, doc/docx, xlsx, png, jpg.");
+            }
+
+            var validationResult = _createDocumentValidator.Validate(data);
+            if (!validationResult.IsValid)
+            {
+                foreach (var err in validationResult.Errors)
+                {
+                    ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }                
+            }
+
+            if (!ModelState.IsValid)
+            {
+                /*
+                return Json(new
+                {
+                    success = false,
+                    errors = ModelState
+                        .Where(x => x.Value.Errors.Any())
+                        .Select(x => new {
+                            field = x.Key,
+                            messages = x.Value.Errors.Select(e => e.ErrorMessage)
+                        })
+                });
+                */
+
+                return PartialView("_AddDocumentModal", data);
+            }
+
+            try
+            {
+                var root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"]);
+                Directory.CreateDirectory(root);
+
+                var ext = Path.GetExtension(file.FileName);
+                var storedFileName = $"{Guid.NewGuid():N}{ext}";
+                var fullPath = Path.Combine(root, storedFileName);
+
+                file.SaveAs(fullPath);
+                data.SavedPath = storedFileName;
+
+                await _mediator.Send(new CreateDocumentCommand
+                {
+                    DocumentRequest = data
+                }, cancellationToken);
+
+                ViewBag.Success = true;
+                return PartialView("_AddDocumentModal", new CreateDocumentRequestData());
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;                
+                var inner = ex.InnerException;
+                while (inner != null)
+                {
+                    msg += " | " + inner.Message;
+                    inner = inner.InnerException;
+                }
+
+                ModelState.AddModelError("", "In ex: " + msg);
+                await LoadInstitutionsTypesProjectsAsync(data, cancellationToken);
+                return PartialView("_AddDocumentModal", data);
+            }
+        }
+
         #endregion
 
         #region Projects
@@ -262,8 +390,44 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
         private async Task LoadInstitutionsAsync(CancellationToken cancellationToken)
         {
-            var institutions = await _mediator.Send(new GetInstitutionsIdAndNameQuery(), cancellationToken);            
+            var institutions = await _mediator.Send(new GetProjectsIdAndNameQuery(), cancellationToken);            
             ViewBag.Institutions = new SelectList(institutions, "Id", "Name");            
+        }
+
+        private async Task LoadInstitutionsTypesProjectsAsync(CreateDocumentRequestData model, CancellationToken cancellationToken)
+        {
+            var institutions = await _mediator.Send(new GetInstitutionIdAndNameQuery(), cancellationToken);
+            ViewBag.Institutions = new SelectList(institutions, "Id", "Name");            
+
+            var projects = await _mediator.Send(new GetProjectsIdAndNameQuery(), cancellationToken);
+            ViewBag.Projects = new SelectList(projects, "Id", "Name");
+
+            var macroTypes = await _mediator.Send(new GetMacroDocumentTypesIdAndNameQuery(), cancellationToken);
+            ViewBag.MacroTypes = new SelectList(macroTypes, "Id", "Name");
+            ViewBag.MacroTypesRaw = macroTypes;
+
+            if (model.MacroTypeId > 0)
+            {                
+                var selected = macroTypes.FirstOrDefault(x => x.Id == model.MacroTypeId);
+                if (selected != null && selected.Code != SlaReportCode)
+                {
+                    var microTypes = await _mediator.Send(new GetDocumentMicroTypesByMacroIdAndNameQuery { MacroId = model.MacroTypeId }, cancellationToken);
+                    ViewBag.MicroTypes = new SelectList(microTypes, "Id", "Name");
+                }
+                else ViewBag.MicroTypes = new SelectList(Enumerable.Empty<SelectListItem>());                
+            }
+            else ViewBag.MicroTypes = new SelectList(Enumerable.Empty<SelectListItem>());            
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetMicroTypes(int macroTypeId, CancellationToken cancellationToken)
+        {
+            if (macroTypeId <= 0) return Json(Enumerable.Empty<object>(), JsonRequestBehavior.AllowGet);
+
+            var microTypes = await _mediator.Send(new GetDocumentMicroTypesByMacroIdAndNameQuery { MacroId = macroTypeId }, cancellationToken);            
+            var result = microTypes.Select(x => new { x.Id, x.Name });
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

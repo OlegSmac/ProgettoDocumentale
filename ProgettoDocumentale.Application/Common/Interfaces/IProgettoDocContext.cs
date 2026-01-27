@@ -17,6 +17,7 @@ namespace ProgettoDocumentale.Application.Common.Interfaces
         DbSet<Institution> Institutions { get; set; }
         DbSet<Document> Documents { get; set; }
         DbSet<DocumentType> DocumentTypes { get; set; }
+        DbSet<DocumentTypeHierarchy> DocumentTypeHierarchies { get; set; }
         DbSet<Project> Projects { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);

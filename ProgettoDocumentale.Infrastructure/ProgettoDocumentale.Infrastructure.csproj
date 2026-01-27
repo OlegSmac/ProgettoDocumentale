@@ -156,6 +156,18 @@
     <Compile Include="Migrations\202601130809149_InitialCreate.Designer.cs">
       <DependentUpon>202601130809149_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202601260752277_IncreaseDocumentTypeCodeLength.cs" />
+    <Compile Include="Migrations\202601260752277_IncreaseDocumentTypeCodeLength.Designer.cs">
+      <DependentUpon>202601260752277_IncreaseDocumentTypeCodeLength.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202601261234501_MakeDocumentProjectNullable.cs" />
+    <Compile Include="Migrations\202601261234501_MakeDocumentProjectNullable.Designer.cs">
+      <DependentUpon>202601261234501_MakeDocumentProjectNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202601271134163_OptionalProjectId.cs" />
+    <Compile Include="Migrations\202601271134163_OptionalProjectId.Designer.cs">
+      <DependentUpon>202601271134163_OptionalProjectId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Persistence\Configurations\DocumentConfiguration.cs" />
     <Compile Include="Persistence\Configurations\DocumentTypeConfiguration.cs" />
@@ -187,6 +199,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202601130809149_InitialCreate.resx">
       <DependentUpon>202601130809149_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202601260752277_IncreaseDocumentTypeCodeLength.resx">
+      <DependentUpon>202601260752277_IncreaseDocumentTypeCodeLength.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202601261234501_MakeDocumentProjectNullable.resx">
+      <DependentUpon>202601261234501_MakeDocumentProjectNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202601271134163_OptionalProjectId.resx">
+      <DependentUpon>202601271134163_OptionalProjectId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

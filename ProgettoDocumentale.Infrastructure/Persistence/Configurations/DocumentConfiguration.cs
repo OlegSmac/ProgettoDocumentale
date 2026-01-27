@@ -34,7 +34,7 @@ namespace ProgettoDocumentale.Infrastructure.Persistence.Configurations
                 .HasForeignKey(x => x.TypeId)
                 .WillCascadeOnDelete(false);
 
-            HasRequired(x => x.Project)
+            HasOptional(x => x.Project)
                 .WithMany(t => t.Documents)
                 .HasForeignKey(x => x.ProjectId)
                 .WillCascadeOnDelete(false);

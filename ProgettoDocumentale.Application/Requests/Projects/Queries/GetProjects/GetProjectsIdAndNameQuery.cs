@@ -9,25 +9,25 @@ using MediatR;
 using ProgettoDocumentale.Application.Common.DTOs;
 using ProgettoDocumentale.Application.Common.Interfaces;
 
-namespace ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInstitutions
+namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjects
 {
-    public class GetInstitutionIdAndNameQuery : IRequest<IEnumerable<IdNameDTO>>
+    public class GetProjectsIdAndNameQuery : IRequest<IEnumerable<IdNameDTO>>
     { }
 
-    public class GetInstitutionsIdAndNameQueryHandler : IRequestHandler<GetInstitutionIdAndNameQuery, IEnumerable<IdNameDTO>>
+    public class GetProjectsIdAndNameQueryHandler : IRequestHandler<GetProjectsIdAndNameQuery, IEnumerable<IdNameDTO>>
     {
         private readonly IProgettoDocContext _context;
 
-        public GetInstitutionsIdAndNameQueryHandler(IProgettoDocContext context)
+        public GetProjectsIdAndNameQueryHandler(IProgettoDocContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<IdNameDTO>> Handle(GetInstitutionIdAndNameQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IdNameDTO>> Handle(GetProjectsIdAndNameQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                return await _context.Institutions
+                return await _context.Projects
                     .Select(i => new IdNameDTO { Id = i.Id, Name = i.Name })
                     .ToListAsync();
             }

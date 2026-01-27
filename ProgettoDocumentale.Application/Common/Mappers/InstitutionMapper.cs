@@ -41,5 +41,6 @@ namespace ProgettoDocumentale.Application.Conmmon.Mappers
             Name = institution.Name,
             AdditionalInfo = institution.AdditionalInfo
         };
+
     }
 }

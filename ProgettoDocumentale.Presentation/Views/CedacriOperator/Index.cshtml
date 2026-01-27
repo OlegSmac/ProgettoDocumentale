@@ -103,7 +103,7 @@
             <div class="d-flex justify-content-start mt-3">
                 <button type="button"
                         class="btn btn-primary"
-                        onclick="openModal({ url: '/CedacriOperator/AddDocument', data: 0, target: '#addDocumentModal', content: '#addDocumentModalContent' })"
+                        onclick="openModal({ url: '/CedacriOperator/GetAddDocument', data: 0, target: '#addDocumentModal', content: '#addDocumentModalContent' })"
                         data-bs-toggle="modal"
                         data-bs-target="#addDocumentModal">
                     New Document
@@ -201,6 +201,9 @@
     <script src="~/Scripts/formatNetDate.js"></script>
     <script src="~/Scripts/Modal/OpenModal.js"></script>
 
+    <script src="~/Scripts/Document/AddDocument.js"></script>
+    <script src="~/Scripts/Document/HandleCreateUpdateDocument.js"></script>
+
     <script src="~/Scripts/Project/HandleCreateUpdateProject.js"></script>
     <script src="~/Scripts/Project/RemoveProject.js"></script>
     <script src="~/Scripts/Project/LoadProjectsHierarchy.js"></script>
@@ -285,10 +288,15 @@
                 columns: [
                     { data: "Id", title: "Id", name: "Id", visible: false },
                     { data: "Name", title: "Name", name: "Name", autoWidth: true },
-                    { data: "Type", title: "Type", name: "Type", autoWidth: true },
-                    { data: "Date", title: "Date", name: "Date", autoWidth: true },
-                    { data: "InstitutionId", title: "Institution", name: "InstitutionId", autoWidth: true },
-                    { data: "ProjectId", title: "Project", name: "Project", autoWidth: true }
+                    { data: "TypeName", title: "Type", name: "TypeName", autoWidth: true },
+                    {
+                        data: "UploadDate", title: "Date", name: "UploadDate", autoWidth: true, render: function (data, type) {
+                            if (type === "display" || type === "filter") return formatNetDate(data);
+                            return data;
+                        }
+                    },
+                    { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
+                    { data: "ProjectName", title: "Project", name: "ProjectName", autoWidth: true }
                 ],
                 pagingType: "full_numbers",
                 language: {

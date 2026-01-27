@@ -30,13 +30,17 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
 
         public async Task<IEnumerable<DocumentDTO>> Handle(GetPagedDocumentsQuery request, CancellationToken cancellationToken)
         {
-            try {
+            try {                        
                 var query = _context.Documents
+                    .Include(d => d.User)
+                    .Include(d => d.Type)
+                    .Include(d => d.Institution)
+                    .Include(d => d.Project)
                     .Select(DocumentMapper.ToDtoExpr())
                     .Search(request.Parameters)
                     .OrderBy(request.Parameters)
-                    .Page(request.Parameters);                
-
+                    .Page(request.Parameters);
+                                
                 return await query.ToListAsync(cancellationToken);
             }
             catch (Exception e)

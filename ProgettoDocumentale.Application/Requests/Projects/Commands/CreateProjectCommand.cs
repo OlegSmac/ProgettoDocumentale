@@ -35,7 +35,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
                 var req = request.ProjectRequest;
 
                 var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == req.InstitutionId, cancellationToken);
-                if (institution == null) throw new Exception($"Institution with name {req.InstitutionId} not found");
+                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");
 
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == req.Username, cancellationToken);
                 if (user == null) throw new Exception($"User with username '{req.Username}' not found");

@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\IPasswordEncryptionService.cs" />
+    <Compile Include="Common\DTOs\IdNamCodeDTO.cs" />
     <Compile Include="Common\Extensions\DataTableExtensions.cs" />
     <Compile Include="Common\Interfaces\ICurrentUserService.cs" />
     <Compile Include="Common\Interfaces\IDateTime.cs" />
@@ -173,8 +174,16 @@
     <Compile Include="Common\TableParameters\DataTableParameters.cs" />
     <Compile Include="Common\TableParameters\DataTableSearch.cs" />
     <Compile Include="Common\DTOs\IdNameDTO.cs" />
+    <Compile Include="Requests\Documents\Commands\CreateDocumentCommand.cs" />
     <Compile Include="Requests\Documents\DTOs\DocumentDTO.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetPagedDocumentsQuery.cs" />
+    <Compile Include="Requests\Documents\ViewModels\CreateDocumentRequestData.cs" />
+    <Compile Include="Requests\Documents\ViewModels\CreateDocumentValidator.cs" />
+    <Compile Include="Requests\Documents\ViewModels\UpdateDocumentRequestData.cs" />
+    <Compile Include="Requests\Documents\ViewModels\UpdateDocumentValidator.cs" />
+    <Compile Include="Requests\DocumentTypes\Queries\GetDocumentMicroTypesByMacroIdAndNameQuery.cs" />
+    <Compile Include="Requests\DocumentTypes\Queries\GetMacroDocumentTypesIdAndNameQuery.cs" />
+    <Compile Include="Requests\DocumentTypes\Queries\GetMacroDocumentTypesIdNameCodeQuery.cs" />
     <Compile Include="Requests\Institutions\DTOs\InstitutionDTO.cs" />
     <Compile Include="Requests\Institutions\ViewModels\CreateInstitutionValidator.cs" />
     <Compile Include="Requests\Institutions\ViewModels\UpdateInstitutionValidator.cs" />
@@ -184,6 +193,7 @@
     <Compile Include="Requests\Projects\DTOs\InstitutionProjectsTreeDTO.cs" />
     <Compile Include="Requests\Projects\DTOs\ProjectDTO.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjectBy\GetProjectByIdQuery.cs" />
+    <Compile Include="Requests\Projects\Queries\GetProjects\GetProjectsIdAndNameQuery.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjects\GetPagedProjectsQuery.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjects\GetProjectsHierarchyQuery.cs" />
     <Compile Include="Requests\Projects\ViewModels\CreateProjectRequestData.cs" />
@@ -230,10 +240,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Requests\Documents\Commands\" />
-    <Folder Include="Requests\Documents\ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

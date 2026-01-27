@@ -52,7 +52,7 @@ namespace ProgettoDocumentale.Application.Common.Mappers
             DateFrom = project.DateFrom,
             DateTill = project.DateTill,
             AdditionalInfo = project.AdditionalInfo,
-            IsActive = project.IsActive         
+            IsActive = project.IsActive
         };
 
     }

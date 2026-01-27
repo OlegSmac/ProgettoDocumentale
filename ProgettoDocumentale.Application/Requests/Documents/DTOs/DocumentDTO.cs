@@ -9,10 +9,18 @@ namespace ProgettoDocumentale.Application.Requests.Documents.DTOs
     public class DocumentDTO
     {
         public int Id { get; set; }
+
         public int InstitutionId { get; set; }
-        public int UserId { get; set; }       
-        public int TypeId { get; set; }      
-        public int ProjectId { get; set; }
+        public string InstitutionName { get; set; }
+
+        public string Username { get; set; }
+
+        public int TypeId { get; set; } 
+        public string TypeName { get; set; }
+
+        public int? ProjectId { get; set; }
+        public string ProjectName { get; set; }
+
         public string Name { get; set; }
         public string SavedPath { get; set; }
         public DateTime UploadDate { get; set; }

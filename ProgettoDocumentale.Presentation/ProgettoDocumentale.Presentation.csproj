@@ -269,6 +269,8 @@
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\dataTables.js" />
     <Content Include="Scripts\dataTables.min.js" />
+    <Content Include="Scripts\Document\AddDocument.js" />
+    <Content Include="Scripts\Document\HandleCreateUpdateDocument.js" />
     <Content Include="Scripts\formatNetDate.js" />
     <Content Include="Scripts\i18n\defaults-am_ET.js" />
     <Content Include="Scripts\i18n\defaults-am_ET.min.js" />
@@ -473,9 +475,11 @@
     <Content Include="Views\CedacriOperator\_AddProjectModal.cshtml" />
     <Content Include="Views\CedacriOperator\_UpdateProjectModal.cshtml" />
     <Content Include="Views\CedacriOperator\_ProjectDetailsModal.cshtml" />
+    <Content Include="Views\CedacriOperator\_AddDocumentModal.cshtml" />
+    <Content Include="Views\CedacriOperator\_UpdateDocumentModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\uploads\" />
     <Folder Include="Content\fonts\" />
     <Folder Include="webfonts\" />
   </ItemGroup>
