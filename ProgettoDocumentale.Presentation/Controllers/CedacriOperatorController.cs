@@ -136,6 +136,24 @@ namespace ProgettoDocumentale.Presentation.Controllers
             return PartialView("_DocumentDetailsModal", document);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> DownloadDocument(int id, CancellationToken cancellationToken)
+        {
+            var document = await _mediator.Send(new GetDocumentByIdQuery { Id = id });
+            if (document == null) return HttpNotFound();
+
+            var root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"]);
+            var fullPath = Path.Combine(root, document.SavedPath ?? "");
+            if (!System.IO.File.Exists(fullPath)) return HttpNotFound("File not found on disk");
+
+            var downloadName = document.Name;
+            if (string.IsNullOrWhiteSpace(Path.GetExtension(downloadName))) downloadName += Path.GetExtension(fullPath);
+
+            var contentType = MimeMapping.GetMimeMapping(downloadName);
+
+            return File(fullPath, contentType, downloadName);
+        }
+
         #endregion
 
         #region Projects
@@ -240,19 +258,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
             if (!ModelState.IsValid) return PartialView("_AddDocumentModal", data);
 
             try
-            {
-                /*
-                var root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"]);   
-                Directory.CreateDirectory(root);
-
-                var ext = Path.GetExtension(file.FileName);
-                var storedFileName = $"{Guid.NewGuid():N}{ext}";
-                var fullPath = Path.Combine(root, storedFileName);
-
-                file.SaveAs(fullPath);
-                data.SavedPath = storedFileName;
-                */
-
+            {                
                 await _mediator.Send(new CreateDocumentCommand
                 {
                     DocumentRequest = data,
@@ -269,7 +275,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 await LoadInstitutionsTypesProjectsAsync(data.MacroTypeId, data.MicroTypeId, data.ProjectId, cancellationToken);
                 return PartialView("_AddDocumentModal", data);
             }
-        }
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]

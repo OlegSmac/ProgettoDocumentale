@@ -327,6 +327,10 @@
                             });
                             break;
 
+                        case 'Download':                            
+                            window.location = '/CedacriOperator/DownloadDocument?id=' + encodeURIComponent(id);
+                            break;
+
                         case 'Update':
                             openModal({
                                 data: id,
@@ -343,6 +347,7 @@
                 },
                 items: {
                     "Details": { name: "Details" },
+                    "Download": { name: "Download" },
                     "Update": { name: "Update" },
                     "Remove": { name: "Remove" }
                 }
