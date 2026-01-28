@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using MediatR;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.Common.Mappers;
@@ -17,6 +20,8 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
     public class CreateDocumentCommand : IRequest<DocumentDTO>
     {
         public CreateDocumentRequestData DocumentRequest { get; set; }
+        public HttpPostedFileBase File { get; set; }
+        public string Root { get; set; }
     }
 
     public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, DocumentDTO>
@@ -26,6 +31,18 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
         public CreateDocumentCommandHandler(IProgettoDocContext context)
         {
             _context = context;
+        }
+
+        private void SaveFile(CreateDocumentCommand request)
+        {            
+            Directory.CreateDirectory(request.Root);
+
+            var ext = Path.GetExtension(request.File.FileName);
+            var storedFileName = $"{Guid.NewGuid():N}{ext}";
+            var fullPath = Path.Combine(request.Root, storedFileName);
+
+            request.File.SaveAs(fullPath);
+            request.DocumentRequest.SavedPath = storedFileName;
         }
 
         public async Task<DocumentDTO> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
@@ -49,8 +66,10 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                     if (project == null) throw new Exception($"Project with id={req.ProjectId} not found");
                 }
 
+                SaveFile(request);
+
                 Document document = DocumentMapper.CreateDocumentRequestDataToDocument(req);
-                document.UserId = user.Id;
+                document.UserId = user.Id;                
 
                 _context.Documents.Add(document);
                 await _context.SaveChangesAsync(cancellationToken);

@@ -127,6 +127,15 @@ namespace ProgettoDocumentale.Presentation.Controllers
             return PartialView("_UpdateDocumentModal", model);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetDocumentDetails(int id, CancellationToken cancellationToken)
+        {
+            var document = await _mediator.Send(new GetDocumentByIdQuery { Id = id }, cancellationToken);
+            if (document == null) return HttpNotFound();
+            
+            return PartialView("_DocumentDetailsModal", document);
+        }
+
         #endregion
 
         #region Projects
@@ -196,24 +205,9 @@ namespace ProgettoDocumentale.Presentation.Controllers
         public async Task<ActionResult> GetProjectDetails(int id, CancellationToken cancellationToken)
         {
             var project = await _mediator.Send(new GetProjectByIdQuery { Id = id }, cancellationToken);
-            if (project == null) return HttpNotFound();
+            if (project == null) return HttpNotFound();            
 
-            var institution = await _mediator.Send(new GetInstitutionByIdQuery { Id = project.InstitutionId }, cancellationToken);
-
-            var model = new ProjectDTO
-            {
-                Id = project.Id,
-                InstitutionId = project.InstitutionId,
-                InstitutionName = project.InstitutionName,
-                Username = User.Identity?.Name,
-                Name = project.Name,
-                DateFrom = project.DateFrom,
-                DateTill = project.DateTill,
-                AdditionalInfo = project.AdditionalInfo,
-                IsActive = project.IsActive
-            };
-
-            return PartialView("_ProjectDetailsModal", model);
+            return PartialView("_ProjectDetailsModal", project);
         }
 
         #endregion
@@ -247,7 +241,8 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
             try
             {
-                var root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"]);
+                /*
+                var root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"]);   
                 Directory.CreateDirectory(root);
 
                 var ext = Path.GetExtension(file.FileName);
@@ -256,10 +251,13 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
                 file.SaveAs(fullPath);
                 data.SavedPath = storedFileName;
+                */
 
                 await _mediator.Send(new CreateDocumentCommand
                 {
-                    DocumentRequest = data
+                    DocumentRequest = data,
+                    File = file,
+                    Root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"])
                 }, cancellationToken);
 
                 ViewBag.Success = true;
@@ -316,7 +314,8 @@ namespace ProgettoDocumentale.Presentation.Controllers
         {
             var output = await _mediator.Send(new RemoveDocumentByIdCommand
             {
-                Id = id
+                Id = id,
+                Root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"])
             }, cancellationToken);
 
             if (output != "removed") return Json(new { success = false, message = output });

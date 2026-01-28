@@ -8,6 +8,7 @@ function toggleRemoveProject(id) {
         success: function (res) {
             if (res && res.success) {
                 if (projectsTable) projectsTable.ajax.reload(null, false);
+                if (documentsTable) documentsTable.ajax.reload(null, false);
             } else {
                 alert(res.message || 'Failed to remove institution');
             }

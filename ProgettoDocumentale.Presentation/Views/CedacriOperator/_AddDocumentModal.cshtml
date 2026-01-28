@@ -63,9 +63,7 @@
                 @Html.HiddenFor(m => m.TypeId, new { id = "TypeId" })
 
                 <div class="form-group row mb-2 px-4" id="microRow" style="display:none">
-                    <div class="col-6 col-md-3">
-                        @Html.LabelFor(m => m.MicroTypeId, "Micro type")
-                    </div>
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.MicroTypeId, "Micro type")</div>
                     <div class="col-12 col-md-8">
                         @Html.DropDownListFor(m => m.MicroTypeId, (SelectList)ViewBag.MicroTypes, "Select micro type", new { @class = "form-select", id = "MicroTypeId", disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.MicroTypeId, "", new { @class = "text-danger validation-message" })
@@ -73,9 +71,7 @@
                 </div>
 
                 <div class="form-group row mb-2 px-4" id="projectRow" style="display:none">
-                    <div class="col-6 col-md-3">
-                        @Html.LabelFor(m => m.ProjectId, "Project")
-                    </div>
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.ProjectId, "Project")</div>
                     <div class="col-12 col-md-8">
                         @Html.DropDownListFor(m => m.ProjectId, (SelectList)ViewBag.Projects, "Select Project", new { @class = "form-select", id = "ProjectId", disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.ProjectId, "", new { @class = "text-danger validation-message" })

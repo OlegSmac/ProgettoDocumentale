@@ -142,6 +142,12 @@
     </div>
 </div>
 
+<div class="modal fade" id="documentDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="documentDetailsModalContent"></div>
+    </div>
+</div>
+
 <div class="modal fade" id="addProjectModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" id="addProjectModalContent"></div>
@@ -196,6 +202,20 @@
 
             projectsTable = initializeProjectsDataTable();
             loadProjectsHierarchy();
+
+            $('#DocumentsDatatable tbody').on('dblclick', 'tr', function () {
+                var row = documentsTable.row(this);
+                if (!row.any()) return;
+
+                var id = row.data().Id;
+
+                openModal({
+                    data: id,
+                    url: '/CedacriOperator/GetDocumentDetails',
+                    target: '#documentDetailsModal',
+                    content: '#documentDetailsModalContent'
+                });
+            });
 
             $('#ProjectsDatatable tbody').on('dblclick', 'tr', function () {
                 var row = projectsTable.row(this);
@@ -298,6 +318,15 @@
                     var id = row.data().Id;
 
                     switch (key) {
+                        case 'Details':
+                            openModal({
+                                data: id,
+                                url: '/CedacriOperator/GetDocumentDetails',
+                                target: '#documentDetailsModal',
+                                content: '#documentDetailsModalContent'
+                            });
+                            break;
+
                         case 'Update':
                             openModal({
                                 data: id,
@@ -313,6 +342,7 @@
                     }
                 },
                 items: {
+                    "Details": { name: "Details" },
                     "Update": { name: "Update" },
                     "Remove": { name: "Remove" }
                 }
@@ -399,11 +429,21 @@
 
                     switch (key) {
                         case 'Details':
-                            openModal({ data: id, url: '/CedacriOperator/GetProjectDetails', target: '#projectDetailsModal', content: '#projectDetailsModalContent' });
+                            openModal({
+                                data: id,
+                                url: '/CedacriOperator/GetProjectDetails',
+                                target: '#projectDetailsModal',
+                                content: '#projectDetailsModalContent'
+                            });
                             break;
 
                         case 'Update':
-                            openModal({ data: id, url: '/CedacriOperator/GetUpdateProject', target: '#updateProjectModal', content: '#updateProjectModalContent' });
+                            openModal({
+                                data: id,
+                                url: '/CedacriOperator/GetUpdateProject',
+                                target: '#updateProjectModal',
+                                content: '#updateProjectModalContent'
+                            });
                             break;
 
                         case 'Remove':

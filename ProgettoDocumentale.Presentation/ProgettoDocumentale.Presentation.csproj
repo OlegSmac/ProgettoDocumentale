@@ -481,6 +481,7 @@
     <Content Include="Views\CedacriOperator\_ProjectDetailsModal.cshtml" />
     <Content Include="Views\CedacriOperator\_AddDocumentModal.cshtml" />
     <Content Include="Views\CedacriOperator\_UpdateDocumentModal.cshtml" />
+    <Content Include="Views\CedacriOperator\_DocumentDetailsModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
