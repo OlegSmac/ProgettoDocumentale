@@ -62,7 +62,7 @@
             <div class="d-flex justify-content-start mt-3">
                 <button type="button"
                         class="btn btn-primary"
-                        onclick="openModal({ url: '/Admin/AddInstitution', data: 0, target: '#addInstitutionModal', content: '#addInstitutionModalContent' })"
+                        onclick="openModal({ url: '/Admin/GetAddInstitution', data: 0, target: '#addInstitutionModal', content: '#addInstitutionModalContent' })"
                         data-bs-toggle="modal"
                         data-bs-target="#addInstitutionModal">
                     New Institution
@@ -94,7 +94,7 @@
             <div class="d-flex justify-content-start mt-3">
                 <button type="button"
                         class="btn btn-primary"
-                        onclick="openModal({ url: '/Admin/AddUser', data: 0, target: '#addUserModal', content: '#addUserModalContent' })"
+                        onclick="openModal({ url: '/Admin/GetAddUser', data: 0, target: '#addUserModal', content: '#addUserModalContent' })"
                         data-bs-toggle="modal"
                         data-bs-target="#addUserModal">
                     New User
@@ -207,7 +207,7 @@
 
                     switch (key) {
                         case 'Update':
-                            openModal({ data: id, url: '/Admin/UpdateInstitution', target: '#updateInstitutionModal', content: '#updateInstitutionModalContent' });
+                            openModal({ data: id, url: '/Admin/GetUpdateInstitution', target: '#updateInstitutionModal', content: '#updateInstitutionModalContent' });
                             break;
 
                         case 'Remove':
@@ -301,11 +301,11 @@
 
                     switch (key) {
                         case 'Update':
-                            openModal({ data: id, url: '/Admin/UpdateUser', target: '#updateUserModal', content: '#updateUserModalContent' });
+                            openModal({ data: id, url: '/Admin/GetUpdateUser', target: '#updateUserModal', content: '#updateUserModalContent' });
                             break;
 
                         case 'ResetPassword':
-                            openModal({ data: id, url: '/Admin/ResetPassword', target: '#resetPasswordModal', content: '#resetPasswordModalContent' });
+                            openModal({ data: id, url: '/Admin/GetResetPassword', target: '#resetPasswordModal', content: '#resetPasswordModalContent' });
                             break;
                     }
                 },

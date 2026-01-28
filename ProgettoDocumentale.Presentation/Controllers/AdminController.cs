@@ -86,7 +86,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddInstitution(CancellationToken cancellationToken)
+        public ActionResult GetAddInstitution(CancellationToken cancellationToken)
         {                     
             return PartialView("_AddInstitutionModal", new CreateInstitutionRequestData());
         }
@@ -130,7 +130,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> AddUser(CancellationToken cancellationToken)
+        public async Task<ActionResult> GetAddUser(CancellationToken cancellationToken)
         {          
             var institutions = await _mediator.Send(new GetInstitutionsIdAndNameQuery(), cancellationToken);           
             var roles = await _mediator.Send(new GetRolesIdAndNameQuery(), cancellationToken);
@@ -144,7 +144,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> UpdateUser(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetUpdateUser(int id, CancellationToken cancellationToken)
         {
             await LoadInstitutionsAndRolesAsync(cancellationToken);
 
@@ -168,7 +168,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ResetPassword(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetResetPassword(int id, CancellationToken cancellationToken)
         {
             var user = await _mediator.Send(new GetUserByIdQuery { Id = id }, cancellationToken);
             if (user == null) return HttpNotFound();
