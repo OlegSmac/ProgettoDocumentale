@@ -75,11 +75,14 @@ namespace ProgettoDocumentale.Presentation.Controllers
         #region Documents
 
         [HttpPost]
-        public async Task<ActionResult> DocumentsTable(DataTableParameters parameters, CancellationToken cancellationToken)
+        public async Task<ActionResult> DocumentsTable(DataTableParameters parameters, int? institutionId, int? year, int? macroId, CancellationToken cancellationToken)
         {
             var documents = await _mediator.Send(new GetPagedDocumentsQuery
             {
-                Parameters = parameters
+                Parameters = parameters,
+                InstitutionId = institutionId,
+                Year = year,
+                MacroId = macroId
             }, cancellationToken);
 
             return Json(new
@@ -89,6 +92,13 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 recordsTotal = parameters.TotalCount,
                 data = documents
             });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetDocumentsHierarchy(CancellationToken cancellationToken)
+        {
+            var data = await _mediator.Send(new GetDocumentsHierarchyQuery(), cancellationToken);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

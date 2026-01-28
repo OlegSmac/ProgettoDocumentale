@@ -178,7 +178,9 @@
     <Compile Include="Requests\Documents\Commands\RemoveDocumentByIdCommand.cs" />
     <Compile Include="Requests\Documents\Commands\UpdateDocumentCommand.cs" />
     <Compile Include="Requests\Documents\DTOs\DocumentDTO.cs" />
+    <Compile Include="Requests\Documents\DTOs\InstitutionDocumentsTreeDTO.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocumentBy\GetDocumentByIdQuery.cs" />
+    <Compile Include="Requests\Documents\Queries\GetDocuments\GetDocumentsHierarchyQuery.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetPagedDocumentsQuery.cs" />
     <Compile Include="Requests\Documents\ViewModels\CreateDocumentRequestData.cs" />
     <Compile Include="Requests\Documents\ViewModels\CreateDocumentValidator.cs" />

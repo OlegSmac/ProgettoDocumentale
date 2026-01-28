@@ -39,9 +39,9 @@
                             ${(inst.Years || []).map(y => `
                                 <li class="mb-1">
                                     <a href="#" class="text-decoration-none text-dark year-filter"
-                                            data-institution-id="${inst.InstitutionId}"
-                                            data-year="${y}">
-                                        ${y}
+                                       data-institution-id="${inst.InstitutionId}"
+                                       data-year="${y.Year}">
+                                        ${y.Year} <span class="text-muted">(${y.Count})</span>
                                     </a>
                                 </li>
                             `).join('')}
@@ -58,8 +58,35 @@
 $(document).on('click', '.year-filter', function (e) {
     e.preventDefault();
 
-    selectedInstitutionId = parseInt($(this).data('institution-id'), 10);
-    selectedYear = parseInt($(this).data('year'), 10);
+    projInstitutionId = parseInt($(this).data('institution-id'), 10);
+    projYear = parseInt($(this).data('year'), 10);
+
+    projectsTable.ajax.reload();
+});
+
+$(document).on('click', '.all-projects-filter', function (e) {
+    e.preventDefault();
+
+    projInstitutionId = null;
+    projYear = null;
+
+    projectsTable.ajax.reload();
+});
+
+$(document).on('click', '.hierarchy-inst-filter', function (e) {
+    e.preventDefault();
+
+    projInstitutionId = parseInt($(this).data('institution-id'), 10);
+    projYear = null;
+
+    projectsTable.ajax.reload();
+});
+
+$(document).on('click', '.year-filter', function (e) {
+    e.preventDefault();
+
+    projInstitutionId = parseInt($(this).data('institution-id'), 10);
+    projYear = parseInt($(this).data('year'), 10);
 
     projectsTable.ajax.reload();
 });

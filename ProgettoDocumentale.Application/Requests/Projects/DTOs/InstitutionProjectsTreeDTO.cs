@@ -10,6 +10,12 @@ namespace ProgettoDocumentale.Application.Requests.Projects.DTOs
     {
         public int InstitutionId { get; set; }
         public string InstitutionName { get; set; }
-        public List<int> Years { get; set; }
+        public List<YearCountDTO> Years { get; set; }
+    }
+
+    public class YearCountDTO
+    {
+        public int Year { get; set; }
+        public int Count { get; set; }
     }
 }

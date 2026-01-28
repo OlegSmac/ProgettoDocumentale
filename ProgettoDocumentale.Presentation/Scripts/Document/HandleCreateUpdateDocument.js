@@ -9,7 +9,7 @@ function handleCreateUpdateDocument(html) {
         modal.hide();
 
         documentsTable?.ajax.reload(null, false);
-        //loadHierarchy();
+        loadDocumentsHierarchy();
         $("#addDocumentModalContent").empty();
 
         return;

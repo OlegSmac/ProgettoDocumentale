@@ -1,19 +1,20 @@
-﻿function loadProjectsHierarchy() {
-    $.getJSON("/CedacriOperator/GetProjectsHierarchy", function (items) {
+﻿function loadDocumentsHierarchy() {
+    $.getJSON("/CedacriOperator/GetDocumentsHierarchy", function (items) {
+
         var html = `
             <ul class="list-unstyled mb-0">
                 <li class="mb-2">
                     <a href="#"
-                        class="text-decoration-none text-dark fw-semibold all-projects-filter">
+                        class="text-decoration-none text-dark fw-semibold all-docs-filter">
                         <i class="bi bi-list-ul me-2"></i>
-                        All projects
+                        All documents
                     </a>
                 </li>
                 <li><hr class="my-2"></li>
         `;
 
         items.forEach(function (inst) {
-            var instCollapseId = 'inst-' + inst.InstitutionId;
+            var instCollapseId = 'doc-inst-' + inst.InstitutionId;
 
             html += `
                 <li class="mb-2">
@@ -22,13 +23,13 @@
                         <button type="button"
                                 class="btn btn-link p-0 text-decoration-none fw-semibold text-dark"
                                 data-bs-toggle="collapse"
-                                data-bs-target="#${instCollapseId}",
+                                data-bs-target="#${instCollapseId}"
                                 aria-expanded="false">
-                            <i class="bi bi-plus-square hierarchy-toggle-icon"></i>                        
+                            <i class="bi bi-plus-square hierarchy-toggle-icon"></i>
                         </button>
 
-                        <a href="#" class="text-decoration-none text-dark fw-semibold hierarchy-inst-filter"
-                                data-institution-id="${inst.InstitutionId}">
+                        <a href="#" class="text-decoration-none text-dark fw-semibold doc-inst-filter"
+                           data-institution-id="${inst.InstitutionId}">
                             ${inst.InstitutionName}
                         </a>
 
@@ -36,32 +37,91 @@
 
                     <div class="collapse mt-1" id="${instCollapseId}">
                         <ul class="list-unstyled ps-4 mb-0">
-                            ${(inst.Years || []).map(y => `
-                                <li class="mb-1">
-                                    <a href="#" class="text-decoration-none text-dark year-filter"
-                                            data-institution-id="${inst.InstitutionId}"
-                                            data-year="${y}">
-                                        ${y}
-                                    </a>
-                                </li>
-                            `).join('')}
+                            ${(inst.Years || []).map(y => {
+                                var yearCollapseId = `doc-year-${inst.InstitutionId}-${y.Year}`;
+
+                                return `
+                                    <li class="mb-1">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <button type="button"
+                                                    class="btn btn-link p-0 text-decoration-none text-dark"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#${yearCollapseId}"
+                                                    aria-expanded="false">
+                                                <i class="bi bi-plus-square hierarchy-toggle-icon"></i>
+                                            </button>
+
+                                            <a href="#" class="text-decoration-none text-dark doc-year-filter"
+                                               data-institution-id="${inst.InstitutionId}"
+                                               data-year="${y.Year}">
+                                                ${y.Year}
+                                            </a>
+                                        </div>
+
+                                        <div class="collapse mt-1" id="${yearCollapseId}">
+                                            <ul class="list-unstyled ps-4 mb-0">
+                                                ${(y.Types || []).map(t => `
+                                                    <li class="mb-1">
+                                                        <a href="#" class="text-decoration-none text-dark doc-type-filter"
+                                                           data-institution-id="${inst.InstitutionId}"
+                                                           data-year="${y.Year}"
+                                                           data-macro-type-id="${t.MacroTypeId}">
+                                                            ${t.MacroTypeName} <span class="text-muted">(${t.Count})</span>
+                                                        </a>
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        </div>
+                                    </li>
+                                `;
+                            }).join('')}
                         </ul>
                     </div>
                 </li>`;
         });
 
         html += '</ul>';
-        $('#projectsHierarchy').html(html);
+
+        $('#documentsHierarchy').html(html);
     });
 }
 
-$(document).on('click', '.year-filter', function (e) {
+$(document).on('click', '.all-docs-filter', function (e) {
     e.preventDefault();
 
-    selectedInstitutionId = parseInt($(this).data('institution-id'), 10);
-    selectedYear = parseInt($(this).data('year'), 10);
+    docInstitutionId = null;
+    docYear = null;
+    docMacroTypeId = null;
 
-    projectsTable.ajax.reload();
+    documentsTable.ajax.reload();
 });
 
+$(document).on('click', '.doc-inst-filter', function (e) {
+    e.preventDefault();
 
+    docInstitutionId = parseInt($(this).data('institution-id'), 10);
+    docYear = null;
+    docMacroTypeId = null;
+
+    documentsTable.ajax.reload();
+});
+
+$(document).on('click', '.doc-year-filter', function (e) {
+    e.preventDefault();
+
+    docInstitutionId = parseInt($(this).data('institution-id'), 10);
+    docYear = parseInt($(this).data('year'), 10);
+    docMacroTypeId = null;
+
+    documentsTable.ajax.reload();
+});
+
+$(document).on('click', '.doc-type-filter', function (e) {
+    e.preventDefault();
+
+    docInstitutionId = parseInt($(this).data('institution-id'), 10);
+    docYear = parseInt($(this).data('year'), 10);
+    docMacroTypeId = parseInt($(this).data('macro-type-id'), 10);
+
+    documentsTable.ajax.reload();
+});
