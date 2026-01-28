@@ -132,7 +132,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAddUser(CancellationToken cancellationToken)
         {          
-            var institutions = await _mediator.Send(new GetInstitutionsIdAndNameQuery(), cancellationToken);           
+            var institutions = await _mediator.Send(new GetInstitutionIdAndNameQuery(), cancellationToken);           
             var roles = await _mediator.Send(new GetRolesIdAndNameQuery(), cancellationToken);
 
             ViewBag.Institutions = new SelectList(institutions, "Id", "Name");
@@ -399,7 +399,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
         private async Task LoadInstitutionsAndRolesAsync(CancellationToken cancellationToken)
         {
-            var institutions = await _mediator.Send(new GetInstitutionsIdAndNameQuery(), cancellationToken);        
+            var institutions = await _mediator.Send(new GetInstitutionIdAndNameQuery(), cancellationToken);        
             var roles = await _mediator.Send(new GetRolesIdAndNameQuery(), cancellationToken);
 
             ViewBag.Institutions = new SelectList(institutions, "Id", "Name");

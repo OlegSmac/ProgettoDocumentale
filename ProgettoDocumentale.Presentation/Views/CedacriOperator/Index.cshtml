@@ -1,0 +1,454 @@
+@{
+    ViewBag.Title = "Cedacri operator page";
+}
+
+@section styles {
+    <link rel="stylesheet" href="~/Content/all.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/Content/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="~/Content/jquery.contextMenu.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap-select.min.css" />
+}
+
+<div class="container-fluid">
+    @Html.AntiForgeryToken()
+
+    <ul class="nav nav-tabs mb-3" id="cedacriOperatorTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active"
+                    id="documents-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#documentsTab"
+                    type="button"
+                    role="tab"
+                    aria-controls="documentsTab"
+                    aria-selected="false">
+                Documents
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    id="projects-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#projectsTab"
+                    type="button"
+                    role="tab"
+                    aria-controls="projectsTab"
+                    aria-selected="true">
+                Projects
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="cedacriOperatorTabsContent">
+
+        <div class="tab-pane fade show active"
+             id="documentsTab"
+             role="tabpanel"
+             aria-labelledby="documents-tab">
+
+            <div class="row g-3 mt-2">
+
+                <div class="col-12 col-lg-3">
+                    <div class="border rounded p-2 bg-white">
+                        <div id="documentsHierarchy"></div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-9">
+                    <table id="DocumentsDatatable"
+                           class="table-borderless row-border border-light mt-2 w-100"
+                           cellspacing="0">
+                        <thead style="background-color:#2f3248;color:#fff" class="table-light">
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th>Institution</th>
+                                <th>Project</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-start mt-3">
+                <button type="button"
+                        class="btn btn-primary"
+                        onclick="openModal({ url: '/CedacriOperator/GetAddDocument', data: 0, target: '#addDocumentModal', content: '#addDocumentModalContent' })"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addDocumentModal">
+                    New Document
+                </button>
+            </div>
+        </div>
+
+        <div class="tab-pane fade"
+             id="projectsTab"
+             role="tabpanel"
+             aria-labelledby="projects-tab">
+
+            <div class="row g-3 mt-2">
+
+                <div class="col-12 col-lg-3">
+                    <div class="border rounded p-2 bg-white">
+                        <div id="projectsHierarchy"></div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-9">
+                    <table id="ProjectsDatatable"
+                           class="table-borderless row-border border-light mt-2 w-100"
+                           cellspacing="0">
+                        <thead style="background-color:#2f3248;color:#fff" class="table-light">
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Date from</th>
+                                <th>Date till</th>
+                                <th>Institution</th>
+                                <th>User</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-start mt-3">
+                <button type="button"
+                        class="btn btn-primary"
+                        onclick="openModal({ url: '/CedacriOperator/GetAddProject', data: 0, target: '#addProjectModal', content: '#addProjectModalContent' })"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addProjectModal">
+                    New Project
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addDocumentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="addDocumentModalContent"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateDocumentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="updateDocumentModalContent"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="documentDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="documentDetailsModalContent"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="addProjectModalContent"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateProjectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="updateProjectModalContent"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="projectDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="projectDetailsModalContent"></div>
+    </div>
+</div>
+
+<style>
+    .dt-center {
+        text-align: center;
+    }
+</style>
+
+@section scripts {
+    <script src="~/Scripts/dataTables.min.js"></script>
+    <script src="~/Scripts/jquery.ui.position.min.js"></script>
+    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+
+    <!--<script src="~/Scripts/Document/AddDocument.js"></script>-->
+    <script src="~/Scripts/Document/LoadDocumentsHierarchy.js"></script>
+    <script src="~/Scripts/Document/HandleCreateUpdateDocument.js"></script>
+    <script src="~/scripts/Document/documentForm.js"></script>
+    <script src="~/scripts/Document/addDocumentStart.js"></script>
+    <script src="~/scripts/Document/updateDocumentStart.js"></script>
+    <script src="~/Scripts/Document/RemoveDocument.js"></script>
+
+    <script src="~/Scripts/Project/LoadProjectsHierarchy.js"></script>
+    <script src="~/Scripts/Project/HandleCreateUpdateProject.js"></script>
+    <script src="~/Scripts/Project/RemoveProject.js"></script>
+
+    <script src="~/Scripts/formatNetDate.js"></script>
+    <script src="~/Scripts/Modal/OpenModal.js"></script>
+
+    <script>
+        var documentsTable;
+        var projectsTable;
+
+        $(document).ready(function () {
+            documentsTable = initializeDocumentsDataTable();
+            loadDocumentsHierarchy();
+
+            projectsTable = initializeProjectsDataTable();
+            loadProjectsHierarchy();
+
+            $('#DocumentsDatatable tbody').on('dblclick', 'tr', function () {
+                var row = documentsTable.row(this);
+                if (!row.any()) return;
+
+                var id = row.data().Id;
+
+                openModal({
+                    data: id,
+                    url: '/CedacriOperator/GetDocumentDetails',
+                    target: '#documentDetailsModal',
+                    content: '#documentDetailsModalContent'
+                });
+            });
+
+            $('#ProjectsDatatable tbody').on('dblclick', 'tr', function () {
+                var row = projectsTable.row(this);
+                if (!row.any()) return;
+
+                var id = row.data().Id;
+
+                openModal({
+                    data: id,
+                    url: '/CedacriOperator/GetProjectDetails',
+                    target: '#projectDetailsModal',
+                    content: '#projectDetailsModalContent'
+                });
+            });
+        });
+
+        $(document).on('shown.bs.collapse hidden.bs.collapse', '#projectsHierarchy .collapse, #documentsHierarchy .collapse', function () {
+            var icon = $(this).prev().find('.hierarchy-toggle-icon');
+
+            if ($(this).hasClass('show')) {
+                icon.removeClass('bi-plus-square').addClass('bi-dash-square');
+            } else {
+                icon.removeClass('bi-dash-square').addClass('bi-plus-square');
+            }
+        });
+
+        var docInstitutionId = null;
+        var docYear = null;
+        var docMacroTypeId = null;
+
+        function initializeDocumentsDataTable() {
+            var table = $('#DocumentsDatatable').DataTable({
+                serverSide: true,
+                processing: true,
+                pageLength: 10,
+                order: [[1, 'asc']],
+                lengthMenu: [[10, 15, 25, 50, 100], [10, 15, 25, 50, 100]],
+                dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                ajax: {
+                    url: "/CedacriOperator/DocumentsTable",
+                    type: "POST",
+                    dataType: "json",
+                    data: function (d) {
+                        d.institutionId = docInstitutionId;
+                        d.year = docYear;
+                        d.macroId = docMacroTypeId;
+                    }
+                },
+                columns: [
+                    { data: "Id", title: "Id", name: "Id", visible: false },
+                    { data: "Name", title: "Name", name: "Name", autoWidth: true },
+                    { data: "TypeName", title: "Type", name: "TypeName", autoWidth: true },
+                    {
+                        data: "UploadDate", title: "Upload date", name: "UploadDate", autoWidth: true, render: function (data, type) {
+                            if (type === "display" || type === "filter") return formatNetDate(data);
+                            return data;
+                        }
+                    },
+                    { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
+                    { data: "ProjectName", title: "Project", name: "ProjectName", autoWidth: true }
+                ],
+                pagingType: "full_numbers",
+                language: {
+                    search: '<i class="bi bi-search"></i>',
+                    searchPlaceholder: "Search",
+                    paginate: {
+                        first: "First",
+                        previous: "&laquo;",
+                        next: "&raquo;",
+                        last: "Last"
+                    }
+                }
+            });
+
+            $('#DocumentsDatatable').contextMenu({
+                selector: 'tbody tr',
+                trigger: 'right',
+                callback: function (key, options) {
+                    var row = table.row(options.$trigger);
+                    var id = row.data().Id;
+
+                    switch (key) {
+                        case 'Details':
+                            openModal({
+                                data: id,
+                                url: '/CedacriOperator/GetDocumentDetails',
+                                target: '#documentDetailsModal',
+                                content: '#documentDetailsModalContent'
+                            });
+                            break;
+
+                        case 'Download':
+                            window.location = '/CedacriOperator/DownloadDocument?id=' + encodeURIComponent(id);
+                            break;
+
+                        case 'Update':
+                            openModal({
+                                data: id,
+                                url: '/CedacriOperator/GetUpdateDocument',
+                                target: '#updateDocumentModal',
+                                content: '#updateDocumentModalContent'
+                            });
+                            break;
+
+                        case 'Remove':
+                            toggleRemoveDocument(id);
+                            break;
+                    }
+                },
+                items: {
+                    "Details": { name: "Details" },
+                    "Download": { name: "Download" },
+                    "Update": { name: "Update" },
+                    "Remove": { name: "Remove" }
+                }
+            });
+
+            return table;
+        }
+
+        var projInstitutionId = null;
+        var projYear = null;
+
+        function initializeProjectsDataTable() {
+            var table = $('#ProjectsDatatable').DataTable({
+                serverSide: true,
+                processing: true,
+                pageLength: 10,
+                order: [[1, 'asc']],
+                lengthMenu: [[10, 15, 25, 50, 100], [10, 15, 25, 50, 100]],
+                dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                ajax: {
+                    url: "/CedacriOperator/ProjectsTable",
+                    type: "POST",
+                    dataType: "json",
+                    data: function (d) {
+                        d.institutionId = projInstitutionId;
+                        d.year = projYear;
+                    }
+                },
+                columns: [
+                    { data: "Id", title: "Id", name: "Id", visible: false },
+                    { data: "Name", title: "Name", name: "Name", autoWidth: true },
+                    {
+                        data: "DateFrom", title: "Date From", name: "DateFrom", autoWidth: true, render: function (data, type) {
+                            if (type === "display" || type === "filter") return formatNetDate(data);
+                            return data;
+                        }
+                    },
+                    {
+                        data: "DateTill", title: "Date Till", name: "DateTill", autoWidth: true, render: function (data, type) {
+                            if (type === "display" || type === "filter") return formatNetDate(data);
+                            return data;
+                        }
+                    },
+                    { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
+                    { data: "Username", title: "Created by", name: "Username", autoWidth: true },
+                    {
+                        data: "IsActive",
+                        title: "Active",
+                        name: "IsActive",
+                        searchable: false,
+                        autoWidth: true,
+                        className: "dt-center",
+                        render: function (data, type) {
+                            if (type === "display") {
+                                return (data === true || data === 'true')
+                                    ? '<i class="fas fa-check-circle text-success"></i>'
+                                    : '<i class="fas fa-times-circle text-danger"></i>';
+                            }
+                            return data;
+                        }
+                    }
+                ],
+                pagingType: "full_numbers",
+                language: {
+                    search: '<i class="bi bi-search"></i>',
+                    searchPlaceholder: "Search",
+                    paginate: {
+                        first: "First",
+                        previous: "&laquo;",
+                        next: "&raquo;",
+                        last: "Last"
+                    }
+                }
+            });
+
+            $('#ProjectsDatatable').contextMenu({
+                selector: 'tbody tr',
+                trigger: 'right',
+                callback: function (key, options) {
+                    var row = table.row(options.$trigger);
+                    var id = row.data().Id;
+
+                    switch (key) {
+                        case 'Details':
+                            openModal({
+                                data: id,
+                                url: '/CedacriOperator/GetProjectDetails',
+                                target: '#projectDetailsModal',
+                                content: '#projectDetailsModalContent'
+                            });
+                            break;
+
+                        case 'Update':
+                            openModal({
+                                data: id,
+                                url: '/CedacriOperator/GetUpdateProject',
+                                target: '#updateProjectModal',
+                                content: '#updateProjectModalContent'
+                            });
+                            break;
+
+                        case 'Remove':
+                            toggleRemoveProject(id);
+                            break;
+                    }
+                },
+                items: {
+                    "Details": { name: "Details" },
+                    "Update": { name: "Update" },
+                    "Remove": { name: "Remove" }
+                }
+            });
+
+            return table;
+        }
+
+    </script>
+
+}

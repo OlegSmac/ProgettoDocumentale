@@ -1,0 +1,69 @@
+@model ProgettoDocumentale.Application.Requests.Projects.ViewModels.CreateProjectRequestData
+
+<div class="modal-content" id="addProjectModalContent" data-success="@(ViewBag.Success == true ? "1" : "0")">
+    <div class="modal-header">
+        <h5 class="modal-title">Create project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    @using (Ajax.BeginForm("AddProject", "CedacriOperator", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "handleCreateUpdateProject"
+    }, new { id = "projectForm" }))
+    {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.Name, "Project Name")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger validation-message", data_valmsg_for = "Name" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.InstitutionId, "Institution")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.DropDownListFor(m => m.InstitutionId, (SelectList)ViewBag.Institutions, "Select Institution", new { @class = "form-select" })
+                        @Html.ValidationMessageFor(m => m.InstitutionId, "", new { @class = "text-danger validation-message", data_valmsg_for = "InstitutionId" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.DateFrom, "Start date")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextBoxFor(m => m.DateFrom, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(m => m.DateFrom, "", new { @class = "text-danger validation-message", data_valmsg_for = "DateFrom" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.DateTill, "End date")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextBoxFor(m => m.DateTill, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(m => m.DateTill, "", new { @class = "text-danger validation-message", data_valmsg_for = "DateTill" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.AdditionalInfo, "Additional info")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextAreaFor(m => m.AdditionalInfo, 3, 1, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AdditionalInfo, "", new { @class = "text-danger validation-message", data_valmsg_for = "AdditionalInfo" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+    }
+</div>

@@ -11,10 +11,10 @@ using ProgettoDocumentale.Application.Common.Interfaces;
 
 namespace ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInstitutions
 {
-    public class GetInstitutionsIdAndNameQuery : IRequest<IEnumerable<IdNameDTO>>
+    public class GetInstitutionIdAndNameQuery : IRequest<IEnumerable<IdNameDTO>>
     { }
 
-    public class GetInstitutionsIdAndNameQueryHandler : IRequestHandler<GetInstitutionsIdAndNameQuery, IEnumerable<IdNameDTO>>
+    public class GetInstitutionsIdAndNameQueryHandler : IRequestHandler<GetInstitutionIdAndNameQuery, IEnumerable<IdNameDTO>>
     {
         private readonly IProgettoDocContext _context;
 
@@ -23,7 +23,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInsti
             _context = context;
         }
 
-        public async Task<IEnumerable<IdNameDTO>> Handle(GetInstitutionsIdAndNameQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IdNameDTO>> Handle(GetInstitutionIdAndNameQuery request, CancellationToken cancellationToken)
         {
             try
             {

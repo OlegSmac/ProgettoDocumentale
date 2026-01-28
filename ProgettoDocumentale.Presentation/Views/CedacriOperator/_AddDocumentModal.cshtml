@@ -1,0 +1,106 @@
+﻿@model ProgettoDocumentale.Application.Requests.Documents.ViewModels.CreateDocumentRequestData
+
+<div class="modal-content" id="addDocumentModalContent" data-success="@(ViewBag.Success == true ? "1" : "0")">
+    <div class="modal-header">
+        <h5 class="modal-title">Create document</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    @using (Html.BeginForm("AddDocument", "CedacriOperator", FormMethod.Post, new { id = "documentForm", enctype = "multipart/form-data", autocomplete = "off" }))
+    {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">                
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">
+                        <label class="form-label">File</label>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <input type="file"
+                               name="file"
+                               class="form-control"
+                               accept=".pdf,.doc,.docx,.xlsx,.png,.jpg,.jpeg" />
+                        <small class="text-muted">Max 50 MB. Allowed: pdf, doc/docx, xlsx, png, jpg.</small>
+
+                        @Html.ValidationMessage("file", "", new { @class = "text-danger validation-message" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.Name, "Name")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger validation-message", data_valmsg_for = "Name" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.InstitutionId, "Institution")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.DropDownListFor(m => m.InstitutionId, (SelectList)ViewBag.Institutions, "Select Institution", new { @class = "form-select" })
+                        @Html.ValidationMessageFor(m => m.InstitutionId, "", new { @class = "text-danger validation-message", data_valmsg_for = "InstitutionId" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.MacroTypeId, "Macro type")</div>
+                    <div class="col-12 col-md-8">
+                        <select id="MacroTypeId" name="MacroTypeId" class="form-select">
+                            <option value="">Select macro type</option>
+                            @foreach (var mt in ViewBag.MacroTypesRaw)
+                            {                                
+                                <option value="@mt.Id" data-code="@mt.Code" @(Model.MacroTypeId == (int)mt.Id ? "selected" : null)>@mt.Name</option>
+                            }
+                        </select>
+
+                        @Html.ValidationMessageFor(m => m.MacroTypeId, "", new { @class = "text-danger validation-message" })
+                    </div>
+                </div>
+
+                @Html.HiddenFor(m => m.TypeId, new { id = "TypeId" })
+
+                <div class="form-group row mb-2 px-4" id="microRow" style="display:none">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.MicroTypeId, "Micro type")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.DropDownListFor(m => m.MicroTypeId, (SelectList)ViewBag.MicroTypes, "Select micro type", new { @class = "form-select", id = "MicroTypeId", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.MicroTypeId, "", new { @class = "text-danger validation-message" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4" id="projectRow" style="display:none">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.ProjectId, "Project")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.DropDownListFor(m => m.ProjectId, (SelectList)ViewBag.Projects, "Select Project", new { @class = "form-select", id = "ProjectId", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.ProjectId, "", new { @class = "text-danger validation-message" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.GroupingDate, "Grouping date")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextBoxFor(m => m.GroupingDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(m => m.GroupingDate, "", new { @class = "text-danger validation-message", data_valmsg_for = "GroupingDate" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.AdditionalInfo, "Additional info")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextAreaFor(m => m.AdditionalInfo, 3, 1, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AdditionalInfo, "", new { @class = "text-danger validation-message", data_valmsg_for = "AdditionalInfo" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+    }
+</div>
+

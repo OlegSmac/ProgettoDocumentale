@@ -10,7 +10,7 @@ namespace ProgettoDocumentale.Infrastructure.Persistence.Configurations
             HasKey(x => x.Id);
 
             Property(x => x.Code)
-                .HasMaxLength(5);
+                .HasMaxLength(20);
 
             Property(x => x.Name)
                 .HasMaxLength(255);

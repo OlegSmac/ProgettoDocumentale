@@ -29,6 +29,7 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
+        public DbSet<DocumentTypeHierarchy> DocumentTypeHierarchies { get; set; }
         public DbSet<Project> Projects { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

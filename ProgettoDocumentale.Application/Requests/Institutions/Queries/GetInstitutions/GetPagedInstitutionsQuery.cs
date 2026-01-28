@@ -33,13 +33,12 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInsti
             try
             {
                 var query = _context.Institutions
+                    .Select(InstitutionMapper.ToDtoExpr())
                     .Search(request.Parameters)
                     .OrderBy(request.Parameters)
-                    .Page(request.Parameters);
+                    .Page(request.Parameters);                
 
-                var institutions = await query.ToListAsync(cancellationToken);
-
-                return institutions.Select(InstitutionMapper.InstitutionToInstitutionDTO).ToList();
+                return await query.ToListAsync(cancellationToken);
             }
             catch (Exception e)
             {
