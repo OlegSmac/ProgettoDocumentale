@@ -1,6 +1,7 @@
 function openModal(options) {
     $.get(options.url, { id: options.data })
         .done(function (html) {
+            $(options.content).empty();//.html(data.viewHtml);
             $(options.content).html(html);
             $(options.target).modal('show');
 
