@@ -36,6 +36,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
                 var req = request.UserRequest;
 
                 var user = await _context.Users
+                    .Include(u => u.Institution)
                     .Include(u => u.UserRoles.Select(ur => ur.Role))
                     .FirstOrDefaultAsync(u => u.Id == req.Id);
 

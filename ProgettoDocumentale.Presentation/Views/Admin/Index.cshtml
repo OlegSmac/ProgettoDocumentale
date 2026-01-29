@@ -118,6 +118,12 @@
     </div>
 </div>
 
+<div class="modal fade" id="detailsUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-body" id="detailsUserModalContent"></div>
+    </div>
+</div>
+
 <div class="modal fade" id="updateUserModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-body" id="updateUserModalContent"></div>
@@ -156,8 +162,22 @@
         var usersTable;
 
         $(document).ready(function () {
-            userTable = initializeUsersDataTable();
-            institutionTable = initializeInstitutionsDataTable();
+            usersTable = initializeUsersDataTable();
+            institutionsTable = initializeInstitutionsDataTable();
+
+            $('#UsersDatatable tbody').on('dblclick', 'tr', function () {
+                var row = usersTable.row(this);
+                if (!row.any()) return;
+
+                var id = row.data().Id;
+
+                openModal({
+                    data: id,
+                    url: '/Admin/GetUserDetails',
+                    target: '#detailsUserModal',
+                    content: '#detailsUserModalContent'
+                });
+            });
         });
 
         function initializeInstitutionsDataTable() {
@@ -291,6 +311,10 @@
                     var id = row.data().Id;
 
                     switch (key) {
+                        case 'Details':
+                            openModal({ data: id, url: '/Admin/GetUserDetails', target: '#detailsUserModal', content: '#detailsUserModalContent' });
+                            break;
+
                         case 'Update':
                             openModal({ data: id, url: '/Admin/GetUpdateUser', target: '#updateUserModal', content: '#updateUserModalContent' });
                             break;
@@ -301,6 +325,7 @@
                     }
                 },
                 items: {
+                    "Details": { name: "Details" },
                     "Update": { name: "Update" },
                     "ResetPassword": { name: "Reset Password" }
                 }

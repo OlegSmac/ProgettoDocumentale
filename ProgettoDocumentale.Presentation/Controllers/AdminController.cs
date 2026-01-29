@@ -144,6 +144,15 @@ namespace ProgettoDocumentale.Presentation.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> GetUserDetails(int id, CancellationToken cancellationToke)
+        {
+            var user = await _mediator.Send(new GetUserByIdQuery { Id = id });
+            if (user == null) return HttpNotFound();
+
+            return PartialView("_UserDetailsModal", user);
+        }
+
+        [HttpGet]
         public async Task<ActionResult> GetUpdateUser(int id, CancellationToken cancellationToken)
         {
             await LoadInstitutionsAndRolesAsync(cancellationToken);

@@ -20,5 +20,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.DTOs
         public string Patronymic { get; set; }
 
         public List<string> Roles { get; set; } = new List<string>();
+        public string RolesDisplay => string.Join(", ", Roles);
+
     }
 }
