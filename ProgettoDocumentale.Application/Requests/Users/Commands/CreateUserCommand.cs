@@ -36,8 +36,8 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
             {
                 var req = request.UserRequest;
 
-                var institutionExists = await _context.Institutions.AnyAsync(i => i.Id == req.InstitutionId, cancellationToken);
-                if (!institutionExists) throw new Exception($"Institution with id={req.InstitutionId} not found");
+                var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == req.InstitutionId, cancellationToken);
+                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");
 
                 var usernameTaken = await _context.Users.AnyAsync(u => u.UserName == req.UserName, cancellationToken);
                 if (usernameTaken) throw new Exception($"UserName '{req.UserName}' already exists");

@@ -8,6 +8,6 @@
         const modal = bootstrap.Modal.getInstance($modal[0]) || new bootstrap.Modal($modal[0]);
         modal.hide();
 
-        userTable?.ajax.reload(null, false);
+        usersTable?.ajax.reload(null, false);
     }
 }

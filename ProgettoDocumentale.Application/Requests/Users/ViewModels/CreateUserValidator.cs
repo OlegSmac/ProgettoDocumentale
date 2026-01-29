@@ -23,6 +23,12 @@ namespace ProgettoDocumentale.Application.Requests.Users.ViewModels
                                 .MinimumLength(4).WithMessage("Password must be at least 4 characters")
                                 .MaximumLength(50).WithMessage("Password must be at most 50 characters");
 
+            RuleFor(model => model.Password).NotEmpty().WithMessage("Password cannot be empty")
+                                .NotNull().WithMessage("Password cannot be null")
+                                .MinimumLength(4).WithMessage("Password must be at least 4 characters")
+                                .MaximumLength(50).WithMessage("Password must be at most 50 characters")
+                                .Equal(model => model.Password).WithMessage("Passwords don't match");
+
             RuleFor(model => model.Email).NotEmpty().WithMessage("Email cannot be empty")
                                 .NotNull().WithMessage("Email cannot be null")
                                 .MinimumLength(4).WithMessage("Email must be at least 4 characters")

@@ -29,9 +29,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
         {
             try
             {
-                var user = _context.Users.FirstOrDefault(u => u.UserName == request.PasswordRequest.UserName);
-
-                if (!PasswordEncryptionService.VerifyPassword(request.PasswordRequest.OldPassword, user.PasswordHash)) throw new Exception("Incorrect old password");
+                var user = _context.Users.FirstOrDefault(u => u.UserName == request.PasswordRequest.UserName);                
 
                 user.PasswordHash = PasswordEncryptionService.HashPassword(request.PasswordRequest.NewPassword);             
                 await _context.SaveChangesAsync(cancellationToken);

@@ -184,8 +184,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
             var model = new ResetPasswordData
             {
-                UserName = user.UserName,
-                OldPassword = string.Empty,
+                UserName = user.UserName,                
                 NewPassword = string.Empty
             };
 

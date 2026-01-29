@@ -8,8 +8,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.ViewModels
 {
     public class ResetPasswordData
     {
-        public string UserName { get; set; }
-        public string OldPassword { get; set; }
+        public string UserName { get; set; }        
         public string NewPassword { get; set; }
     }
 }

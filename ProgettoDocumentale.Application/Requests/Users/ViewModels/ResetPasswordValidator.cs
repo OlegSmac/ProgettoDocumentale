@@ -13,12 +13,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.ViewModels
             RuleFor(model => model.UserName).NotEmpty().WithMessage("Username cannot be empty")
                                 .NotNull().WithMessage("Username cannot be null")
                                 .MinimumLength(4).WithMessage("Username must be at least 4 characters")
-                                .MaximumLength(32).WithMessage("Username must be at most 32 characters");
-
-            RuleFor(model => model.OldPassword).NotEmpty().WithMessage("OldPassword cannot be empty")
-                                .NotNull().WithMessage("OldPassword cannot be null")
-                                .MinimumLength(4).WithMessage("OldPassword must be at least 4 characters")
-                                .MaximumLength(50).WithMessage("OldPassword must be at most 50 characters");
+                                .MaximumLength(32).WithMessage("Username must be at most 32 characters");            
 
             RuleFor(model => model.NewPassword).NotEmpty().WithMessage("NewPassword cannot be empty")
                                 .NotNull().WithMessage("NewPassword cannot be null")

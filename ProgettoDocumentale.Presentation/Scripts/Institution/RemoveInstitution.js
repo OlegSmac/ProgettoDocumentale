@@ -7,7 +7,7 @@ function toggleRemoveInstitution(id) {
         data: { id: id, __RequestVerificationToken: token },
         success: function (res) {
             if (res && res.success) {
-                if (institutionTable) institutionTable.ajax.reload(null, false);
+                if (institutionsTable) institutionsTable.ajax.reload(null, false);
             } else {
                 alert(res.message || 'Failed to remove institution');
             }

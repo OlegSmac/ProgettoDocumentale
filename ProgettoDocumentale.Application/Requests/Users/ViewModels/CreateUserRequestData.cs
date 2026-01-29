@@ -12,6 +12,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.ViewModels
         public int InstitutionId { get; set; } = -1;
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string PasswordRepeat { get; set; }
         public string Email { get; set; }
         public bool IsEnabled { get; set; } = true;
         public string Name { get; set; }

@@ -3,7 +3,7 @@ function openModal(options) {
         .done(function (html) {
             $(options.content).empty();
             $(options.content).html(html);
-            console.log(html);
+            
             $(options.target).modal('show');
 
             $('.selectpicker').selectpicker();

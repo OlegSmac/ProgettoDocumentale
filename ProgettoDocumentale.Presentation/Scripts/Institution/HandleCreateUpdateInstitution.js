@@ -8,6 +8,6 @@ function handleCreateUpdateInstitution(html) {
         const modal = bootstrap.Modal.getInstance($modal[0]) || new bootstrap.Modal($modal[0]);
         modal.hide();
 
-        institutionTable?.ajax.reload(null, false);
+        institutionsTable?.ajax.reload(null, false);
     }
 }

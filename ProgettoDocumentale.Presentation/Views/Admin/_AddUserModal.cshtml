@@ -36,6 +36,14 @@
                 </div>
 
                 <div class="form-group row mb-2 px-4">
+                    <div class="col-6 col-md-3">@Html.LabelFor(m => m.PasswordRepeat, "Password confirm")</div>
+                    <div class="col-12 col-md-8">
+                        @Html.TextBoxFor(m => m.PasswordRepeat, new { @class = "form-control", type = "password" })
+                        @Html.ValidationMessageFor(m => m.PasswordRepeat, "", new { @class = "text-danger validation-message", data_valmsg_for = "Password" })
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 px-4">
                     <div class="col-6 col-md-3">@Html.LabelFor(m => m.Email, "Email")</div>
                     <div class="col-12 col-md-8">
                         @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email" })
@@ -81,7 +89,7 @@
                         @Html.DropDownListFor(m => m.InstitutionId, (SelectList)ViewBag.Institutions, "Select Institution", new { @class = "form-select" })
                         @Html.ValidationMessageFor(m => m.InstitutionId, "", new { @class = "text-danger validation-message", data_valmsg_for = "InstitutionId" })
                     </div>
-                </div>             
+                </div>
 
             </div>
         </div>
