@@ -1,8 +1,9 @@
 function openModal(options) {
     $.get(options.url, { id: options.data })
         .done(function (html) {
-            $(options.content).empty();//.html(data.viewHtml);
+            $(options.content).empty();
             $(options.content).html(html);
+            console.log(html);
             $(options.target).modal('show');
 
             $('.selectpicker').selectpicker();

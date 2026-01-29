@@ -20,6 +20,7 @@ namespace ProgettoDocumentale.Application.Common.Mappers
             {
                 Id = user.Id,
                 InstitutionId = user.InstitutionId,
+                InstitutionName = user.Institution.Name,
                 UserName = user.UserName,
                 PasswordHash = user.PasswordHash,
                 Email = user.Email,
@@ -52,6 +53,7 @@ namespace ProgettoDocumentale.Application.Common.Mappers
         {
             Id = user.Id,
             InstitutionId = user.InstitutionId,
+            InstitutionName = user.Institution.Name,
             UserName = user.UserName,
             PasswordHash = user.PasswordHash,
             Email = user.Email,

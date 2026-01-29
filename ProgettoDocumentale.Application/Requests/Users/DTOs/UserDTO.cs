@@ -8,15 +8,16 @@ namespace ProgettoDocumentale.Application.Requests.Users.DTOs
 {
     public class UserDTO
     {
-        public int Id;
-        public int InstitutionId;
-        public string UserName;
-        public string PasswordHash;
-        public string Email;
-        public bool IsEnabled;
-        public string Name;
-        public string Surname;
-        public string Patronymic;
+        public int Id { get; set; }
+        public int InstitutionId { get; set; }
+        public string InstitutionName { get; set; }
+        public string UserName { get; set; }
+        public string PasswordHash { get; set; }
+        public string Email { get; set; }
+        public bool IsEnabled { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Patronymic { get; set; }
 
         public List<string> Roles { get; set; } = new List<string>();
     }

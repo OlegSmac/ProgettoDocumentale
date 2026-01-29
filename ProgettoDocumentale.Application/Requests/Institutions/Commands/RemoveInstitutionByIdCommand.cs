@@ -28,6 +28,11 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Commands
         {
             try
             {
+                //Should be implemented removing functionality?
+
+                var instUsers =  await _context.Users.Where(u => u.InstitutionId == request.Id).ToListAsync();
+                foreach (var user in instUsers) _context.Users.Remove(user);
+
                 var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == request.Id);
                 if (institution == null) return $"Institution with id = {request.Id} doesn't exist";
 

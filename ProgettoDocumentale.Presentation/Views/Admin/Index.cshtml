@@ -77,13 +77,9 @@
 
             <table id="UsersDatatable" class="table-borderless row-border border-light mt-2 w-100" cellspacing="0">
                 <thead style="background-color: #2f3248; color: #ffffff" class="table-light">
-                    <tr>
-                        <th>Id</th>
+                    <tr>                        
                         <th>UserName</th>
-                        <th>Email</th>
-                        <th>Name</th>
-                        <th>Surname</th>
-                        <th>Patronymic</th>
+                        <th>Email</th>                        
                         <th>Institution</th>
                         <th>Roles</th>
                         <th>Enabled</th>
@@ -106,31 +102,31 @@
 
 <div class="modal fade" id="addInstitutionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="addInstitutionModalContent"></div>
+        <div class="modal-body" id="addInstitutionModalContent"></div>
     </div>
 </div>
 
 <div class="modal fade" id="updateInstitutionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="updateInstitutionModalContent"></div>
+        <div class="modal-body" id="updateInstitutionModalContent"></div>
     </div>
 </div>
 
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="addUserModalContent"></div>
+        <div class="modal-body" id="addUserModalContent"></div>
     </div>
 </div>
 
 <div class="modal fade" id="updateUserModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="updateUserModalContent"></div>
+        <div class="modal-body" id="updateUserModalContent"></div>
     </div>
 </div>
 
 <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="resetPasswordModalContent"></div>
+        <div class="modal-body" id="resetPasswordModalContent"></div>
     </div>
 </div>
 
@@ -239,14 +235,10 @@
                     type: "POST",
                     dataType: "json"
                 },
-                columns: [
-                    { data: "Id", title: "Id", name: "Id", visible: false },
+                columns: [                    
                     { data: "UserName", title: "Username", name: "UserName", autoWidth: true },
-                    { data: "Email", title: "Email", name: "Email", autoWidth: true },
-                    { data: "Name", title: "Name", name: "Name", autoWidth: true },
-                    { data: "Surname", title: "Surname", name: "Surname", autoWidth: true },
-                    { data: "Patronymic", title: "Patronymic", name: "Patronymic", autoWidth: true },
-                    { data: "InstitutionId", title: "Institution", name: "InstitutionId", autoWidth: true, searchable: false },
+                    { data: "Email", title: "Email", name: "Email", autoWidth: true },                    
+                    { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
 
                     {
                         data: "Roles",

@@ -34,6 +34,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Queries.GetUsers
             try
             {
                 var query = _context.Users
+                    .Include(u => u.Institution)
                     .Include(u => u.UserRoles.Select(ur => ur.Role))
                     .Select(UserMapper.ToDtoExpr())
                     .Search(request.Parameters)

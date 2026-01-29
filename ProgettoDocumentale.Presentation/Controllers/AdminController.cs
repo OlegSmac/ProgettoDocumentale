@@ -92,7 +92,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> UpdateInstitution(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetUpdateInstitution(int id, CancellationToken cancellationToken)
         {
             var institution = await _mediator.Send(new GetInstitutionByIdQuery { Id = id }, cancellationToken);
             if (institution == null) return HttpNotFound();            

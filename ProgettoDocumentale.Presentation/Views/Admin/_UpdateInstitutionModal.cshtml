@@ -22,7 +22,7 @@
                 <div class="form-group row mb-2 px-4">
                     <div class="col-6 col-md-3">@Html.LabelFor(m => m.InstCode, "Institution code")</div>
                     <div class="col-12 col-md-8">
-                        @Html.TextBoxFor(m => m.InstCode, "Inst code", new { @class = "form-control bg-secondary bg-opacity-25", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.InstCode, new { @class = "form-control bg-secondary bg-opacity-25", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.InstCode, "", new { @class = "text-danger validation-message", data_valmsg_for = "InstCode" })
                     </div>
                 </div>

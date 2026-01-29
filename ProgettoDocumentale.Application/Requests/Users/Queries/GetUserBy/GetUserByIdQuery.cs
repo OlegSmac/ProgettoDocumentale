@@ -32,6 +32,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Queries.GetUserBy
             try
             {
                 var user = await _context.Users
+                    .Include(u => u.Institution)
                     .Include(u => u.UserRoles)
                     .Include("UserRoles.Role")
                     .Select(UserMapper.ToDtoExpr())
