@@ -9,8 +9,6 @@ function handleCreateUpdateProject(html) {
         modal.hide();
 
         projectsTable?.ajax.reload(null, false);
-        loadProjectsHierarchy();
-
-        $("#addProjectModalContent").empty();
+        loadProjectsHierarchy();        
     }
 }

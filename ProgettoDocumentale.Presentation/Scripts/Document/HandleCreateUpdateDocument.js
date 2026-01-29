@@ -13,7 +13,5 @@ function handleCreateUpdateDocument(html) {
         $("#addDocumentModalContent").empty();
 
         return;
-    }
-
-    bindDocumentFormAjax();
+    }    
 }
