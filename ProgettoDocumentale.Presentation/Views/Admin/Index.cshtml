@@ -77,9 +77,9 @@
 
             <table id="UsersDatatable" class="table-borderless row-border border-light mt-2 w-100" cellspacing="0">
                 <thead style="background-color: #2f3248; color: #ffffff" class="table-light">
-                    <tr>                        
+                    <tr>
                         <th>UserName</th>
-                        <th>Email</th>                        
+                        <th>Email</th>
                         <th>Institution</th>
                         <th>Roles</th>
                         <th>Enabled</th>
@@ -148,14 +148,14 @@
     <script src="~/Scripts/jquery.contextMenu.min.js"></script>
     <script src="~/Scripts/bootstrap-select.min.js"></script>
 
-    <script src="~/Scripts/Modal/OpenModal.js"></script>
-    <script src="~/Scripts/Modal/RolesSelection.js"></script>
+    <script src="~/Scripts/Institution/handleCreateUpdateInstitution.js"></script>
+    <script src="~/Scripts/Institution/removeInstitution.js"></script>
 
-    <script src="~/Scripts/Institution/HandleCreateUpdateInstitution.js"></script>
-    <script src="~/Scripts/Institution/RemoveInstitution.js"></script>
+    <script src="~/Scripts/User/handleCreateUpdateUser.js"></script>
+    <script src="~/Scripts/User/handleResetPassword.js"></script>
 
-    <script src="~/Scripts/User/HandleCreateUpdateUser.js"></script>
-    <script src="~/Scripts/User/HandleResetPassword.js"></script>
+    <script src="~/Scripts/Modal/openModal.js"></script>
+    <script src="~/Scripts/Modal/rolesSelection.js"></script>
 
     <script>
         var institutionsTable;
@@ -255,9 +255,9 @@
                     type: "POST",
                     dataType: "json"
                 },
-                columns: [                    
+                columns: [
                     { data: "UserName", title: "Username", name: "UserName", autoWidth: true },
-                    { data: "Email", title: "Email", name: "Email", autoWidth: true },                    
+                    { data: "Email", title: "Email", name: "Email", autoWidth: true },
                     { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
 
                     {
