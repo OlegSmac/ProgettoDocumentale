@@ -136,8 +136,9 @@ namespace ProgettoDocumentale.Presentation.Controllers
             var roles = await _mediator.Send(new GetRolesIdAndNameQuery(), cancellationToken);
 
             ViewBag.Institutions = new SelectList(institutions, "Id", "Name");
+
             ViewBag.AvailableRoles = roles
-                .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
+                .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name })
                 .ToList();
 
             return PartialView("_AddUserModal", new CreateUserRequestData());
