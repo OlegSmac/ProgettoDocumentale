@@ -10,13 +10,13 @@ using ProgettoDocumentale.Application.Common.Interfaces;
 
 namespace ProgettoDocumentale.Application.Requests.Users.Commands
 {
-    public class SetUserAvailabilityCommand : IRequest<string>
+    public class SetUserAvailabilityCommand : IRequest<Unit>
     {
         public int UserId { get; set; }
         public bool IsEnable { get; set; }
     }
     
-    public class SetUserAvailabilityCommandHandler : IRequestHandler<SetUserAvailabilityCommand, string>
+    public class SetUserAvailabilityCommandHandler : IRequestHandler<SetUserAvailabilityCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
 
@@ -25,18 +25,18 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
             _context = context;
         }
 
-        public async Task<string> Handle(SetUserAvailabilityCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SetUserAvailabilityCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken);
-                if (user == null) return $"User with id={request.UserId} not found";
+                if (user == null) throw new Exception($"User with id={request.UserId} not found");
 
                 user.IsEnabled = request.IsEnable;
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return "changed";
+                return Unit.Value;
             }
             catch (Exception e)
             {

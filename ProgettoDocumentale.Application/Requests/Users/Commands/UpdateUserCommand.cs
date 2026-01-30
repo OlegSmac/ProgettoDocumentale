@@ -15,12 +15,12 @@ using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Application.Requests.Users.Commands
 {
-    public class UpdateUserCommand : IRequest<UserDTO>
+    public class UpdateUserCommand : IRequest<Unit>
     {
         public UpdateUserRequestData UserRequest { get; set; }
     }
 
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserDTO>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
 
@@ -29,7 +29,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
             _context = context;
         }
 
-        public async Task<UserDTO> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return UserMapper.UserToUserDTO(user);
+                return Unit.Value;
             }
             catch (Exception e)
             {

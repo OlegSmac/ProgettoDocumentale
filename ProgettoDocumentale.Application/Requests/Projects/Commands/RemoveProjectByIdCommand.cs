@@ -10,12 +10,12 @@ using ProgettoDocumentale.Application.Common.Interfaces;
 
 namespace ProgettoDocumentale.Application.Requests.Projects.Commands
 {
-    public class RemoveProjectByIdCommand : IRequest<string>
+    public class RemoveProjectByIdCommand : IRequest<Unit>
     {
         public int Id { get; set; }
     }
 
-    public class RemoveProjectByIdCommandHandler : IRequestHandler<RemoveProjectByIdCommand, string>
+    public class RemoveProjectByIdCommandHandler : IRequestHandler<RemoveProjectByIdCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
 
@@ -24,12 +24,12 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
             _context = context;
         }
 
-        public async Task<string> Handle(RemoveProjectByIdCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RemoveProjectByIdCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 var project = await _context.Projects.FirstOrDefaultAsync(i => i.Id == request.Id);
-                if (project == null) return $"Project with id = {request.Id} doesn't exist";
+                if (project == null) throw new Exception($"Project with id = {request.Id} doesn't exist");
 
                 var relatedDocuments = await _context.Documents
                     .Where(d => d.ProjectId != null && d.ProjectId == project.Id)
@@ -40,7 +40,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
                 _context.Projects.Remove(project);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return "removed";
+                return Unit.Value;
             }
             catch (Exception e)
             {

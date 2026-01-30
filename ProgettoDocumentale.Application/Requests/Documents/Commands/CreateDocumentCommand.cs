@@ -17,14 +17,14 @@ using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Application.Requests.Documents.Commands
 {
-    public class CreateDocumentCommand : IRequest<DocumentDTO>
+    public class CreateDocumentCommand : IRequest<Unit>
     {
         public CreateDocumentRequestData DocumentRequest { get; set; }
         public HttpPostedFileBase File { get; set; }
         public string Root { get; set; }
     }
 
-    public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, DocumentDTO>
+    public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
 
@@ -45,7 +45,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
             request.DocumentRequest.SavedPath = storedFileName;
         }
 
-        public async Task<DocumentDTO> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                 _context.Documents.Add(document);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return DocumentMapper.DocumentToDocumentDTO(document);
+                return Unit.Value;
             }
             catch (Exception e)
             {

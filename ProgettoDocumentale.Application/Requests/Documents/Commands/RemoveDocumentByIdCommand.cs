@@ -12,13 +12,13 @@ using ProgettoDocumentale.Application.Requests.Projects.Commands;
 
 namespace ProgettoDocumentale.Application.Requests.Documents.Commands
 {
-    public class RemoveDocumentByIdCommand : IRequest<string>
+    public class RemoveDocumentByIdCommand : IRequest<Unit>
     {
         public int Id { get; set; }
         public string Root { get; set; }
     }
 
-    public class RemoveDocumentByIdCommandHandler : IRequestHandler<RemoveDocumentByIdCommand, string>
+    public class RemoveDocumentByIdCommandHandler : IRequestHandler<RemoveDocumentByIdCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
 
@@ -37,19 +37,19 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
             else throw new Exception($"File in {fullPath} not found");
         }
 
-        public async Task<string> Handle(RemoveDocumentByIdCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RemoveDocumentByIdCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 var document = await _context.Documents.FirstOrDefaultAsync(i => i.Id == request.Id);
-                if (document == null) return $"Document with id = {request.Id} doesn't exist";
+                if (document == null) throw new Exception($"Document with id = {request.Id} doesn't exist");
 
                 DeleteFile(request.Root, document.SavedPath);
 
                 _context.Documents.Remove(document);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return "removed";
+                return Unit.Value;
             }
             catch (Exception e)
             {

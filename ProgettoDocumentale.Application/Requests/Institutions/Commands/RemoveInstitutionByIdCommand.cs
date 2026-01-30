@@ -10,12 +10,12 @@ using ProgettoDocumentale.Application.Common.Interfaces;
 
 namespace ProgettoDocumentale.Application.Requests.Institutions.Commands
 {
-    public class RemoveInstitutionByIdCommand : IRequest<string>
+    public class RemoveInstitutionByIdCommand : IRequest<Unit>
     {
         public int Id { get; set; }
     }
 
-    public class RemoveInstitutionByIdCommandHandler : IRequestHandler<RemoveInstitutionByIdCommand, string>
+    public class RemoveInstitutionByIdCommandHandler : IRequestHandler<RemoveInstitutionByIdCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
 
@@ -24,22 +24,22 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Commands
             _context = context;
         }
 
-        public async Task<string> Handle(RemoveInstitutionByIdCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RemoveInstitutionByIdCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                //Should be implemented removing functionality?
+                //TODO: Should be implemented removing functionality?
 
                 var instUsers =  await _context.Users.Where(u => u.InstitutionId == request.Id).ToListAsync();
                 foreach (var user in instUsers) _context.Users.Remove(user);
 
                 var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == request.Id);
-                if (institution == null) return $"Institution with id = {request.Id} doesn't exist";
+                if (institution == null) throw new Exception($"Institution with id = {request.Id} doesn't exist");
 
                 _context.Institutions.Remove(institution);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return "removed";
+                return Unit.Value;
             }
             catch (Exception e)
             {

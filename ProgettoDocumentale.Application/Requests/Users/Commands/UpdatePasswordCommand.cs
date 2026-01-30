@@ -11,12 +11,12 @@ using ProgettoDocumentale.Application.Requests.Users.ViewModels;
 
 namespace ProgettoDocumentale.Application.Requests.Users.Commands
 {
-    public class UpdatePasswordCommand : IRequest<string>
+    public class UpdatePasswordCommand : IRequest<Unit>
     {
         public ResetPasswordData PasswordRequest { get; set; }
     }
 
-    public class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordCommand, string>
+    public class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
 
@@ -25,7 +25,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
             _context = context;
         }
 
-        public async Task<string> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
                 user.PasswordHash = PasswordEncryptionService.HashPassword(request.PasswordRequest.NewPassword);             
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return "Updated";
+                return Unit.Value;
             }
             catch (Exception e)
             {

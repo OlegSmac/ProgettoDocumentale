@@ -13,12 +13,12 @@ using ProgettoDocumentale.Application.Requests.Projects.ViewModels;
 
 namespace ProgettoDocumentale.Application.Requests.Projects.Commands
 {
-    public class UpdateProjectCommand : IRequest<ProjectDTO>
+    public class UpdateProjectCommand : IRequest<Unit>
     {
         public UpdateProjectRequestData ProjectRequest;
     }
 
-    public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, ProjectDTO>
+    public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
 
@@ -27,7 +27,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
             _context = context;
         }
 
-        public async Task<ProjectDTO> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return ProjectMapper.ProjectToProjectDTO(project);
+                return Unit.Value;
             }
             catch (Exception e)
             {

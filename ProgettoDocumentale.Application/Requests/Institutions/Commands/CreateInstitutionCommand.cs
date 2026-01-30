@@ -14,12 +14,12 @@ using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Application.Requests.Institutions.Commands
 {
-    public class CreateInstitutionCommand : IRequest<InstitutionDTO>
+    public class CreateInstitutionCommand : IRequest<Unit>
     {
         public CreateInstitutionRequestData InstitutionRequest;
     }
 
-    public class CreateInstitutionCommandHandler : IRequestHandler<CreateInstitutionCommand, InstitutionDTO>
+    public class CreateInstitutionCommandHandler : IRequestHandler<CreateInstitutionCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
 
@@ -28,7 +28,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Commands
             _context = context;
         }
 
-        public async Task<InstitutionDTO> Handle(CreateInstitutionCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateInstitutionCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Commands
                 _context.Institutions.Add(institution);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return InstitutionMapper.InstitutionToInstitutionDTO(institution);
+                return Unit.Value;
             }
             catch (Exception e)
             {
