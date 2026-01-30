@@ -28,16 +28,13 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjects
             try
             {
                 return await _context.Projects
-                    .Join(_context.Institutions,
-                        p => p.InstitutionId,
-                        i => i.Id,
-                        (p, i) => new { p, i })
-                    .GroupBy(x => new { x.p.InstitutionId, x.p.Institution.Name })
+                    .Include(p => p.Institution)
+                    .GroupBy(p => new { p.InstitutionId, p.Institution.Name })
                     .Select(g => new InstitutionProjectsTreeDTO
                     {
                         InstitutionId = g.Key.InstitutionId,
                         InstitutionName = g.Key.Name,
-                        Years = g.GroupBy(x => x.p.DateFrom.Year)
+                        Years = g.GroupBy(p => p.DateFrom.Year)
                                 .Select(yg => new YearCountDTO
                                 {
                                     Year = yg.Key,

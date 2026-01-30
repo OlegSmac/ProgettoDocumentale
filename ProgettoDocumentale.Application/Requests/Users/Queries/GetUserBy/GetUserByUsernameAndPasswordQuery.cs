@@ -37,7 +37,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Queries.GetUserBy
                 var user = await _context.Users
                     .Include(u => u.Institution)
                     .Include(u => u.UserRoles)
-                    .Include("UserRoles.Role")
+                    .Include(u => u.UserRoles.Select(ur => ur.Role))
                     .FirstOrDefaultAsync(u => u.UserName == request.UserName, cancellationToken);
 
                 if (user == null) return null;               
