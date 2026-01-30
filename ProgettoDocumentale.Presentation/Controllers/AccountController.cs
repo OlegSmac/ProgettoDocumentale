@@ -61,8 +61,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 if (user == null)
                 {
                     ModelState.AddModelError("", "Invalid Username and Password");
-                    return View();
-                    //return RedirectToAction("Login","Account", model);
+                    return View();                    
                 }
                 else if (user.IsEnabled == false)
                 {

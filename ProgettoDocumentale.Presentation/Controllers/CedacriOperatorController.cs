@@ -328,13 +328,18 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveDocument(int id, CancellationToken cancellationToken)
         {
-            var output = await _mediator.Send(new RemoveDocumentByIdCommand
+            try
             {
-                Id = id,
-                Root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"])
-            }, cancellationToken);
-
-            if (output != "removed") return Json(new { success = false, message = output });
+                var output = await _mediator.Send(new RemoveDocumentByIdCommand
+                {
+                    Id = id,
+                    Root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"])
+                }, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message });
+            }
 
             return Json(new { success = true });
         }
@@ -416,12 +421,17 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveProject(int id, CancellationToken cancellationToken)
         {
-            var output = await _mediator.Send(new RemoveProjectByIdCommand
+            try
             {
-                Id = id
-            }, cancellationToken);
-
-            if (output != "removed") return Json(new { success = false, message = output });
+                var output = await _mediator.Send(new RemoveProjectByIdCommand
+                {
+                    Id = id
+                }, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message });
+            }
 
             return Json(new { success = true });
         }

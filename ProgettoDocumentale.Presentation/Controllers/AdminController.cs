@@ -268,12 +268,17 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveInstitution(int id, CancellationToken cancellationToken)
         {
-            var output = await _mediator.Send(new RemoveInstitutionByIdCommand
+            try
             {
-                Id = id
-            }, cancellationToken);
-
-            if (output != "removed") return Json(new { success = false, message = output });
+                var output = await _mediator.Send(new RemoveInstitutionByIdCommand
+                {
+                    Id = id
+                }, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message });
+            }
 
             return Json(new { success = true });
         }
@@ -389,13 +394,18 @@ namespace ProgettoDocumentale.Presentation.Controllers
             var user = await _mediator.Send(new GetUserByIdQuery { Id = id }, cancellationToken);
             if (user == null) return HttpNotFound();
 
-            var output = await _mediator.Send(new SetUserAvailabilityCommand
+            try
             {
-                UserId = id,
-                IsEnable = !user.IsEnabled
-            }, cancellationToken);
-
-            if (output != "changed") return Json(new { success = false, message = output });
+                var output = await _mediator.Send(new SetUserAvailabilityCommand
+                {
+                    UserId = id,
+                    IsEnable = !user.IsEnabled
+                }, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message });
+            }
 
             return Json(new { success = true });
         }
