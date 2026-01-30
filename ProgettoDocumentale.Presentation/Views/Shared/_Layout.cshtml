@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink("Progetto Documentale", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <div class="navbar-brand">Progetto Documentale</div>
 
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +23,7 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav me-auto">
                     @if (User.Identity.IsAuthenticated)
-                    {                       
+                    {
                         if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
@@ -35,6 +35,13 @@
                         {
                             <li class="nav-item">
                                 @Html.ActionLink("CedacriOperator", "Index", "CedacriOperator", null, new { @class = "nav-link" })
+                            </li>
+                        }
+
+                        if (User.IsInRole("CedacriOperator"))
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("BankOperator", "Index", "BankOperator", null, new { @class = "nav-link" })
                             </li>
                         }
                     }

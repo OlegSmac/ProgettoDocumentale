@@ -249,6 +249,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BankOperatorController.cs" />
     <Compile Include="Controllers\CedacriOperatorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -484,6 +485,7 @@
     <Content Include="Views\CedacriOperator\_UpdateDocumentModal.cshtml" />
     <Content Include="Views\CedacriOperator\_DocumentDetailsModal.cshtml" />
     <Content Include="Views\Admin\_UserDetailsModal.cshtml" />
+    <Content Include="Views\BankOperator\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />

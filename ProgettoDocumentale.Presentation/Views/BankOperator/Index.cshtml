@@ -1,0 +1,128 @@
+@{
+    ViewBag.Title = "Bank operator page";
+}
+
+@section styles {
+    <link rel="stylesheet" href="~/Content/all.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/Content/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="~/Content/jquery.contextMenu.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap-select.min.css" />
+}
+
+<div class="container-fluid">
+    @Html.AntiForgeryToken()
+
+    <ul class="nav nav-tabs mb-3" id="bankOperatorTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active"
+                    id="service-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#serviceTab"
+                    type="button"
+                    role="tab"
+                    aria-controls="serviceTab"
+                    aria-selected="false">
+                Service Reports
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    id="sla-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#slaTab"
+                    type="button"
+                    role="tab"
+                    aria-controls="slaTab"
+                    aria-selected="true">
+                SLA Reports
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    id="planning-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#planningTab"
+                    type="button"
+                    role="tab"
+                    aria-controls="planningTab"
+                    aria-selected="true">
+                Planning
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="bankOperatorTabsContent">
+
+        <div class="tab-pane fade show active"
+             id="serviceTab"
+             role="tabpanel"
+             aria-labelledby="service-tab">
+
+            <div class="row g-3 mt-2">
+                <div class="col-12 col-lg-3">
+                    <div class="border rounded p-2 bg-white">
+                        <div id="serviceHierarchy">a</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade"
+             id="slaTab"
+             role="tabpanel"
+             aria-labelledby="sla-tab">
+
+            <div class="row g-3 mt-2">
+                <div class="col-12 col-lg-3">
+                    <div class="border rounded p-2 bg-white">
+                        <div id="slaHierarchy">b</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade"
+             id="planningTab"
+             role="tabpanel"
+             aria-labelledby="planning-tab">
+
+            <div class="row g-3 mt-2">
+                <div class="col-12 col-lg-3">
+                    <div class="border rounded p-2 bg-white">
+                        <div id="planningHierarchy">c</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-body" id="infoModalContent"></div>
+    </div>
+</div>
+
+<style>
+    .dt-center {
+        text-align: center;
+    }
+</style>
+
+@section scripts {
+    <script src="~/Scripts/dataTables.min.js"></script>
+    <script src="~/Scripts/jquery.ui.position.min.js"></script>
+    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.min.js"></script>    
+
+    <script src="~/Scripts/formatNetDate.js"></script>
+    <script src="~/Scripts/Modal/openModal.js"></script>    
+
+}

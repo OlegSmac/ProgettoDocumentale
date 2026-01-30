@@ -31,13 +31,13 @@
             @Html.AntiForgeryToken()
 
             <div class="form-group mb-3 w-100">
-                @Html.LabelFor(m => m.UserName, new { @class = "form-label" })
+                @Html.LabelFor(m => m.UserName, "Username", new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", style = "width:100%; max-width:100%; box-sizing:border-box;", autocomplete = "username" })
                 @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
             </div>
             
             <div class="form-group mb-3">
-                @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                @Html.LabelFor(m => m.Password, "Password", new { @class = "form-label" })
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", style = "width:100%; max-width:100%; box-sizing:border-box;", autocomplete = "current-password" })
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
