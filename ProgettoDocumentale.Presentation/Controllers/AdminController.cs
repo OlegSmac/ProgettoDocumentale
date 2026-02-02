@@ -171,7 +171,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 Name = user.Name,
                 Surname = user.Surname,
                 Patronymic = user.Patronymic,
-                Roles = user.Roles?.ToList() ?? new List<string>()
+                Roles = user.RolesIds?.ToList() ?? new List<int>()
             };
 
             return PartialView("_UpdateUserModal", model);
@@ -424,7 +424,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
             ViewBag.Institutions = new SelectList(institutions, "Id", "Name");
             ViewBag.AvailableRoles = roles.Select(r => new SelectListItem
             {
-                Value = r.Name,
+                Value = r.Id.ToString(),
                 Text = r.Name
             }).ToList();
         }

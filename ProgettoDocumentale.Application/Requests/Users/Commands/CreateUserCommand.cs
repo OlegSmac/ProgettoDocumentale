@@ -50,11 +50,11 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
                 if (req.Roles != null && req.Roles.Count > 0)
                 {
                     var roles = await _context.Roles
-                        .Where(r => req.Roles.Contains(r.Name))
+                        .Where(r => req.Roles.Contains(r.Id))
                         .ToListAsync(cancellationToken);
 
-                    var missing = req.Roles.Except(roles.Select(r => r.Name)).ToList();
-                    if (missing.Count > 0) throw new Exception("Unknown roles: " + string.Join(", ", missing));
+                    var missing = req.Roles.Except(roles.Select(r => r.Id)).ToList();
+                    if (missing.Count > 0) throw new Exception("Unknown roles indexes: " + string.Join(", ", missing));
 
                     foreach (var role in roles)
                     {

@@ -17,6 +17,6 @@ namespace ProgettoDocumentale.Application.Requests.Users.ViewModels
         public string Surname { get; set; }
         public string Patronymic { get; set; }
 
-        public List<string> Roles { get; set; } = new List<string>();
+        public List<int> Roles { get; set; } = new List<int>();
     }
 }

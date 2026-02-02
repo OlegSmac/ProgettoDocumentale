@@ -179,9 +179,15 @@
     <Compile Include="Requests\Documents\Commands\UpdateDocumentCommand.cs" />
     <Compile Include="Requests\Documents\DTOs\DocumentDTO.cs" />
     <Compile Include="Requests\Documents\DTOs\InstitutionDocumentsTreeDTO.cs" />
+    <Compile Include="Requests\Documents\DTOs\ProjectsReportsTreeDTO.cs" />
+    <Compile Include="Requests\Documents\DTOs\ServiceReportsTreeDTO.cs" />
+    <Compile Include="Requests\Documents\DTOs\SLAReportsTreeDTO.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocumentBy\GetDocumentByIdQuery.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetDocumentsHierarchyQuery.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetPagedDocumentsQuery.cs" />
+    <Compile Include="Requests\Documents\Queries\GetDocuments\GetProjectsWithDocumentsHierarchyQuery.cs" />
+    <Compile Include="Requests\Documents\Queries\GetDocuments\GetServiceReportsHierarchyQuery.cs" />
+    <Compile Include="Requests\Documents\Queries\GetDocuments\GetSLAReportsHierarchyQuery.cs" />
     <Compile Include="Requests\Documents\ViewModels\CreateDocumentRequestData.cs" />
     <Compile Include="Requests\Documents\ViewModels\CreateDocumentValidator.cs" />
     <Compile Include="Requests\Documents\ViewModels\UpdateDocumentRequestData.cs" />

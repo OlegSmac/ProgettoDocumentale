@@ -57,11 +57,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
                 user.IsEnabled = req.IsEnabled;
                 user.Name = req.Name;
                 user.Surname = req.Surname;
-                user.Patronymic = req.Patronymic;
-
-                var requestedRoleNames = req.Roles
-                    .Distinct(StringComparer.OrdinalIgnoreCase)
-                    .ToList();
+                user.Patronymic = req.Patronymic;                
 
                 if (user.UserRoles.Any())
                 {
@@ -69,17 +65,17 @@ namespace ProgettoDocumentale.Application.Requests.Users.Commands
                     user.UserRoles.Clear();
                 }
 
-                if (requestedRoleNames.Count > 0)
+                if (req.Roles.Count > 0)
                 {
                     var roles = await _context.Roles
-                        .Where(r => requestedRoleNames.Contains(r.Name))
+                        .Where(r => req.Roles.Contains(r.Id))
                         .ToListAsync(cancellationToken);
 
-                    var missing = requestedRoleNames
-                        .Except(roles.Select(r => r.Name), StringComparer.OrdinalIgnoreCase)
+                    var missing = req.Roles
+                        .Except(roles.Select(r => r.Id))
                         .ToList();
 
-                    if (missing.Count > 0) throw new Exception("Unknown roles: " + string.Join(", ", missing));
+                    if (missing.Count > 0) throw new Exception("Unknown roles indexes: " + string.Join(", ", missing));
 
                     foreach (var role in roles)
                     {

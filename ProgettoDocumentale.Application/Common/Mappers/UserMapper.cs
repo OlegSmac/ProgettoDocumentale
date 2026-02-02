@@ -28,6 +28,10 @@ namespace ProgettoDocumentale.Application.Common.Mappers
                 Name = user.Name,
                 Surname = user.Surname,
                 Patronymic = user.Patronymic,
+                RolesIds = user.UserRoles
+                    .Where(ur => ur.Role != null)
+                    .Select(ur => ur.Role.Id)
+                    .ToList(),
                 Roles = user.UserRoles
                     .Where(ur => ur.Role != null)
                     .Select(ur => ur.Role.Name)
@@ -61,6 +65,10 @@ namespace ProgettoDocumentale.Application.Common.Mappers
             Name = user.Name,
             Surname = user.Surname,
             Patronymic = user.Patronymic,
+            RolesIds = user.UserRoles
+                    .Where(ur => ur.Role != null)
+                    .Select(ur => ur.Role.Id)
+                    .ToList(),
             Roles = user.UserRoles
                     .Where(ur => ur.Role != null)
                     .Select(ur => ur.Role.Name)

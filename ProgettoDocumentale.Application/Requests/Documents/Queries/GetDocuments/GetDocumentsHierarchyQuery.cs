@@ -39,7 +39,8 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
 
                 join mt in _context.DocumentTypes on macroId.Value equals mt.Id
                 where mt.IsMarco
-                select new
+
+                group d by new
                 {
                     d.InstitutionId,
                     InstitutionName = i.Name,
@@ -47,28 +48,23 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
                     MacroId = mt.Id,
                     MacroName = mt.Name
                 }
-            )
-            .GroupBy(x => new
-            {
-                x.InstitutionId,
-                x.InstitutionName,
-                x.Year,
-                x.MacroId,
-                x.MacroName
-            })
-            .Select(g => new
-            {
-                g.Key.InstitutionId,
-                g.Key.InstitutionName,
-                g.Key.Year,
-                g.Key.MacroId,
-                g.Key.MacroName,
-                Count = g.Count()
-            })
+                
+                into g
+                select new
+                {
+                    g.Key.InstitutionId,
+                    g.Key.InstitutionName,
+                    g.Key.Year,
+                    g.Key.MacroId,
+                    g.Key.MacroName,
+                    Count = g.Count()
+                }
+            )            
             .ToListAsync(cancellationToken);
             
             var result = rows
                 .GroupBy(r => new { r.InstitutionId, r.InstitutionName })
+                .OrderBy(g => g.Key.InstitutionName)
                 .Select(inst => new InstitutionDocumentsTreeDTO
                 {
                     InstitutionId = inst.Key.InstitutionId,
@@ -80,11 +76,12 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
                         {
                             Year = yearGroup.Key,
                             Types = yearGroup
-                                .Select(t => new DocumentMacroNodeDTO
+                                .GroupBy(x => new { x.MacroId, x.MacroName })
+                                .Select(g => new DocumentMacroNodeDTO
                                 {
-                                    MacroTypeId = t.MacroId,
-                                    MacroTypeName = t.MacroName,
-                                    Count = t.Count
+                                    MacroTypeId = g.Key.MacroId,
+                                    MacroTypeName = g.Key.MacroName,
+                                    Count = g.Sum(x => x.Count)
                                 })
                                 .OrderBy(t => t.MacroTypeName)
                                 .ToList()
@@ -92,8 +89,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
                         .Where(y => y.Types.Any())
                         .ToList()
                 })
-                .Where(i => i.Years.Any())
-                .OrderBy(i => i.InstitutionName)
+                .Where(i => i.Years.Any())                
                 .ToList();
 
             return result;

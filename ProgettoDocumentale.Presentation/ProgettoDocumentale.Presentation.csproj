@@ -266,6 +266,7 @@
     <Content Include="Content\jquery.contextMenu.min.css" />
     <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\jquery.dataTables.min.css" />
+    <Content Include="Scripts\BankOperator\bankOperatorHierarchy.js" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\dataTables.js" />
@@ -486,6 +487,10 @@
     <Content Include="Views\CedacriOperator\_DocumentDetailsModal.cshtml" />
     <Content Include="Views\Admin\_UserDetailsModal.cshtml" />
     <Content Include="Views\BankOperator\Index.cshtml" />
+    <Content Include="Views\BankOperator\_ServiceReportsTab.cshtml" />
+    <Content Include="Views\BankOperator\_SLAReportsTab.cshtml" />
+    <Content Include="Views\BankOperator\_ProjectsReportsTab.cshtml" />
+    <Content Include="Views\BankOperator\_DocumentDetailsModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
