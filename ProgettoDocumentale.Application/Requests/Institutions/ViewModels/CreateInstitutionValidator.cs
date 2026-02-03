@@ -20,10 +20,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.ViewModels
                                 .MinimumLength(2).WithMessage("Name must be at least 2 characters")
                                 .MaximumLength(255).WithMessage("Name must be at most 255 characters");
 
-            RuleFor(model => model.AdditionalInfo).NotEmpty().WithMessage("AdditionalInfo cannot be empty")
-                                .NotNull().WithMessage("AdditionalInfo cannot be null")
-                                .MinimumLength(5).WithMessage("AdditionalInfo must be at least 5 characters")
-                                .MaximumLength(500).WithMessage("AdditionalInfo must be at most 500 characters");
+            RuleFor(model => model.AdditionalInfo).MaximumLength(500).WithMessage("Additional info must be at most 500 characters");
         }
     }
 }

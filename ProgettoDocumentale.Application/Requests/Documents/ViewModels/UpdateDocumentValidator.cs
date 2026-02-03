@@ -28,12 +28,9 @@ namespace ProgettoDocumentale.Application.Requests.Documents.ViewModels
             RuleFor(model => model.Name).NotEmpty().WithMessage("Name cannot be empty")
                                 .NotNull().WithMessage("Name cannot be null")
                                 .MinimumLength(1).WithMessage("Name must be at least 1 character")
-                                .MaximumLength(100).WithMessage("Name must be at most 100 characters");                       
+                                .MaximumLength(100).WithMessage("Name must be at most 100 characters");
 
-            RuleFor(model => model.AdditionalInfo).NotEmpty().WithMessage("Additional info cannot be empty")
-                                .NotNull().WithMessage("Additional info cannot be null")
-                                .MinimumLength(5).WithMessage("Additional info must be at least 5 character")
-                                .MaximumLength(500).WithMessage("Additional info must be at most 500 characters");
+            RuleFor(model => model.AdditionalInfo).MaximumLength(500).WithMessage("Additional info must be at most 500 characters");
 
             RuleFor(model => model.GroupingDate).NotEmpty().WithMessage("Upload date cannot be empty")
                                 .NotNull().WithMessage("Upload date cannot be null");

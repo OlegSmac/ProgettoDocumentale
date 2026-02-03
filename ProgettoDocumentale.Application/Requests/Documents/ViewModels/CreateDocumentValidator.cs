@@ -30,10 +30,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.ViewModels
             RuleFor(model => model.UploadDate).NotEmpty().WithMessage("Upload date cannot be empty")
                                 .NotNull().WithMessage("Upload date cannot be null");
 
-            RuleFor(model => model.AdditionalInfo).NotEmpty().WithMessage("Additional info cannot be empty")
-                                .NotNull().WithMessage("Additional info cannot be null")
-                                .MinimumLength(5).WithMessage("Additional info must be at least 5 character")
-                                .MaximumLength(500).WithMessage("Additional info must be at most 500 characters");
+            RuleFor(model => model.AdditionalInfo).MaximumLength(500).WithMessage("Additional info must be at most 500 characters");
 
             RuleFor(model => model.GroupingDate).NotEmpty().WithMessage("Upload date cannot be empty")
                                 .NotNull().WithMessage("Upload date cannot be null");

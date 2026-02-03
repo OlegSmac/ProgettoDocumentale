@@ -25,10 +25,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.ViewModels
                                 .NotNull().WithMessage("DateTill cannot be null")
                                 .GreaterThanOrEqualTo(model => model.DateFrom).WithMessage("End date can't be less than start");
 
-            RuleFor(model => model.AdditionalInfo).NotEmpty().WithMessage("Additional info cannot be empty")
-                                .NotNull().WithMessage("Additional info cannot be null")
-                                .MinimumLength(5).WithMessage("Additional info must be at least 5 character")
-                                .MaximumLength(500).WithMessage("Additional info must be at most 500 characters");
+            RuleFor(model => model.AdditionalInfo).MaximumLength(500).WithMessage("Additional info must be at most 500 characters");
         }
     }
 }
