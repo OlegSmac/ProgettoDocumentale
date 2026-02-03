@@ -77,9 +77,7 @@
             <div class="d-flex justify-content-start mt-3">
                 <button type="button"
                         class="btn btn-primary"
-                        onclick="openModal({ url: '/CedacriOperator/GetAddDocument', data: 0, target: '#addDocumentModal', content: '#addDocumentModalContent' })"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addDocumentModal">
+                        onclick="openModal({ url: '/CedacriOperator/GetAddDocument', data: 0 })">
                     New Document
                 </button>
             </div>
@@ -120,49 +118,11 @@
             <div class="d-flex justify-content-start mt-3">
                 <button type="button"
                         class="btn btn-primary"
-                        onclick="openModal({ url: '/CedacriOperator/GetAddProject', data: 0, target: '#addProjectModal', content: '#addProjectModalContent' })"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addProjectModal">
+                        onclick="openModal({ url: '/CedacriOperator/GetAddProject', data: 0 })">
                     New Project
                 </button>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addDocumentModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="addDocumentModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="updateDocumentModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="updateDocumentModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="documentDetailsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="documentDetailsModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="addProjectModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="addProjectModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="updateProjectModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="updateProjectModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="projectDetailsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="projectDetailsModalContent"></div>
     </div>
 </div>
 
@@ -177,8 +137,7 @@
     <script src="~/Scripts/jquery.ui.position.min.js"></script>
     <script src="~/Scripts/jquery.contextMenu.min.js"></script>
     <script src="~/Scripts/bootstrap-select.min.js"></script>
-
-    <!--<script src="~/Scripts/Document/AddDocument.js"></script>-->
+    
     <script src="~/Scripts/Document/loadDocumentsHierarchy.js"></script>
     <script src="~/Scripts/Document/handleCreateUpdateDocument.js"></script>
     <script src="~/scripts/Document/documentForm.js"></script>
@@ -212,9 +171,7 @@
 
                 openModal({
                     data: id,
-                    url: '/CedacriOperator/GetDocumentDetails',
-                    target: '#documentDetailsModal',
-                    content: '#documentDetailsModalContent'
+                    url: '/CedacriOperator/GetDocumentDetails'
                 });
             });
 
@@ -226,9 +183,7 @@
 
                 openModal({
                     data: id,
-                    url: '/CedacriOperator/GetProjectDetails',
-                    target: '#projectDetailsModal',
-                    content: '#projectDetailsModalContent'
+                    url: '/CedacriOperator/GetProjectDetails'
                 });
             });
         });
@@ -304,9 +259,7 @@
                         case 'Details':
                             openModal({
                                 data: id,
-                                url: '/CedacriOperator/GetDocumentDetails',
-                                target: '#documentDetailsModal',
-                                content: '#documentDetailsModalContent'
+                                url: '/CedacriOperator/GetDocumentDetails'
                             });
                             break;
 
@@ -317,9 +270,7 @@
                         case 'Update':
                             openModal({
                                 data: id,
-                                url: '/CedacriOperator/GetUpdateDocument',
-                                target: '#updateDocumentModal',
-                                content: '#updateDocumentModalContent'
+                                url: '/CedacriOperator/GetUpdateDocument'
                             });
                             break;
 
@@ -419,18 +370,14 @@
                         case 'Details':
                             openModal({
                                 data: id,
-                                url: '/CedacriOperator/GetProjectDetails',
-                                target: '#projectDetailsModal',
-                                content: '#projectDetailsModalContent'
+                                url: '/CedacriOperator/GetProjectDetails'
                             });
                             break;
 
                         case 'Update':
                             openModal({
                                 data: id,
-                                url: '/CedacriOperator/GetUpdateProject',
-                                target: '#updateProjectModal',
-                                content: '#updateProjectModalContent'
+                                url: '/CedacriOperator/GetUpdateProject'
                             });
                             break;
 

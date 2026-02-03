@@ -62,9 +62,7 @@
             <div class="d-flex justify-content-start mt-3">
                 <button type="button"
                         class="btn btn-primary"
-                        onclick="openModal({ url: '/Admin/GetAddInstitution', data: 0, target: '#addInstitutionModal', content: '#addInstitutionModalContent' })"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addInstitutionModal">
+                        onclick="openModal({ url: '/Admin/GetAddInstitution', data: 0 })">
                     New Institution
                 </button>
             </div>
@@ -90,49 +88,11 @@
             <div class="d-flex justify-content-start mt-3">
                 <button type="button"
                         class="btn btn-primary"
-                        onclick="openModal({ url: '/Admin/GetAddUser', data: 0, target: '#addUserModal', content: '#addUserModalContent' })"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addUserModal">
+                        onclick="openModal({ url: '/Admin/GetAddUser', data: 0 })">
                     New User
                 </button>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addInstitutionModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="addInstitutionModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="updateInstitutionModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="updateInstitutionModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="addUserModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="detailsUserModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="detailsUserModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="updateUserModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="updateUserModalContent"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-body" id="resetPasswordModalContent"></div>
     </div>
 </div>
 
@@ -173,9 +133,7 @@
 
                 openModal({
                     data: id,
-                    url: '/Admin/GetUserDetails',
-                    target: '#detailsUserModal',
-                    content: '#detailsUserModalContent'
+                    url: '/Admin/GetUserDetails'
                 });
             });
         });
@@ -223,7 +181,7 @@
 
                     switch (key) {
                         case 'Update':
-                            openModal({ data: id, url: '/Admin/GetUpdateInstitution', target: '#updateInstitutionModal', content: '#updateInstitutionModalContent' });
+                            openModal({ data: id, url: '/Admin/GetUpdateInstitution' });
                             break;
 
                         case 'Remove':
@@ -312,15 +270,15 @@
 
                     switch (key) {
                         case 'Details':
-                            openModal({ data: id, url: '/Admin/GetUserDetails', target: '#detailsUserModal', content: '#detailsUserModalContent' });
+                            openModal({ data: id, url: '/Admin/GetUserDetails' });
                             break;
 
                         case 'Update':
-                            openModal({ data: id, url: '/Admin/GetUpdateUser', target: '#updateUserModal', content: '#updateUserModalContent' });
+                            openModal({ data: id, url: '/Admin/GetUpdateUser' });
                             break;
 
                         case 'ResetPassword':
-                            openModal({ data: id, url: '/Admin/GetResetPassword', target: '#resetPasswordModal', content: '#resetPasswordModalContent' });
+                            openModal({ data: id, url: '/Admin/GetResetPassword' });
                             break;
                     }
                 },

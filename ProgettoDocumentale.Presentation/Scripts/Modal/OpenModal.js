@@ -1,14 +1,22 @@
 function openModal(options) {
-    $.get(options.url, { id: options.data })
-        .done(function (html) {
-            $(options.content).empty();
-            $(options.content).html(html);
-            
-            $(options.target).modal('show');
+    $('#appModalContent').empty().html('<div class="text-muted">Loading...</div>');
 
-            $('.selectpicker').selectpicker();
-        })
-        .fail(function () {
-            alert("Failed to load modal content.");
-        });
+    $.ajax({
+        url: options.url,
+        type: 'GET',
+        cache: false,
+        data: options.data != null ? { id: options.data } : {},
+    })
+    .done(function (html) {
+        $('#appModalContent').empty().html(html);
+        if ($.fn.selectpicker) {
+            $('#appModalContent .selectpicker').selectpicker();
+        }
+
+        $('#appModal').modal('show');
+    })
+    .fail(function () {
+        $('#appModalContent').empty();
+        alert("Failed to load modal content.");
+    });
 }

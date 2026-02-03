@@ -32,9 +32,7 @@ function bindReportContextMenu(selector) {
                 case 'Info':
                     openModal({
                         data: id,
-                        url: '/BankOperator/GetDocumentDetails',
-                        target: '#infoModal',
-                        content: '#infoModalContent'
+                        url: '/BankOperator/GetDocumentDetails'
                     });
                     break;
 
@@ -56,8 +54,6 @@ $(document).on('dblclick', '.report-item', function (e) {
 
     openModal({
         data: id,
-        url: '/BankOperator/GetDocumentDetails',
-        target: '#infoModal',
-        content: '#infoModalContent'
+        url: '/BankOperator/GetDocumentDetails'
     });
 });

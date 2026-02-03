@@ -78,6 +78,15 @@
 
     <div class="container body-content">
         @RenderBody()
+
+        <div class="modal fade" id="appModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body" id="appModalContent"></div>
+                </div>
+            </div>
+        </div>
+
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - Progetto Documentale</p>
@@ -86,7 +95,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>    
 
     @RenderSection("scripts", required: false)
 </body>

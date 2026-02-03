@@ -207,7 +207,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult> GetUpdateProject(int id, CancellationToken cancellationToken)
         {            
-            await LoadInstitutionsAsync(cancellationToken);
+            await LoadInstitutionsAsync(cancellationToken);            
 
             var project = await _mediator.Send(new GetProjectByIdQuery { Id = id }, cancellationToken);
             if (project == null) return HttpNotFound();
@@ -218,7 +218,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
             var model = new UpdateProjectRequestData
             {
                 Id = project.Id,
-                InstitutionId = project.InstitutionId,
+                InstitutionId = institution.Id,                
                 Username = User.Identity?.Name,
                 Name = project.Name,                
                 DateFrom = project.DateFrom,
@@ -444,7 +444,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
         private async Task LoadInstitutionsAsync(CancellationToken cancellationToken)
         {
-            var institutions = await _mediator.Send(new GetProjectsIdAndNameQuery(), cancellationToken);            
+            var institutions = await _mediator.Send(new GetInstitutionIdAndNameQuery(), cancellationToken);            
             ViewBag.Institutions = new SelectList(institutions, "Id", "Name");            
         }
 

@@ -1,4 +1,4 @@
-﻿$(document).on('shown.bs.modal', '#updateDocumentModal', function () {
+﻿$(document).on('shown.bs.modal', '#appModal', function () {
     DocumentForm.bindOnce();
     DocumentForm.init();
 });
