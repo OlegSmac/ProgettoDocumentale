@@ -10,7 +10,12 @@ namespace ProgettoDocumentale.Presentation.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
+            if (User.IsInRole("Admin")) return RedirectToAction("Index", "Admin");
+            if (User.IsInRole("CedacriOperator")) return RedirectToAction("Index", "CedacriOperator");
+            if (User.IsInRole("BancOperator")) return RedirectToAction("Index", "BankOperator");
+            
+            return RedirectToAction("AccessDenied", "Account");
         }
 
         public ActionResult About()

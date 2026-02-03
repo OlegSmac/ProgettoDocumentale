@@ -273,9 +273,9 @@
     <Content Include="Scripts\dataTables.min.js" />
     <Content Include="Scripts\Document\addDocumentStart.js" />
     <Content Include="Scripts\Document\documentForm.js" />
-    <Content Include="Scripts\Document\HandleCreateUpdateDocument.js" />
-    <Content Include="Scripts\Document\LoadDocumentsHierarchy.js" />
-    <Content Include="Scripts\Document\RemoveDocument.js" />
+    <Content Include="Scripts\Document\handleCreateUpdateDocument.js" />
+    <Content Include="Scripts\Document\loadDocumentsHierarchy.js" />
+    <Content Include="Scripts\Document\removeDocument.js" />
     <Content Include="Scripts\Document\updateDocumentStart.js" />
     <Content Include="Scripts\formatNetDate.js" />
     <Content Include="Scripts\i18n\defaults-am_ET.js" />
@@ -358,15 +358,15 @@
     <Content Include="Scripts\i18n\defaults-zh_CN.min.js" />
     <Content Include="Scripts\i18n\defaults-zh_TW.js" />
     <Content Include="Scripts\i18n\defaults-zh_TW.min.js" />
-    <Content Include="Scripts\Institution\HandleCreateUpdateInstitution.js" />
-    <Content Include="Scripts\Institution\RemoveInstitution.js" />
+    <Content Include="Scripts\Institution\handleCreateUpdateInstitution.js" />
+    <Content Include="Scripts\Institution\removeInstitution.js" />
     <Content Include="Scripts\jquery.contextMenu.js" />
     <Content Include="Scripts\jquery.contextMenu.min.js" />
     <Content Include="Scripts\jquery.ui.position.js" />
     <Content Include="Scripts\jquery.ui.position.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\Modal\RolesSelection.js" />
+    <Content Include="Scripts\Modal\rolesSelection.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -450,11 +450,11 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\Project\HandleCreateUpdateProject.js" />
-    <Content Include="Scripts\Project\LoadProjectsHierarchy.js" />
-    <Content Include="Scripts\Project\RemoveProject.js" />
-    <Content Include="Scripts\User\HandleCreateUpdateUser.js" />
-    <Content Include="Scripts\User\HandleResetPassword.js" />
+    <Content Include="Scripts\Project\handleCreateUpdateProject.js" />
+    <Content Include="Scripts\Project\loadProjectsHierarchy.js" />
+    <Content Include="Scripts\Project\removeProject.js" />
+    <Content Include="Scripts\User\handleCreateUpdateUser.js" />
+    <Content Include="Scripts\User\handleResetPassword.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -472,7 +472,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Admin\_AddUserModal.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Scripts\Modal\OpenModal.js" />
+    <Content Include="Scripts\Modal\openModal.js" />
     <Content Include="Views\Admin\_UpdateUserModal.cshtml" />
     <Content Include="Views\Admin\_ResetPasswordModal.cshtml" />
     <Content Include="Views\Admin\_AddInstitutionModal.cshtml" />
