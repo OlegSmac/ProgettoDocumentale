@@ -6,6 +6,6 @@ function handleCreateUpdateInstitution(html) {
     if (success === '1') {
         $('#appModal').modal('hide'); 
 
-        institutionsTable?.ajax.reload(null, false);
+        window.institutionsTable?.ajax.reload(null, false);
     }
 }

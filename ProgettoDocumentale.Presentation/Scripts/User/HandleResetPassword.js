@@ -6,8 +6,6 @@
 
     if ($content.attr("data-success") === "1") {
         const modal = bootstrap.Modal.getInstance($modal[0]) || new bootstrap.Modal($modal[0]);
-        modal.hide();
-
-        usersTable?.ajax.reload(null, false);
+        modal.hide();        
     }
 }

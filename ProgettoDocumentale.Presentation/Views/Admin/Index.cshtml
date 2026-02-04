@@ -19,10 +19,11 @@
                     id="institutions-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#institutionsTab"
+                    data-url="@Url.Action("InstitutionsTab", "Admin")"
                     type="button"
                     role="tab"
                     aria-controls="institutionsTab"
-                    aria-selected="false">
+                    aria-selected="true">
                 Institutions
             </button>
         </li>
@@ -32,15 +33,40 @@
                     id="users-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#usersTab"
+                    data-url="@Url.Action("UsersTab", "Admin")"
                     type="button"
                     role="tab"
                     aria-controls="usersTab"
-                    aria-selected="true">
+                    aria-selected="false">
                 Users
             </button>
         </li>
     </ul>
 
+    <div class="tab-content" id="adminTabsContent">
+
+        <div class="tab-pane fade show active"
+             id="institutionsTab"
+             role="tabpanel"
+             aria-labelledby="institutions-tab">
+
+            <div class="tab-loader p-2" data-loaded="false">
+                <div class="text-muted">Loading…</div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade"
+             id="usersTab"
+             role="tabpanel"
+             aria-labelledby="users-tab">
+
+            <div class="tab-loader p-2" data-loaded="false"></div>
+
+        </div>
+
+    </div>
+    <!--
     <div class="tab-content" id="adminTabsContent">
 
         <div class="tab-pane fade show active"
@@ -94,6 +120,7 @@
             </div>
         </div>
     </div>
+        -->
 </div>
 
 <style>
@@ -117,6 +144,29 @@
     <script src="~/Scripts/Modal/openModal.js"></script>
     <script src="~/Scripts/Modal/rolesSelection.js"></script>
 
+    <script>
+        function loadTab(btn) {
+            var url = btn.getAttribute("data-url");
+            var target = btn.getAttribute("data-bs-target");
+            if (!url || !target) return;
+
+            var $loader = $(target).find(".tab-loader");
+            $loader.html('<div class="text-muted">Loading…</div>');
+            $loader.load(url);
+        }
+
+        $(function () {
+            var activeBtn = document.querySelector('#adminTabs .nav-link.active');
+            if (activeBtn) loadTab(activeBtn);
+        });
+
+        document.getElementById('adminTabs')
+            .addEventListener('shown.bs.tab', function (event) {
+                loadTab(event.target);
+            });
+
+    </script>
+    <!--
     <script>
         var institutionsTable;
         var usersTable;
@@ -293,5 +343,5 @@
         }
 
     </script>
-
+    -->
 }

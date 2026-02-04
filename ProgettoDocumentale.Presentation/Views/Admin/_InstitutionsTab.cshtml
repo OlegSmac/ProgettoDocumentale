@@ -1,0 +1,90 @@
+<table id="InstitutionsDatatable"
+       class="table-borderless row-border border-light mt-2 w-100 stripe"
+       cellspacing="0">
+    <thead class="table-light">
+        <tr>
+            <th>Id</th>
+            <th>InstCode</th>
+            <th>Name</th>
+            <th>AdditionalInfo</th>
+        </tr>
+    </thead>
+</table>
+
+<div class="d-flex justify-content-start mt-3">
+    <button type="button"
+            class="btn btn-primary"
+            onclick="openModal({ url: '/Admin/GetAddInstitution', data: 0 })">
+        New Institution
+    </button>
+</div>
+
+<script>
+    (function () {        
+        if ($.fn.DataTable.isDataTable('#InstitutionsDatatable')) {
+            $('#InstitutionsDatatable').DataTable().destroy();
+            $('#InstitutionsDatatable').empty();
+        }
+
+        try { $.contextMenu('destroy', '#InstitutionsDatatable tbody tr'); } catch (e) { }
+
+        var institutionsTable = $('#InstitutionsDatatable').DataTable({
+            serverSide: true,
+            processing: true,
+            pageLength: 15,
+            order: [[1, 'asc']],
+            lengthMenu: [[10, 15, 25, 50, 100], [10, 15, 25, 50, 100]],
+            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                 "<'row'<'col-sm-12'tr>>" +
+                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            ajax: {
+                url: "/Admin/InstitutionTable",
+                type: "POST",
+                dataType: "json"
+            },
+            columns: [
+                { data: "Id", title: "Id", name: "Id", visible: false },
+                { data: "InstCode", title: "Inst Code", name: "InstCode", autoWidth: true },
+                { data: "Name", title: "Name", name: "Name", autoWidth: true },
+                { data: "AdditionalInfo", title: "Additional Info", name: "AdditionalInfo", autoWidth: true }
+            ],
+            pagingType: "full_numbers",
+            language: {
+                search: '<i class="bi bi-search"></i>',
+                searchPlaceholder: "Search",
+                paginate: {
+                    first: "First",
+                    previous: "&laquo;",
+                    next: "&raquo;",
+                    last: "Last"
+                }
+            }
+        });
+
+        $.contextMenu({
+            selector: '#InstitutionsDatatable tbody tr',
+            trigger: 'right',
+            callback: function (key, options) {
+                var row = institutionsTable.row(options.$trigger);
+                if (!row.any()) return;
+
+                var id = row.data().Id;
+
+                switch (key) {
+                    case 'Update':
+                        openModal({ data: id, url: '/Admin/GetUpdateInstitution' });
+                        break;
+
+                    case 'Remove':
+                        toggleRemoveInstitution(id);
+                        break;
+                }
+            },
+            items: {
+                "Update": { name: "Update" }                
+            }
+        });
+
+        window.institutionsTable = institutionsTable;
+    })();
+</script>

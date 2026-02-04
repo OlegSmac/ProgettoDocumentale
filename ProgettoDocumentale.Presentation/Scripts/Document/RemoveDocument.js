@@ -7,7 +7,8 @@ function toggleRemoveDocument(id) {
         data: { id: id, __RequestVerificationToken: token },
         success: function (res) {
             if (res && res.success) {
-                if (documentsTable) documentsTable.ajax.reload(null, false);
+                if (window.documentsTable) window.documentsTable.ajax.reload(null, false);
+                loadDocumentsHierarchy();
             } else {
                 alert(res.message || 'Failed to remove institution');
             }

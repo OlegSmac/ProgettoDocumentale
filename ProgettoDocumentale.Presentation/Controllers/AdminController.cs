@@ -52,19 +52,16 @@ namespace ProgettoDocumentale.Presentation.Controllers
             _resetPasswordValidator = resetPasswordValidator;
         }
 
-        public async Task<ActionResult> Index(CancellationToken cancellationToken)
-        {
-            try
-            {               
-                return View();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Cannot send request via Mediatr" + ex);
-            }
-        }
+        [HttpGet]
+        public ActionResult Index() => View();
 
         #region Views
+
+        [HttpGet]
+        public ActionResult InstitutionsTab() => PartialView("_InstitutionsTab");
+
+        [HttpGet]
+        public ActionResult UsersTab() => PartialView("_UsersTab");
 
         #region Institutions
 

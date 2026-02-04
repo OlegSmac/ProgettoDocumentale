@@ -22,7 +22,11 @@
 
     function loadMicro(macroId) {
         const $m = $micro();
-        if (!macroId) { disableSelect($m, 'Select micro type'); setHiddenTypeId(); return; }
+        if (!macroId) {
+            disableSelect($m, 'Select micro type');
+            setHiddenTypeId();
+            return;
+        }
 
         disableSelect($m, 'Loading...');
         $.getJSON('/CedacriOperator/GetMicroTypes', { macroTypeId: macroId })
@@ -31,7 +35,10 @@
                 (items || []).forEach(it => $m.append(new Option(it.Name, it.Id)));
                 setHiddenTypeId();
             })
-            .fail(() => { disableSelect($m, 'Failed to load micro types'); setHiddenTypeId(); });
+            .fail(() => {
+                disableSelect($m, 'Failed to load micro types');
+                setHiddenTypeId();
+            });
     }
 
     function applyRules() {

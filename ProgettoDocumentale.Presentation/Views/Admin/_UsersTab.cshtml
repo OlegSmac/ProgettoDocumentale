@@ -1,0 +1,136 @@
+<table id="UsersDatatable"
+       class="table-borderless row-border border-light mt-2 w-100 stripe"
+       cellspacing="0">
+    <thead class="table-light">
+        <tr>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Institution</th>
+            <th>Roles</th>
+            <th>Enabled</th>
+        </tr>
+    </thead>
+</table>
+
+<div class="d-flex justify-content-start mt-3">
+    <button type="button"
+            class="btn btn-primary"
+            onclick="openModal({ url: '/Admin/GetAddUser', data: 0 })">
+        New User
+    </button>
+</div>
+
+<script>
+    (function () {        
+        if ($.fn.DataTable.isDataTable('#UsersDatatable')) {
+            $('#UsersDatatable').DataTable().destroy();
+            $('#UsersDatatable').empty();
+        }
+
+        try { $.contextMenu('destroy', '#UsersDatatable tbody tr'); } catch (e) { }
+
+        var usersTable = $('#UsersDatatable').DataTable({
+            serverSide: true,
+            processing: true,
+            pageLength: 15,
+            order: [[1, 'asc']],
+            lengthMenu: [[10, 15, 25, 50, 100], [10, 15, 25, 50, 100]],
+            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                 "<'row'<'col-sm-12'tr>>" +
+                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            ajax: {
+                url: "/Admin/UserTable",
+                type: "POST",
+                dataType: "json"
+            },
+            columns: [
+                { data: "UserName", title: "Username", name: "UserName", autoWidth: true },
+                { data: "Email", title: "Email", name: "Email", autoWidth: true },
+                { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
+                {
+                    data: "Roles",
+                    title: "Roles",
+                    name: "Roles",
+                    orderable: false,
+                    searchable: false,
+                    autoWidth: true,
+                    render: function (data, type) {
+                        if (type === "display") return (data || []).join(", ");
+                        return data;
+                    }
+                },
+                {
+                    data: "IsEnabled",
+                    title: "Enabled",
+                    name: "IsEnabled",
+                    searchable: false,
+                    autoWidth: true,
+                    className: "dt-center",
+                    render: function (data, type) {
+                        if (type === "display") {
+                            return (data === true || data === 'true')
+                                ? '<i class="fas fa-check-circle text-success"></i>'
+                                : '<i class="fas fa-times-circle text-danger"></i>';
+                        }
+                        return data;
+                    }
+                }
+            ],
+            pagingType: "full_numbers",
+            language: {
+                search: '<i class="bi bi-search"></i>',
+                searchPlaceholder: "Search",
+                paginate: {
+                    first: "First",
+                    previous: "&laquo;",
+                    next: "&raquo;",
+                    last: "Last"
+                }
+            }
+        });
+
+        $('#UsersDatatable tbody')
+            .off('dblclick', 'tr')
+            .on('dblclick', 'tr', function () {
+                var row = usersTable.row(this);
+                if (!row.any()) return;
+
+                openModal({
+                    data: row.data().Id,
+                    url: '/Admin/GetUserDetails'
+                });
+            });
+
+        $.contextMenu({
+            selector: '#UsersDatatable tbody tr',
+            trigger: 'right',
+            callback: function (key, options) {
+                var row = usersTable.row(options.$trigger);
+                if (!row.any()) return;
+
+                var id = row.data().Id;
+
+                switch (key) {
+                    case 'Details':
+                        openModal({ data: id, url: '/Admin/GetUserDetails' });
+                        break;
+
+                    case 'Update':
+                        openModal({ data: id, url: '/Admin/GetUpdateUser' });
+                        break;
+
+                    case 'ResetPassword':
+                        openModal({ data: id, url: '/Admin/GetResetPassword' });
+                        break;
+                }
+            },
+            items: {
+                "Details": { name: "Details" },
+                "Update": { name: "Update" },
+                "ResetPassword": { name: "Reset Password" }
+            }
+        });
+
+        window.usersTable = usersTable;
+    })();
+</script>

@@ -7,7 +7,7 @@ function handleCreateUpdateProject(html) {
     if (success === '1') {
         $('#appModal').modal('hide');        
 
-        projectsTable?.ajax.reload(null, false);
+        window.projectsTable?.ajax.reload(null, false);
         loadProjectsHierarchy();        
     }
 }

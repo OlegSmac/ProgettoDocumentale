@@ -1,0 +1,180 @@
+<div class="row g-3 mt-2">
+
+    <div class="col-12 col-lg-3">
+        <div class="border rounded p-2 bg-white">
+            <div id="projectsHierarchy"></div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-9">
+        <table id="ProjectsDatatable"
+               class="table-borderless row-border border-light mt-2 w-100 stripe"
+               cellspacing="0">
+            <thead class="table-light">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Date from</th>
+                    <th>Date till</th>
+                    <th>Institution</th>
+                    <th>User</th>
+                    <th>Active</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+<div class="d-flex justify-content-start mt-3">
+    <button type="button"
+            class="btn btn-primary"
+            onclick="openModal({ url: '/CedacriOperator/GetAddProject', data: 0 })">
+        New Project
+    </button>
+</div>
+
+<script>
+    (function () {        
+        window.projInstitutionId = null;
+        window.projYear = null;
+        
+        if ($.fn.DataTable.isDataTable('#ProjectsDatatable')) {
+            $('#ProjectsDatatable').DataTable().destroy();
+            $('#ProjectsDatatable').empty();
+        }
+
+        try { $.contextMenu('destroy', '#ProjectsDatatable tbody tr'); } catch (e) { }
+        
+        var projectsTable = $('#ProjectsDatatable').DataTable({
+            serverSide: true,
+            processing: true,
+            pageLength: 10,
+            order: [[1, 'asc']],
+            lengthMenu: [[10, 15, 25, 50, 100], [10, 15, 25, 50, 100]],
+            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            ajax: {
+                url: "/CedacriOperator/ProjectsTable",
+                type: "POST",
+                dataType: "json",
+                data: function (d) {
+                    d.institutionId = window.projInstitutionId;
+                    d.year = window.projYear;
+                }
+            },
+            columns: [
+                { data: "Id", title: "Id", name: "Id", visible: false },
+                { data: "Name", title: "Name", name: "Name", autoWidth: true },
+                {
+                    data: "DateFrom",
+                    title: "Date From",
+                    name: "DateFrom",
+                    autoWidth: true,
+                    render: function (data, type) {
+                        if (type === "display" || type === "filter") return formatNetDate(data);
+                        return data;
+                    }
+                },
+                {
+                    data: "DateTill",
+                    title: "Date Till",
+                    name: "DateTill",
+                    autoWidth: true,
+                    render: function (data, type) {
+                        if (type === "display" || type === "filter") return formatNetDate(data);
+                        return data;
+                    }
+                },
+                { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
+                { data: "Username", title: "Created by", name: "Username", autoWidth: true },
+                {
+                    data: "IsActive",
+                    title: "Active",
+                    name: "IsActive",
+                    searchable: false,
+                    autoWidth: true,
+                    className: "dt-center",
+                    render: function (data, type) {
+                        if (type === "display") {
+                            return (data === true || data === 'true')
+                                ? '<i class="fas fa-check-circle text-success"></i>'
+                                : '<i class="fas fa-times-circle text-danger"></i>';
+                        }
+                        return data;
+                    }
+                }
+            ],
+            pagingType: "full_numbers",
+            language: {
+                search: '<i class="bi bi-search"></i>',
+                searchPlaceholder: "Search",
+                paginate: {
+                    first: "First",
+                    previous: "&laquo;",
+                    next: "&raquo;",
+                    last: "Last"
+                }
+            }
+        });
+        
+        $('#ProjectsDatatable tbody')
+            .off('dblclick', 'tr')
+            .on('dblclick', 'tr', function () {
+                var row = projectsTable.row(this);
+                if (!row.any()) return;
+
+                openModal({
+                    data: row.data().Id,
+                    url: '/CedacriOperator/GetProjectDetails'
+                });
+            });
+        
+        $.contextMenu({
+            selector: '#ProjectsDatatable tbody tr',
+            trigger: 'right',
+            callback: function (key, options) {
+                var row = projectsTable.row(options.$trigger);
+                if (!row.any()) return;
+
+                var id = row.data().Id;
+
+                switch (key) {
+                    case 'Details':
+                        openModal({ data: id, url: '/CedacriOperator/GetProjectDetails' });
+                        break;
+
+                    case 'Update':
+                        openModal({ data: id, url: '/CedacriOperator/GetUpdateProject' });
+                        break;
+
+                    case 'Remove':
+                        toggleRemoveProject(id);
+                        break;
+                }
+            },
+            items: {
+                "Details": { name: "Details" },
+                "Update": { name: "Update" },
+                "Remove": { name: "Remove" }
+            }
+        });
+        
+        loadProjectsHierarchy();
+        
+        $(document)
+            .off('shown.bs.collapse hidden.bs.collapse', '#projectsHierarchy .collapse')
+            .on('shown.bs.collapse hidden.bs.collapse', '#projectsHierarchy .collapse', function () {
+                var icon = $(this).prev().find('.hierarchy-toggle-icon');
+
+                if ($(this).hasClass('show')) {
+                    icon.removeClass('bi-plus-square').addClass('bi-dash-square');
+                } else {
+                    icon.removeClass('bi-dash-square').addClass('bi-plus-square');
+                }
+            });
+        
+        window.projectsTable = projectsTable;
+    })();
+</script>

@@ -43,7 +43,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         private readonly IValidator<UpdateProjectRequestData> _updateProjectValidator;
 
         private readonly IValidator<CreateDocumentRequestData> _createDocumentValidator;
-        private readonly IValidator<UpdateDocumentRequestData> _updateDocumentValidator;     
+        private readonly IValidator<UpdateDocumentRequestData> _updateDocumentValidator;
 
         public CedacriOperatorController(IMediator mediator,
             IValidator<CreateProjectRequestData> createProjectValidator,
@@ -58,19 +58,16 @@ namespace ProgettoDocumentale.Presentation.Controllers
             _updateDocumentValidator = updateDocumentValidator;
         }
 
-        public ActionResult Index(CancellationToken cancellationToken)
-        {
-            try
-            {
-                return View();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Cannot send request via Mediatr" + ex);
-            }
-        }
+        [HttpGet]
+        public ActionResult Index() => View();
 
         #region Views
+
+        [HttpGet]
+        public ActionResult DocumentsTab() => PartialView("_DocumentsTab");
+
+        [HttpGet]
+        public ActionResult ProjectsTab() => PartialView("_ProjectsTab");
 
         #region Documents
 
@@ -117,13 +114,13 @@ namespace ProgettoDocumentale.Presentation.Controllers
             if (document == null) return HttpNotFound();
 
             var institution = await _mediator.Send(new GetInstitutionByIdQuery { Id = document.InstitutionId }, cancellationToken);
-            if (institution == null) return HttpNotFound("Project institution not found");          
+            if (institution == null) return HttpNotFound("Project institution not found");
 
             var model = new UpdateDocumentRequestData
             {
                 Id = document.Id,
                 InstitutionId = institution.Id,
-                Username = User.Identity?.Name,                
+                Username = User.Identity?.Name,
                 Name = document.Name,
                 AdditionalInfo = document.AdditionalInfo,
                 GroupingDate = document.GroupingDate
@@ -142,7 +139,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         {
             var document = await _mediator.Send(new GetDocumentByIdQuery { Id = id }, cancellationToken);
             if (document == null) return HttpNotFound();
-            
+
             return PartialView("_DocumentDetailsModal", document);
         }
 
@@ -191,7 +188,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         public async Task<ActionResult> GetProjectsHierarchy(CancellationToken cancellationToken)
         {
             var data = await _mediator.Send(new GetProjectsHierarchyQuery(), cancellationToken);
-            
+
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
@@ -206,8 +203,8 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
         [HttpGet]
         public async Task<ActionResult> GetUpdateProject(int id, CancellationToken cancellationToken)
-        {            
-            await LoadInstitutionsAsync(cancellationToken);            
+        {
+            await LoadInstitutionsAsync(cancellationToken);
 
             var project = await _mediator.Send(new GetProjectByIdQuery { Id = id }, cancellationToken);
             if (project == null) return HttpNotFound();
@@ -218,9 +215,9 @@ namespace ProgettoDocumentale.Presentation.Controllers
             var model = new UpdateProjectRequestData
             {
                 Id = project.Id,
-                InstitutionId = institution.Id,                
+                InstitutionId = institution.Id,
                 Username = User.Identity?.Name,
-                Name = project.Name,                
+                Name = project.Name,
                 DateFrom = project.DateFrom,
                 DateTill = project.DateTill,
                 AdditionalInfo = project.AdditionalInfo
@@ -233,7 +230,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         public async Task<ActionResult> GetProjectDetails(int id, CancellationToken cancellationToken)
         {
             var project = await _mediator.Send(new GetProjectByIdQuery { Id = id }, cancellationToken);
-            if (project == null) return HttpNotFound();            
+            if (project == null) return HttpNotFound();
 
             return PartialView("_ProjectDetailsModal", project);
         }
@@ -262,13 +259,13 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 foreach (var err in validationResult.Errors)
                 {
                     ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
-                }                
+                }
             }
 
             if (!ModelState.IsValid) return PartialView("_AddDocumentModal", data);
 
             try
-            {                
+            {
                 await _mediator.Send(new CreateDocumentCommand
                 {
                     DocumentRequest = data,
@@ -280,12 +277,12 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 return PartialView("_AddDocumentModal", new CreateDocumentRequestData());
             }
             catch (Exception e)
-            {               
+            {
                 ModelState.AddModelError("", e.Message);
                 await LoadInstitutionsTypesProjectsAsync(data.MacroTypeId, data.MicroTypeId, data.ProjectId, cancellationToken);
                 return PartialView("_AddDocumentModal", data);
             }
-        }        
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -367,7 +364,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
             }
 
             try
-            {                
+            {
                 await _mediator.Send(new CreateProjectCommand
                 {
                     ProjectRequest = data
@@ -386,7 +383,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UpdateProject(UpdateProjectRequestData data, CancellationToken cancellationToken)
-        {            
+        {
             await LoadInstitutionsAsync(cancellationToken);
 
             var validationResult = _updateProjectValidator.Validate(data);
@@ -444,14 +441,14 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
         private async Task LoadInstitutionsAsync(CancellationToken cancellationToken)
         {
-            var institutions = await _mediator.Send(new GetInstitutionIdAndNameQuery(), cancellationToken);            
-            ViewBag.Institutions = new SelectList(institutions, "Id", "Name");            
+            var institutions = await _mediator.Send(new GetInstitutionIdAndNameQuery(), cancellationToken);
+            ViewBag.Institutions = new SelectList(institutions, "Id", "Name");
         }
 
         private async Task LoadInstitutionsTypesProjectsAsync(int macroTypeId, int? microTypeId, int? projectId, CancellationToken cancellationToken)
         {
             var institutions = await _mediator.Send(new GetInstitutionIdAndNameQuery(), cancellationToken);
-            ViewBag.Institutions = new SelectList(institutions, "Id", "Name");            
+            ViewBag.Institutions = new SelectList(institutions, "Id", "Name");
 
             var projects = await _mediator.Send(new GetProjectsIdAndNameQuery(), cancellationToken);
             ViewBag.Projects = new SelectList(projects, "Id", "Name", projectId);
@@ -461,16 +458,16 @@ namespace ProgettoDocumentale.Presentation.Controllers
             ViewBag.MacroTypesRaw = macroTypes;
 
             if (macroTypeId > 0)
-            {                
+            {
                 var selected = macroTypes.FirstOrDefault(x => x.Id == macroTypeId);
                 if (selected != null && selected.Code != SlaReportCode)
                 {
                     var microTypes = await _mediator.Send(new GetDocumentMicroTypesByMacroIdAndNameQuery { MacroId = macroTypeId }, cancellationToken);
                     ViewBag.MicroTypes = new SelectList(microTypes, "Id", "Name", microTypeId);
                 }
-                else ViewBag.MicroTypes = new SelectList(Enumerable.Empty<SelectListItem>());                
+                else ViewBag.MicroTypes = new SelectList(Enumerable.Empty<SelectListItem>());
             }
-            else ViewBag.MicroTypes = new SelectList(Enumerable.Empty<SelectListItem>());            
+            else ViewBag.MicroTypes = new SelectList(Enumerable.Empty<SelectListItem>());
         }
 
         [HttpGet]
@@ -478,7 +475,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         {
             if (macroTypeId <= 0) return Json(Enumerable.Empty<object>(), JsonRequestBehavior.AllowGet);
 
-            var microTypes = await _mediator.Send(new GetDocumentMicroTypesByMacroIdAndNameQuery { MacroId = macroTypeId }, cancellationToken);            
+            var microTypes = await _mediator.Send(new GetDocumentMicroTypesByMacroIdAndNameQuery { MacroId = macroTypeId }, cancellationToken);
             var result = microTypes.Select(x => new { x.Id, x.Name });
 
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -512,7 +509,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
             bool isSla = docType.Code == SlaReportCode;
             bool isServ = docType.Code == ServReportCode;
-            bool isPrj = docType.Code == ProgettazioneCode;           
+            bool isPrj = docType.Code == ProgettazioneCode;
 
             if (isSla)
             {

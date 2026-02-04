@@ -64,7 +64,7 @@
              role="tabpanel"
              aria-labelledby="service-tab">
 
-            <div class="tab-loader p-2" data-loaded="false">
+            <div class="tab-loader p-2">
                 <div class="text-muted">Loading…</div>
             </div>
 
@@ -75,7 +75,7 @@
              role="tabpanel"
              aria-labelledby="sla-tab">
 
-            <div class="tab-loader p-2" data-loaded="false"></div>
+            <div class="tab-loader p-2"></div>
 
         </div>
 
@@ -114,7 +114,6 @@
             if (!url || !target) return;
 
             var $loader = $(target).find(".tab-loader");            
-
             $loader.html('<div class="text-muted">Loading…</div>');
             $loader.load(url);
         }

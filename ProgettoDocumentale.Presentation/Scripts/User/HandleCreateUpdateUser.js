@@ -7,6 +7,6 @@ function handleCreateUpdateUser(html) {
     if (success === '1') {
         $('#appModal').modal('hide');        
 
-        usersTable?.ajax.reload(null, false);
+        window.usersTable?.ajax.reload(null, false);
     }
 }

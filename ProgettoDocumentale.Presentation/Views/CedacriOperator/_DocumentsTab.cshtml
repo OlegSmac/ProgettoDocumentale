@@ -1,0 +1,158 @@
+<div class="row g-3 mt-2">
+
+    <div class="col-12 col-lg-3">
+        <div class="border rounded p-2 bg-white">
+            <div id="documentsHierarchy"></div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-9">
+        <table id="DocumentsDatatable"
+               class="table-borderless row-border border-light mt-2 w-100 stripe"
+               cellspacing="0">
+            <thead class="table-light">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Institution</th>
+                    <th>Project</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+<div class="d-flex justify-content-start mt-3">
+    <button type="button"
+            class="btn btn-primary"
+            onclick="openModal({ url: '/CedacriOperator/GetAddDocument', data: 0 })">
+        New Document
+    </button>
+</div>
+
+<script>
+    (function () {        
+        window.docInstitutionId = null;
+        window.docYear = null;
+        window.docMacroTypeId = null;
+        
+        if ($.fn.DataTable.isDataTable('#DocumentsDatatable')) {
+            $('#DocumentsDatatable').DataTable().destroy();
+            $('#DocumentsDatatable').empty();
+        }
+
+        try { $.contextMenu('destroy', '#DocumentsDatatable tbody tr'); } catch (e) { }
+        
+        var documentsTable = $('#DocumentsDatatable').DataTable({
+            serverSide: true,
+            processing: true,
+            pageLength: 10,
+            order: [[1, 'asc']],
+            lengthMenu: [[10, 15, 25, 50, 100], [10, 15, 25, 50, 100]],
+            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            ajax: {
+                url: "/CedacriOperator/DocumentsTable",
+                type: "POST",
+                dataType: "json",
+                data: function (d) {
+                    d.institutionId = window.docInstitutionId;
+                    d.year = window.docYear;
+                    d.macroId = window.docMacroTypeId;
+                }
+            },
+            columns: [
+                { data: "Id", title: "Id", name: "Id", visible: false },
+                { data: "Name", title: "Name", name: "Name", autoWidth: true },
+                { data: "TypeName", title: "Type", name: "TypeName", autoWidth: true },
+                {
+                    data: "UploadDate",
+                    title: "Upload date",
+                    name: "UploadDate",
+                    autoWidth: true,
+                    render: function (data, type) {
+                        if (type === "display" || type === "filter") return formatNetDate(data);
+                        return data;
+                    }
+                },
+                { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
+                { data: "ProjectName", title: "Project", name: "ProjectName", autoWidth: true }
+            ],
+            pagingType: "full_numbers",
+            language: {
+                search: '<i class="bi bi-search"></i>',
+                searchPlaceholder: "Search",
+                paginate: {
+                    first: "First",
+                    previous: "&laquo;",
+                    next: "&raquo;",
+                    last: "Last"
+                }
+            }
+        });
+        
+        $('#DocumentsDatatable tbody')
+            .off('dblclick', 'tr')
+            .on('dblclick', 'tr', function () {
+                var row = documentsTable.row(this);
+                if (!row.any()) return;
+
+                openModal({
+                    data: row.data().Id,
+                    url: '/CedacriOperator/GetDocumentDetails'
+                });
+            });
+        
+        $.contextMenu({
+            selector: '#DocumentsDatatable tbody tr',
+            trigger: 'right',
+            callback: function (key, options) {
+                var row = documentsTable.row(options.$trigger);
+                if (!row.any()) return;
+
+                var id = row.data().Id;
+
+                switch (key) {
+                    case 'Details':
+                        openModal({ data: id, url: '/CedacriOperator/GetDocumentDetails' });
+                        break;
+                    case 'Download':
+                        window.location = '/CedacriOperator/DownloadDocument?id=' + encodeURIComponent(id);
+                        break;
+                    case 'Update':
+                        openModal({ data: id, url: '/CedacriOperator/GetUpdateDocument' });
+                        break;
+                    case 'Remove':
+                        toggleRemoveDocument(id);
+                        break;
+                }
+            },
+            items: {
+                "Details": { name: "Details" },
+                "Download": { name: "Download" },
+                "Update": { name: "Update" },
+                "Remove": { name: "Remove" }
+            }
+        });
+        
+        loadDocumentsHierarchy();
+        
+        $(document)
+            .off('shown.bs.collapse hidden.bs.collapse', '#documentsHierarchy .collapse')
+            .on('shown.bs.collapse hidden.bs.collapse', '#documentsHierarchy .collapse', function () {
+                var icon = $(this).prev().find('.hierarchy-toggle-icon');
+
+                if ($(this).hasClass('show')) {
+                    icon.removeClass('bi-plus-square').addClass('bi-dash-square');
+                } else {
+                    icon.removeClass('bi-dash-square').addClass('bi-plus-square');
+                }
+            });
+        
+        window.documentsTable = documentsTable;
+    })();
+</script>

@@ -55,22 +55,28 @@
     });
 }
 
-$(document).on('click', '.year-filter', function (e) {
-    e.preventDefault();
-
-    projInstitutionId = parseInt($(this).data('institution-id'), 10);
-    projYear = parseInt($(this).data('year'), 10);
-
-    projectsTable.ajax.reload();
-});
-
 $(document).on('click', '.all-projects-filter', function (e) {
     e.preventDefault();
 
     projInstitutionId = null;
     projYear = null;
 
-    projectsTable.ajax.reload();
+    $('#projectsHierarchy .collapse.show').collapse('hide');
+
+    $('#projectsHierarchy .hierarchy-toggle-icon')
+        .removeClass('bi-dash-square')
+        .addClass('bi-plus-square');
+
+    window.projectsTable.ajax.reload();
+});
+
+$(document).on('click', '.year-filter', function (e) {
+    e.preventDefault();
+
+    projInstitutionId = parseInt($(this).data('institution-id'), 10);
+    projYear = parseInt($(this).data('year'), 10);
+
+    window.projectsTable.ajax.reload();
 });
 
 $(document).on('click', '.hierarchy-inst-filter', function (e) {
@@ -79,14 +85,5 @@ $(document).on('click', '.hierarchy-inst-filter', function (e) {
     projInstitutionId = parseInt($(this).data('institution-id'), 10);
     projYear = null;
 
-    projectsTable.ajax.reload();
-});
-
-$(document).on('click', '.year-filter', function (e) {
-    e.preventDefault();
-
-    projInstitutionId = parseInt($(this).data('institution-id'), 10);
-    projYear = parseInt($(this).data('year'), 10);
-
-    projectsTable.ajax.reload();
+    window.projectsTable.ajax.reload();
 });

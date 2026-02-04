@@ -93,7 +93,13 @@ $(document).on('click', '.all-docs-filter', function (e) {
     docYear = null;
     docMacroTypeId = null;
 
-    documentsTable.ajax.reload();
+    $('#documentsHierarchy .collapse.show').collapse('hide');
+    
+    $('#documentsHierarchy .hierarchy-toggle-icon')
+        .removeClass('bi-dash-square')
+        .addClass('bi-plus-square');
+
+    window.documentsTable.ajax.reload();
 });
 
 $(document).on('click', '.doc-inst-filter', function (e) {
@@ -103,7 +109,7 @@ $(document).on('click', '.doc-inst-filter', function (e) {
     docYear = null;
     docMacroTypeId = null;
 
-    documentsTable.ajax.reload();
+    window.documentsTable.ajax.reload();
 });
 
 $(document).on('click', '.doc-year-filter', function (e) {
@@ -113,7 +119,7 @@ $(document).on('click', '.doc-year-filter', function (e) {
     docYear = parseInt($(this).data('year'), 10);
     docMacroTypeId = null;
 
-    documentsTable.ajax.reload();
+    window.documentsTable.ajax.reload();
 });
 
 $(document).on('click', '.doc-type-filter', function (e) {
@@ -123,5 +129,5 @@ $(document).on('click', '.doc-type-filter', function (e) {
     docYear = parseInt($(this).data('year'), 10);
     docMacroTypeId = parseInt($(this).data('macro-type-id'), 10);
 
-    documentsTable.ajax.reload();
+    window.documentsTable.ajax.reload();
 });

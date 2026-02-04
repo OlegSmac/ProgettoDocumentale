@@ -23,17 +23,8 @@ namespace ProgettoDocumentale.Presentation.Controllers
             _mediator = mediator;
         }
 
-        public ActionResult Index(CancellationToken cancellationToken)
-        {
-            try
-            {
-                return View();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Cannot send request via Mediatr" + ex);
-            }
-        }
+        [HttpGet]
+        public ActionResult Index() => View();
 
         #region Views
 

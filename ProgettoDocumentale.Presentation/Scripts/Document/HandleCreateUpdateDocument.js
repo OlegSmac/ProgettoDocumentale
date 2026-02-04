@@ -7,7 +7,7 @@ function handleCreateUpdateDocument(html) {
     if (success === '1') {
         $('#appModal').modal('hide');        
 
-        documentsTable?.ajax.reload(null, false);
-        loadDocumentsHierarchy();       
+        window.documentsTable?.ajax.reload(null, false);
+        loadDocumentsHierarchy();      
     }    
 }
