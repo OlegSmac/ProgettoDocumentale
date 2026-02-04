@@ -1,6 +1,4 @@
-﻿/*
-$(function () {
+﻿$(function () {
     DocumentForm.bindOnce();
     DocumentForm.init();
 });
-*/

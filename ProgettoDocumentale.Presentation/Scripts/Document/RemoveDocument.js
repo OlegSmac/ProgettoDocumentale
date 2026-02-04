@@ -1,4 +1,8 @@
 function toggleRemoveDocument(id) {
+    if (!confirm('Are you sure you want to remove this document?')) {
+        return;
+    }
+
     var token = $('input[name="__RequestVerificationToken"]').val();
 
     $.ajax({

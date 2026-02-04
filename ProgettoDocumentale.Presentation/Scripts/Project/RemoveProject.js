@@ -1,4 +1,8 @@
 function toggleRemoveProject(id) {
+    if (!confirm('Are you sure you want to remove this project?')) {
+        return;
+    }
+
     var token = $('input[name="__RequestVerificationToken"]').val();
 
     $.ajax({

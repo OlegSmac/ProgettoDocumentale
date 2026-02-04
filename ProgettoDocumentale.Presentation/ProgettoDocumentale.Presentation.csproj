@@ -498,7 +498,6 @@
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
     <Folder Include="Content\fonts\" />
-    <Folder Include="Scripts\CedacriOperator\" />
     <Folder Include="webfonts\" />
   </ItemGroup>
   <ItemGroup>
