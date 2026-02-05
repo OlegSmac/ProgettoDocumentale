@@ -91,18 +91,10 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult> GetUpdateInstitution(int id, CancellationToken cancellationToken)
         {
-            var institution = await _mediator.Send(new GetInstitutionByIdQuery { Id = id }, cancellationToken);
-            if (institution == null) return HttpNotFound();            
+            var institutionModel = await _mediator.Send(new GetUpdateInstitutionByIdQuery { Id = id }, cancellationToken);
+            if (institutionModel == null) return HttpNotFound();                       
 
-            var model = new UpdateInstitutionRequestData
-            {
-                Id = institution.Id,
-                InstCode = institution.InstCode,
-                Name = institution.Name,
-                AdditionalInfo = institution.AdditionalInfo
-            };
-
-            return PartialView("_UpdateInstitutionModal", model);
+            return PartialView("_UpdateInstitutionModal", institutionModel);
         }
 
         #endregion
@@ -142,7 +134,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetUserDetails(int id, CancellationToken cancellationToke)
+        public async Task<ActionResult> GetUserDetails(int id, CancellationToken cancellationToken)
         {
             var user = await _mediator.Send(new GetUserByIdQuery { Id = id });
             if (user == null) return HttpNotFound();
@@ -155,23 +147,10 @@ namespace ProgettoDocumentale.Presentation.Controllers
         {
             await LoadInstitutionsAndRolesAsync(cancellationToken);
 
-            var user = await _mediator.Send(new GetUserByIdQuery { Id = id }, cancellationToken);
-            if (user == null) return HttpNotFound();
+            var userModel = await _mediator.Send(new GetUpdateUserByIdQuery { Id = id }, cancellationToken);
+            if (userModel == null) return HttpNotFound();           
 
-            var model = new UpdateUserRequestData
-            {                
-                Id = user.Id,
-                InstitutionId = user.InstitutionId,
-                UserName = user.UserName,
-                Email = user.Email,
-                IsEnabled = user.IsEnabled,
-                Name = user.Name,
-                Surname = user.Surname,
-                Patronymic = user.Patronymic,
-                Roles = user.RolesIds?.ToList() ?? new List<int>()
-            };
-
-            return PartialView("_UpdateUserModal", model);
+            return PartialView("_UpdateUserModal", userModel);
         }
 
         [HttpGet]

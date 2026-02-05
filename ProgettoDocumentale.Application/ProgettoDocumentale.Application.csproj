@@ -199,6 +199,7 @@
     <Compile Include="Requests\DocumentTypes\Queries\GetMacroDocumentTypesIdNameCodeQuery.cs" />
     <Compile Include="Requests\DocumentTypes\Queries\GetMacroTypeFromMicroQuery.cs" />
     <Compile Include="Requests\Institutions\DTOs\InstitutionDTO.cs" />
+    <Compile Include="Requests\Institutions\Queries\GetInstitutionBy\GetUpdateInstitutionByIdQuery.cs" />
     <Compile Include="Requests\Institutions\ViewModels\CreateInstitutionValidator.cs" />
     <Compile Include="Requests\Institutions\ViewModels\UpdateInstitutionValidator.cs" />
     <Compile Include="Requests\Projects\Commands\CreateProjectCommand.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Common\Mappers\UserMapper.cs" />
     <Compile Include="Requests\Institutions\ViewModels\CreateInstitutionRequestData.cs" />
     <Compile Include="Requests\Institutions\ViewModels\UpdateInstitutionRequestData.cs" />
+    <Compile Include="Requests\Users\Queries\GetUserBy\GetUpdateUserByIdQuery.cs" />
     <Compile Include="Requests\Users\ViewModels\CreateUserValidator.cs" />
     <Compile Include="Requests\Users\ViewModels\LoginUser.cs" />
     <Compile Include="Requests\Users\ViewModels\LoginUserValidator.cs" />
