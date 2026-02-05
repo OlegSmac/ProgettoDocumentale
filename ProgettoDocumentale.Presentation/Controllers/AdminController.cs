@@ -92,7 +92,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         public async Task<ActionResult> GetUpdateInstitution(int id, CancellationToken cancellationToken)
         {
             var institutionModel = await _mediator.Send(new GetUpdateInstitutionByIdQuery { Id = id }, cancellationToken);
-            if (institutionModel == null) return HttpNotFound();                       
+            if (institutionModel == null) return HttpNotFound();
 
             return PartialView("_UpdateInstitutionModal", institutionModel);
         }

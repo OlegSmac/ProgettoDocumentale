@@ -183,6 +183,7 @@
     <Compile Include="Requests\Documents\DTOs\ServiceReportsTreeDTO.cs" />
     <Compile Include="Requests\Documents\DTOs\SLAReportsTreeDTO.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocumentBy\GetDocumentByIdQuery.cs" />
+    <Compile Include="Requests\Documents\Queries\GetDocumentBy\GetUpdateDocumentById.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetDocumentsHierarchyQuery.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetPagedDocumentsQuery.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetProjectsWithDocumentsHierarchyQuery.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="Requests\Projects\DTOs\InstitutionProjectsTreeDTO.cs" />
     <Compile Include="Requests\Projects\DTOs\ProjectDTO.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjectBy\GetProjectByIdQuery.cs" />
+    <Compile Include="Requests\Projects\Queries\GetProjectBy\GetUpdateProjectByIdQuery.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjects\GetProjectsIdAndNameQuery.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjects\GetPagedProjectsQuery.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjects\GetProjectsHierarchyQuery.cs" />

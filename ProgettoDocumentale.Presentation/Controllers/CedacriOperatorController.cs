@@ -110,28 +110,18 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult> GetUpdateDocument(int id, CancellationToken cancellationToken)
         {
-            var document = await _mediator.Send(new GetDocumentByIdQuery { Id = id }, cancellationToken);
-            if (document == null) return HttpNotFound();
+            var documentModel = await _mediator.Send(new GetUpdateDocumentById { Id = id }, cancellationToken);
+            if (documentModel == null) return HttpNotFound();
 
-            var institution = await _mediator.Send(new GetInstitutionByIdQuery { Id = document.InstitutionId }, cancellationToken);
-            if (institution == null) return HttpNotFound("Project institution not found");
+            var institution = await _mediator.Send(new GetInstitutionByIdQuery { Id = documentModel.InstitutionId }, cancellationToken);
+            if (institution == null) return HttpNotFound("Project institution not found");          
 
-            var model = new UpdateDocumentRequestData
-            {
-                Id = document.Id,
-                InstitutionId = institution.Id,
-                Username = User.Identity?.Name,
-                Name = document.Name,
-                AdditionalInfo = document.AdditionalInfo,
-                GroupingDate = document.GroupingDate
-            };
-
-            bool setType = await CheckAndSetDocumentType(model, document, cancellationToken);
+            bool setType = await CheckAndSetDocumentType(documentModel, cancellationToken);
             if (setType == false) return HttpNotFound("Document type not found");
 
-            await LoadInstitutionsTypesProjectsAsync(model.MacroTypeId, model.MicroTypeId, model.ProjectId, cancellationToken);
+            await LoadInstitutionsTypesProjectsAsync(documentModel.MacroTypeId, documentModel.MicroTypeId, documentModel.ProjectId, cancellationToken);
 
-            return PartialView("_UpdateDocumentModal", model);
+            return PartialView("_UpdateDocumentModal", documentModel);
         }
 
         [HttpGet]
@@ -206,24 +196,13 @@ namespace ProgettoDocumentale.Presentation.Controllers
         {
             await LoadInstitutionsAsync(cancellationToken);
 
-            var project = await _mediator.Send(new GetProjectByIdQuery { Id = id }, cancellationToken);
-            if (project == null) return HttpNotFound();
+            var projectModel = await _mediator.Send(new GetUpdateProjectByIdQuery { Id = id }, cancellationToken);
+            if (projectModel == null) return HttpNotFound();
 
-            var institution = await _mediator.Send(new GetInstitutionByIdQuery { Id = project.InstitutionId }, cancellationToken);
-            if (institution == null) return HttpNotFound("Project institution not found");
+            var institution = await _mediator.Send(new GetInstitutionByIdQuery { Id = projectModel.InstitutionId }, cancellationToken);
+            if (institution == null) return HttpNotFound("Project institution not found");            
 
-            var model = new UpdateProjectRequestData
-            {
-                Id = project.Id,
-                InstitutionId = institution.Id,
-                Username = User.Identity?.Name,
-                Name = project.Name,
-                DateFrom = project.DateFrom,
-                DateTill = project.DateTill,
-                AdditionalInfo = project.AdditionalInfo
-            };
-
-            return PartialView("_UpdateProjectModal", model);
+            return PartialView("_UpdateProjectModal", projectModel);
         }
 
         [HttpGet]
@@ -502,9 +481,9 @@ namespace ProgettoDocumentale.Presentation.Controllers
             }
         }
 
-        public async Task<bool> CheckAndSetDocumentType(UpdateDocumentRequestData data, DocumentDTO document, CancellationToken cancellationToken)
+        public async Task<bool> CheckAndSetDocumentType(UpdateDocumentRequestData data, CancellationToken cancellationToken)
         {
-            var docType = await _mediator.Send(new GetDocumentTypeByIdQuery { Id = document.TypeId });
+            var docType = await _mediator.Send(new GetDocumentTypeByIdQuery { Id = data.TypeId });
             if (docType == null) return false;
 
             bool isSla = docType.Code == SlaReportCode;
@@ -512,29 +491,26 @@ namespace ProgettoDocumentale.Presentation.Controllers
             bool isPrj = docType.Code == ProgettazioneCode;
 
             if (isSla)
-            {
-                data.TypeId = document.TypeId;
-                data.MacroTypeId = document.TypeId;
+            {                
+                data.MacroTypeId = data.TypeId;
                 data.MicroTypeId = null;
                 data.ProjectId = null;
             }
             else if (isServ)
             {
-                var macroType = await _mediator.Send(new GetMacroTypeFromMicroQuery { Id = document.TypeId });
-
-                data.TypeId = document.TypeId;
+                var macroType = await _mediator.Send(new GetMacroTypeFromMicroQuery { Id = data.TypeId });
+                
                 data.MacroTypeId = macroType.Id;
-                data.MicroTypeId = document.TypeId;
+                data.MicroTypeId = data.TypeId;
                 data.ProjectId = null;
             }
             else
             {
-                var macroType = await _mediator.Send(new GetMacroTypeFromMicroQuery { Id = document.TypeId });
-
-                data.TypeId = document.TypeId;
+                var macroType = await _mediator.Send(new GetMacroTypeFromMicroQuery { Id = data.TypeId });
+                
                 data.MacroTypeId = macroType.Id;
-                data.MicroTypeId = document.TypeId;
-                data.ProjectId = document.ProjectId;
+                data.MicroTypeId = data.TypeId;
+                data.ProjectId = data.ProjectId;
             }
 
             return true;
