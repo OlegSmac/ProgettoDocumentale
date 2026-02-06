@@ -23,8 +23,20 @@ namespace ProgettoDocumentale.Application.Requests.Documents.DTOs
 
         public string Name { get; set; }
         public string SavedPath { get; set; }
+        
         public DateTime UploadDate { get; set; }
+        public string UploadDateString
+        {
+            get => UploadDate.ToShortDateString();
+        }
+
         public string AdditionalInfo { get; set; }
+        
         public DateTime GroupingDate { get; set; }
+        public string GroupingDateString
+        {
+            get => GroupingDate.ToShortDateString();
+        }
+        
     }
 }

@@ -39,7 +39,7 @@ namespace ProgettoDocumentale.Application.Common.Extensions
         public static IQueryable<T> Search<T>(this IQueryable<T> source, DataTableParameters parameters)
         {
             string searchText = parameters.Search.Value;
-            IEnumerable<string> columnNames = parameters.Columns.Where(x => x.Searchable).Select(x => x.Data);
+            IEnumerable<string> columnNames = parameters.Columns.Where(x => x.Searchable).Select(x => x.Name);
 
             if (string.IsNullOrWhiteSpace(searchText) || !columnNames.Any())
             {

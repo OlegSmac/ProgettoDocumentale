@@ -43,7 +43,8 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
                         Name = d.Name,
                         TypeId = d.TypeId,
                         AdditionalInfo = d.AdditionalInfo,
-                        GroupingDate = d.GroupingDate
+                        GroupingDate = d.GroupingDate,
+                        ProjectId = d.ProjectId,
                     })
                     .FirstOrDefaultAsync(d => d.Id == request.Id);
 

@@ -111,10 +111,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         public async Task<ActionResult> GetUpdateDocument(int id, CancellationToken cancellationToken)
         {
             var documentModel = await _mediator.Send(new GetUpdateDocumentById { Id = id }, cancellationToken);
-            if (documentModel == null) return HttpNotFound();
-
-            var institution = await _mediator.Send(new GetInstitutionByIdQuery { Id = documentModel.InstitutionId }, cancellationToken);
-            if (institution == null) return HttpNotFound("Project institution not found");          
+            if (documentModel == null) return HttpNotFound();                     
 
             bool setType = await CheckAndSetDocumentType(documentModel, cancellationToken);
             if (setType == false) return HttpNotFound("Document type not found");

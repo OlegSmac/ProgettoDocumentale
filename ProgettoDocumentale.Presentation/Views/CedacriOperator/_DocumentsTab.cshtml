@@ -69,16 +69,7 @@
                 { data: "Id", title: "Id", name: "Id", visible: false },
                 { data: "Name", title: "Name", name: "Name", autoWidth: true },
                 { data: "TypeName", title: "Type", name: "TypeName", autoWidth: true },
-                {
-                    data: "UploadDate",
-                    title: "Upload date",
-                    name: "UploadDate",
-                    autoWidth: true,
-                    render: function (data, type) {
-                        if (type === "display" || type === "filter") return formatNetDate(data);
-                        return data;
-                    }
-                },
+                { data: "UploadDateString", title: "Upload date", name: "UploadDate", autoWidth: true },
                 { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
                 { data: "ProjectName", title: "Project", name: "ProjectName", autoWidth: true }
             ],
