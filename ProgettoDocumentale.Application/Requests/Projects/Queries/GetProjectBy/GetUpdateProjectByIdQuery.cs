@@ -37,7 +37,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjectBy
                     {
                         Id = p.Id,
                         InstitutionId = p.Institution.Id,
-                        Username = p.User.UserName,
+                        UserId = p.User.Id,
                         Name = p.Name,
                         DateFrom = p.DateFrom,
                         DateTill = p.DateTill,

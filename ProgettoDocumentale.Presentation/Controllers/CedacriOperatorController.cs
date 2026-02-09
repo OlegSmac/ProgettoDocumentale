@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using FluentValidation;
 using MediatR;
+using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.Common.TableParameters;
 using ProgettoDocumentale.Application.Requests.Documents.Commands;
 using ProgettoDocumentale.Application.Requests.Documents.DTOs;
@@ -37,7 +38,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         private const string ProgettazioneCode = "PROGETTAZIONE";
         private const int MaxBytes = 50 * 1024 * 1024;
 
-        private readonly IMediator _mediator;
+        private readonly IMediator _mediator;        
 
         private readonly IValidator<CreateProjectRequestData> _createProjectValidator;
         private readonly IValidator<UpdateProjectRequestData> _updateProjectValidator;
@@ -51,7 +52,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
             IValidator<CreateDocumentRequestData> createDocumentValidator,
             IValidator<UpdateDocumentRequestData> updateDocumentValidator)
         {
-            _mediator = mediator;
+            _mediator = mediator;            
             _createProjectValidator = createProjectValidator;
             _updateProjectValidator = updateProjectValidator;
             _createDocumentValidator = createDocumentValidator;
@@ -223,8 +224,6 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddDocument(CreateDocumentRequestData data, HttpPostedFileBase file, CancellationToken cancellationToken)
         {
-            data.Username = User.Identity?.Name;
-
             await CheckAndSetDocumentType(data, cancellationToken);
             await LoadInstitutionsTypesProjectsAsync(data.MacroTypeId, data.MicroTypeId, data.ProjectId, cancellationToken);
             ValidateFile(file);
@@ -245,8 +244,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 await _mediator.Send(new CreateDocumentCommand
                 {
                     DocumentRequest = data,
-                    File = file,
-                    Root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"])
+                    File = file
                 }, cancellationToken);
 
                 ViewBag.Success = true;
@@ -264,8 +262,6 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UpdateDocument(UpdateDocumentRequestData data, CancellationToken cancellationToken)
         {
-            data.Username = User.Identity?.Name;
-
             await LoadInstitutionsTypesProjectsAsync(data.MacroTypeId, data.MicroTypeId, data.ProjectId, cancellationToken);
 
             var validationResult = _updateDocumentValidator.Validate(data);
@@ -305,8 +301,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
             {
                 var output = await _mediator.Send(new RemoveDocumentByIdCommand
                 {
-                    Id = id,
-                    Root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"])
+                    Id = id
                 }, cancellationToken);
             }
             catch (Exception e)
@@ -324,8 +319,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddProject(CreateProjectRequestData data, CancellationToken cancellationToken)
-        {
-            data.Username = User.Identity?.Name;
+        {            
             await LoadInstitutionsAsync(cancellationToken);
 
             var validationResult = _createProjectValidator.Validate(data);
@@ -461,7 +455,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         {
             var macroTypes = await _mediator.Send(new GetMacroDocumentTypesIdNameCodeQuery(), cancellationToken);
             var selectedMacro = macroTypes.FirstOrDefault(x => x.Id == data.MacroTypeId);
-
+            //TODO: Add enum for project types 
             bool isSla = selectedMacro?.Code == SlaReportCode;
             bool isPrj = selectedMacro?.Code == ProgettazioneCode;
 

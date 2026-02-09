@@ -15,23 +15,25 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
     public class RemoveDocumentByIdCommand : IRequest<Unit>
     {
         public int Id { get; set; }
-        public string Root { get; set; }
     }
 
     public class RemoveDocumentByIdCommandHandler : IRequestHandler<RemoveDocumentByIdCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
+        private readonly IConfiguration _configuration;
 
-        public RemoveDocumentByIdCommandHandler(IProgettoDocContext context)
+        public RemoveDocumentByIdCommandHandler(IProgettoDocContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
-        private void DeleteFile(string root, string savedPath)
+        private void DeleteFile(string savedPath)
         {
-            if (string.IsNullOrWhiteSpace(root) || string.IsNullOrWhiteSpace(savedPath)) throw new Exception($"File in {savedPath} not found");
-
-            var fullPath = Path.Combine(root, savedPath);
+            string configRoot = _configuration.UploadsRootPhysical;
+            if (string.IsNullOrWhiteSpace(configRoot) || string.IsNullOrWhiteSpace(savedPath)) throw new Exception($"File in {savedPath} not found");
+            
+            var fullPath = Path.Combine(configRoot, savedPath);
 
             if (File.Exists(fullPath)) File.Delete(fullPath);
             else throw new Exception($"File in {fullPath} not found");
@@ -44,7 +46,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                 var document = await _context.Documents.FirstOrDefaultAsync(i => i.Id == request.Id);
                 if (document == null) throw new Exception($"Document with id = {request.Id} doesn't exist");
 
-                DeleteFile(request.Root, document.SavedPath);
+                DeleteFile(document.SavedPath);
 
                 _context.Documents.Remove(document);
                 await _context.SaveChangesAsync(cancellationToken);

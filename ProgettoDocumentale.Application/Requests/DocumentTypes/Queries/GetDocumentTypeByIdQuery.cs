@@ -30,7 +30,10 @@ namespace ProgettoDocumentale.Application.Requests.DocumentTypes.Queries
         {
             try
             {
-                var documentType = await _context.DocumentTypes.FirstOrDefaultAsync(dt => dt.Id == request.Id);
+                var documentType = await _context.DocumentTypes
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(dt => dt.Id == request.Id);
+
                 if (documentType == null) throw new Exception($"Document type with id={request.Id} not found");
 
                 return new DocumentTypeDTO

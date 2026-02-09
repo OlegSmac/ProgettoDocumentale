@@ -21,10 +21,12 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
     public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
+        private readonly ICurrentUserService _currentUserService;
 
-        public UpdateProjectCommandHandler(IProgettoDocContext context)
+        public UpdateProjectCommandHandler(IProgettoDocContext context, ICurrentUserService currentUserService)
         {
             _context = context;
+            _currentUserService = currentUserService;
         }
 
         public async Task<Unit> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
@@ -37,13 +39,10 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
                 if (project == null) throw new Exception($"Project with id={req.Id} not found");
 
                 var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == req.InstitutionId);
-                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");
-
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == req.Username);
-                if (user == null) throw new Exception($"User with username {req.Username} not found");
+                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");               
 
                 project.InstitutionId = institution.Id;
-                project.UserId = user.Id;
+                project.UserId = _currentUserService.UserId;
                 project.Name = req.Name;
                 project.DateFrom = req.DateFrom;
                 project.DateTill = req.DateTill;

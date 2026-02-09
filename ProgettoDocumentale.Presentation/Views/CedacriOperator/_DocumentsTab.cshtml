@@ -69,7 +69,17 @@
                 { data: "Id", title: "Id", name: "Id", visible: false },
                 { data: "Name", title: "Name", name: "Name", autoWidth: true },
                 { data: "TypeName", title: "Type", name: "TypeName", autoWidth: true },
-                { data: "UploadDateString", title: "Upload date", name: "UploadDate", autoWidth: true },
+                {
+                    data: "UploadDate",
+                    title: "Upload date",
+                    name: "UploadDate",                    
+                    render: function (data, type, row) {
+                        if (type === "display" || type === "filter") {
+                            return row.UploadDateString;
+                        }
+                        return data;
+                    }
+                },
                 { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
                 { data: "ProjectName", title: "Project", name: "ProjectName", autoWidth: true }
             ],

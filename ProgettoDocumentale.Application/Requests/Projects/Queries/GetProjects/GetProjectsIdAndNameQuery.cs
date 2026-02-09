@@ -28,6 +28,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjects
             try
             {
                 return await _context.Projects
+                    .AsNoTracking()
                     .Select(i => new IdNameDTO { Id = i.Id, Name = i.Name })
                     .ToListAsync();
             }

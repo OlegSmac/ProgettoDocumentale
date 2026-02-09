@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using ProgettoDocumentale.Application.Abstractions;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.Common.Mappers;
 using ProgettoDocumentale.Application.Requests.Users.DTOs;

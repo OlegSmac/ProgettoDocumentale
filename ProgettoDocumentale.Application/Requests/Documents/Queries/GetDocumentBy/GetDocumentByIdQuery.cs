@@ -32,6 +32,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
             try
             {
                 var document = await _context.Documents
+                    .AsNoTracking()
                     .Include(d => d.User)
                     .Include(d => d.Type)
                     .Include(d => d.Institution)

@@ -1,5 +1,5 @@
 function toggleRemoveProject(id) {
-    if (!confirm('Are you sure you want to remove this project?')) {
+    if (!confirm('Are you sure you want to remove this project with all its documents?')) {
         return;
     }
 

@@ -39,7 +39,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
                     {
                         Id = d.Id,
                         InstitutionId = d.InstitutionId,
-                        Username = d.User.UserName,
+                        UserId = d.User.Id,
                         Name = d.Name,
                         TypeId = d.TypeId,
                         AdditionalInfo = d.AdditionalInfo,

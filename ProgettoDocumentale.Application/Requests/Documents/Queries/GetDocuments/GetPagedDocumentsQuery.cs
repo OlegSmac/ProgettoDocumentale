@@ -35,9 +35,9 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
         {
             try {
                 var baseQuery =
-                    from d in _context.Documents
-                    join dt in _context.DocumentTypes on d.TypeId equals dt.Id
-                    join dth in _context.DocumentTypeHierarchies on dt.Id equals dth.MicroId into hJoin
+                    from d in _context.Documents.AsNoTracking()
+                    join dt in _context.DocumentTypes.AsNoTracking() on d.TypeId equals dt.Id
+                    join dth in _context.DocumentTypeHierarchies.AsNoTracking() on dt.Id equals dth.MicroId into hJoin
                     from dth in hJoin.DefaultIfEmpty()
                     select new { d, dt, dth };
 
@@ -55,6 +55,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
                 }
 
                 var dtoQuery = baseQuery
+                    .AsNoTracking()
                     .Select(x => x.d)
                     .Include(d => d.User)
                     .Include(d => d.Type)

@@ -41,6 +41,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjects
                 if (request.Year.HasValue) baseQuery = baseQuery.Where(p => p.DateFrom.Year == request.Year.Value);
 
                 var dtoQuery = baseQuery
+                    .AsNoTracking()
                     .Include(p => p.Institution)
                     .Include(p => p.User)
                     .Select(ProjectMapper.ToDtoExpr())

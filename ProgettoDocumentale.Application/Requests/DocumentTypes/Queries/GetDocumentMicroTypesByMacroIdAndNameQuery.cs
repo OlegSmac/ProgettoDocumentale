@@ -29,6 +29,7 @@ namespace ProgettoDocumentale.Application.Requests.DocumentTypes.Queries
             try
             {
                 return await _context.DocumentTypeHierarchies
+                    .AsNoTracking()
                     .Where(h => h.MacroId == request.MacroId)
                     .Select(h => new IdNameDTO { Id = h.MicroId, Name = h.Micro.Name })
                     .OrderBy(x => x.Name)

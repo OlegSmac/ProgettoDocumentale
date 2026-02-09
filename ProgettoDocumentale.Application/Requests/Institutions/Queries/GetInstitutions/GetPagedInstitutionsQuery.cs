@@ -33,6 +33,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInsti
             try
             {
                 var query = _context.Institutions
+                    .AsNoTracking()
                     .Select(InstitutionMapper.ToDtoExpr())
                     .Search(request.Parameters)
                     .OrderBy(request.Parameters)

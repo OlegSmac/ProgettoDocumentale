@@ -26,9 +26,9 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
         public async Task<List<ProjectsReportsTreeDTO>> Handle(GetProjectsWithDocumentsHierarchyQuery request, CancellationToken cancellationToken)
         {
             var rows = await (
-                from d in _context.Documents
-                join p in _context.Projects on d.ProjectId equals p.Id
-                join dt in _context.DocumentTypes on d.TypeId equals dt.Id
+                from d in _context.Documents.AsNoTracking()
+                join p in _context.Projects.AsNoTracking() on d.ProjectId equals p.Id
+                join dt in _context.DocumentTypes.AsNoTracking() on d.TypeId equals dt.Id
                 where dt.Code == "PRJ_ANALISI" ||
                     dt.Code == "PRJ_TRANSIZIONE" ||
                     dt.Code == "PRJ_PRODUZIONE" ||

@@ -14,10 +14,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.ViewModels
             RuleFor(model => model.Id).NotNull().WithMessage("Id cannot be null");
 
             RuleFor(model => model.InstitutionId).NotNull().WithMessage("Institution cannot be null")
-                                .NotEqual(-1).WithMessage("Choose institution");
-
-            RuleFor(model => model.Username).NotNull().WithMessage("User cannot be null")
-                                .NotNull().WithMessage("Choose user");
+                                .NotEqual(-1).WithMessage("Choose institution");            
 
             RuleFor(model => model.MacroTypeId).NotNull().WithMessage("Type cannot be null")
                                 .NotEqual(-1).WithMessage("Choose type");

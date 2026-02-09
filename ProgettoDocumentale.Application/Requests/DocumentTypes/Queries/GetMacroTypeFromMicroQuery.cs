@@ -29,7 +29,10 @@ namespace ProgettoDocumentale.Application.Requests.DocumentTypes.Queries
         {
             try
             {
-                var documentTypeMicro = await _context.DocumentTypes.FirstOrDefaultAsync(dt => dt.Id == request.Id);
+                var documentTypeMicro = await _context.DocumentTypes
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(dt => dt.Id == request.Id);
+
                 if (documentTypeMicro == null) throw new Exception($"Document type with id={request.Id} not found");
 
                 var documentTypeMacro = await _context.DocumentTypeHierarchies

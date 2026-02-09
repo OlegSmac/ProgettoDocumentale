@@ -31,6 +31,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInsti
             try 
             {
                 var institution = await _context.Institutions
+                    .AsNoTracking()
                     .Select(InstitutionMapper.ToDtoExpr())
                     .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
                 

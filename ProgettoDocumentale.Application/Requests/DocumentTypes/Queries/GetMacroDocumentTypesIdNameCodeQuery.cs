@@ -27,6 +27,7 @@ namespace ProgettoDocumentale.Application.Requests.DocumentTypes.Queries
         {
             try {
                 return await _context.DocumentTypes
+                    .AsNoTracking()
                     .Where(dt => dt.IsMarco)
                     .OrderBy(dt => dt.Name)
                     .Select(dt => new IdNameCodeDTO

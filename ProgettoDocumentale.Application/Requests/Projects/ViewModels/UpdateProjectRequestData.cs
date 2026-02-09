@@ -11,7 +11,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.ViewModels
     {
         public int Id { get; set; }
         public int InstitutionId { get; set; } = -1;
-        public string Username { get; set; }
+        public int UserId { get; set; } = -1;
         public string Name { get; set; }
 
         [DataType(DataType.Date)]

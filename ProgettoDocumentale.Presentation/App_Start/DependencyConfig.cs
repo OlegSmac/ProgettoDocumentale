@@ -9,12 +9,13 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Owin.Security;
-using ProgettoDocumentale.Application.Abstractions;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.Services;
 using ProgettoDocumentale.Infrastructure.Persistence;
 using ProgettoDocumentale.Infrastructure.Services;
+using ProgettoDocumentale.Presentation.Utils;
 
 namespace ProgettoDocumentale.Presentation.App_Start
 {
@@ -63,6 +64,8 @@ namespace ProgettoDocumentale.Presentation.App_Start
                 .Where(t => t.GetInterfaces().Any(i => i.IsClosedTypeOf(typeof(IValidator<>))))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<Configuration>().As<Application.Common.Interfaces.IConfiguration>().SingleInstance();
 
             var container = builder.Build();
 

@@ -31,6 +31,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjectBy
             try
             {
                 var project = await _context.Projects
+                    .AsNoTracking()
                     .Include(p => p.Institution)
                     .Include(p => p.User)
                     .Select(ProjectMapper.ToDtoExpr())

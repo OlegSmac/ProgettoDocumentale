@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using System.Data.Entity;
-using ProgettoDocumentale.Application.Abstractions;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.Services;
 using ProgettoDocumentale.Application.Requests.Users.DTOs;
@@ -35,6 +32,7 @@ namespace ProgettoDocumentale.Application.Requests.Users.Queries.GetUserBy
             try
             {
                 var user = await _context.Users
+                    .AsNoTracking()
                     .Include(u => u.Institution)
                     .Include(u => u.UserRoles)
                     .Include(u => u.UserRoles.Select(ur => ur.Role))

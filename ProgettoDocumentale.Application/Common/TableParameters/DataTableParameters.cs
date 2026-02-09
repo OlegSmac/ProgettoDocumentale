@@ -23,7 +23,7 @@ namespace ProgettoDocumentale.Application.Common.TableParameters
         {
             foreach (var item in Order)
             {
-                item.Name = Columns[item.Column].Name;
+                item.Name = Columns[item.Column].Data;
             }
         }
         /// <summary>

@@ -12,7 +12,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.ViewModels
     public class CreateDocumentRequestData
     {
         public int InstitutionId { get; set; } = -1;
-        public string Username { get; set; }
+        public int UserId { get; set; } = -1;
         public int MacroTypeId { get; set; } = -1;
         public int? MicroTypeId { get; set; }
         public int TypeId { get; set; } = -1;

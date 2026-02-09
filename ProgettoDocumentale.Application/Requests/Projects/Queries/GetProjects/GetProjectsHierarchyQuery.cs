@@ -28,6 +28,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjects
             try
             {
                 return await _context.Projects
+                    .AsNoTracking()
                     .Include(p => p.Institution)
                     .GroupBy(p => new { p.InstitutionId, p.Institution.Name })
                     .Select(g => new InstitutionProjectsTreeDTO

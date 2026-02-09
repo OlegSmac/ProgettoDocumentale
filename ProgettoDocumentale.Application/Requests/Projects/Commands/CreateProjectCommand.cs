@@ -22,10 +22,12 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
     public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
+        private readonly ICurrentUserService _currentUserService;
 
-        public CreateProjectCommandHandler(IProgettoDocContext context)
+        public CreateProjectCommandHandler(IProgettoDocContext context, ICurrentUserService currentUserService)
         {
             _context = context;
+            _currentUserService = currentUserService;
         }
 
         public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
@@ -35,14 +37,11 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
                 var req = request.ProjectRequest;
 
                 var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == req.InstitutionId, cancellationToken);
-                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");
-
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == req.Username, cancellationToken);
-                if (user == null) throw new Exception($"User with username '{req.Username}' not found");
+                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");                
 
                 Project project = ProjectMapper.CreateProjectRequestDataToProject(req);
-                project.InstitutionId = institution.Id;
-                project.UserId = user.Id;
+                project.InstitutionId = institution.Id;                                
+                project.UserId = _currentUserService.UserId;
 
                 _context.Projects.Add(project);
                 await _context.SaveChangesAsync(cancellationToken);

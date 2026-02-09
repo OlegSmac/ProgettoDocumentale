@@ -29,8 +29,8 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
         public async Task<List<ServiceReportsTreeDTO>> Handle(GetServiceReportsHierarchyQuery request, CancellationToken cancellationToken)
         {
             var rows = await (
-                from d in _context.Documents
-                join dt in _context.DocumentTypes on d.TypeId equals dt.Id
+                from d in _context.Documents.AsNoTracking()
+                join dt in _context.DocumentTypes.AsNoTracking() on d.TypeId equals dt.Id
                 where dt.Code == "SRV_NETWORK" ||
                     dt.Code == "SRV_SECURITY" ||
                     dt.Code == "SRV_CHANGE" ||

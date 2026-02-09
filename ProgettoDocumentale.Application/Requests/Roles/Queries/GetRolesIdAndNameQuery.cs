@@ -28,6 +28,7 @@ namespace ProgettoDocumentale.Application.Requests.Roles.Queries
             try
             {
                 return await _context.Roles
+                    .AsNoTracking()
                     .Select(r => new IdNameDTO { Id = r.Id, Name = r.Name })
                     .ToListAsync();
             }

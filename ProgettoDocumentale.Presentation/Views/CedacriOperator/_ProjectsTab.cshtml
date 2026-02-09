@@ -67,8 +67,30 @@
             columns: [
                 { data: "Id", title: "Id", name: "Id", visible: false },
                 { data: "Name", title: "Name", name: "Name", autoWidth: true },
-                { data: "DateFromString", title: "Date From", name: "DateFrom", autoWidth: true },
-                { data: "DateTillString", title: "Date Till", name: "DateTill", autoWidth: true },
+                {
+                    data: "DateFrom",
+                    title: "Date From",
+                    name: "DateFrom",
+                    autoWidth: true,
+                    render: function (data, type, row) {
+                        if (type === "display" || type === "filter") {
+                            return row.DateFromString;
+                        }
+                        return data;
+                    }
+                },
+                {
+                    data: "DateTill",
+                    title: "Date Till",
+                    name: "DateTill",
+                    autoWidth: true,
+                    render: function (data, type, row) {
+                        if (type === "display" || type === "filter") {
+                            return row.DateTillString;
+                        }
+                        return data;
+                    }
+                },
                 { data: "InstitutionName", title: "Institution", name: "InstitutionName", autoWidth: true },
                 { data: "Username", title: "Created by", name: "Username", autoWidth: true },
                 {

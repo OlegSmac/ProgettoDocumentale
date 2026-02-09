@@ -28,6 +28,7 @@ namespace ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInsti
             try
             {
                 return await _context.Institutions
+                    .AsNoTracking()
                     .Select(i => new IdNameDTO { Id = i.Id, Name = i.Name })
                     .ToListAsync();
             }

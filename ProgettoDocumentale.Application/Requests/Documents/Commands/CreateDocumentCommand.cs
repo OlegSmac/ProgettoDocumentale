@@ -20,29 +20,33 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
     public class CreateDocumentCommand : IRequest<Unit>
     {
         public CreateDocumentRequestData DocumentRequest { get; set; }
-        public HttpPostedFileBase File { get; set; }
-        public string Root { get; set; }
+        public HttpPostedFileBase File { get; set; }        
     }
 
     public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly ICurrentUserService _currentUserService;
 
-        public CreateDocumentCommandHandler(IProgettoDocContext context)
+        public CreateDocumentCommandHandler(IProgettoDocContext context, IConfiguration configuration, ICurrentUserService currentUserService)
         {
             _context = context;
+            _configuration = configuration;
+            _currentUserService = currentUserService;
         }
 
-        private void SaveFile(CreateDocumentCommand request)
-        {            
-            Directory.CreateDirectory(request.Root);
+        private string SaveFile(HttpPostedFileBase file)
+        {
+            string configRoot = _configuration.UploadsRootPhysical;
+            Directory.CreateDirectory(configRoot);
 
-            var ext = Path.GetExtension(request.File.FileName);
-            var storedFileName = $"{Guid.NewGuid():N}{ext}";
-            var fullPath = Path.Combine(request.Root, storedFileName);
+            var ext = Path.GetExtension(file.FileName);
+            var storedFileName = $"{Guid.NewGuid():N}{ext}";            
+            var fullPath = Path.Combine(configRoot, storedFileName);
 
-            request.File.SaveAs(fullPath);
-            request.DocumentRequest.SavedPath = storedFileName;
+            file.SaveAs(fullPath);
+            return storedFileName;
         }
 
         public async Task<Unit> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
@@ -52,10 +56,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                 var req = request.DocumentRequest;
 
                 var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == req.InstitutionId, cancellationToken);
-                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");
-
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == req.Username, cancellationToken);
-                if (user == null) throw new Exception($"User with username '{req.Username}' not found");
+                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");                
 
                 var type = await _context.DocumentTypes.FirstOrDefaultAsync(dt => dt.Id == req.TypeId, cancellationToken);
                 if (type == null) throw new Exception($"Type with id={req.InstitutionId} not found");
@@ -66,10 +67,10 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                     if (project == null) throw new Exception($"Project with id={req.ProjectId} not found");
                 }
 
-                SaveFile(request);
+                req.SavedPath = SaveFile(request.File);
 
                 Document document = DocumentMapper.CreateDocumentRequestDataToDocument(req);
-                document.UserId = user.Id;                
+                document.UserId = _currentUserService.UserId;
 
                 _context.Documents.Add(document);
                 await _context.SaveChangesAsync(cancellationToken);

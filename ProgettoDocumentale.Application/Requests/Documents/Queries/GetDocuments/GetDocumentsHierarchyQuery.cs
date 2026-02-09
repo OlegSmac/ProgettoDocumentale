@@ -26,11 +26,11 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocument
         public async Task<List<InstitutionDocumentsTreeDTO>> Handle(GetDocumentsHierarchyQuery request, CancellationToken cancellationToken)
         {            
             var rows = await (
-                from d in _context.Documents
-                join i in _context.Institutions on d.InstitutionId equals i.Id
-                join dt in _context.DocumentTypes on d.TypeId equals dt.Id
+                from d in _context.Documents.AsNoTracking()
+                join i in _context.Institutions.AsNoTracking() on d.InstitutionId equals i.Id
+                join dt in _context.DocumentTypes.AsNoTracking() on d.TypeId equals dt.Id
                
-                join dth in _context.DocumentTypeHierarchies on dt.Id equals dth.MicroId into hJoin
+                join dth in _context.DocumentTypeHierarchies.AsNoTracking() on dt.Id equals dth.MicroId into hJoin
                 from dth in hJoin.DefaultIfEmpty()
 
                 //SLA is macro type, if no SLA use macro type of micro

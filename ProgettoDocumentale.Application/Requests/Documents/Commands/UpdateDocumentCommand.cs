@@ -23,10 +23,12 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
     public class UpdateDocumentCommandHandler : IRequestHandler<UpdateDocumentCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
+        private readonly ICurrentUserService _currentUserService;
 
-        public UpdateDocumentCommandHandler(IProgettoDocContext context)
+        public UpdateDocumentCommandHandler(IProgettoDocContext context, ICurrentUserService currentUserService)
         {
             _context = context;
+            _currentUserService = currentUserService;
         }
 
         public async Task<Unit> Handle(UpdateDocumentCommand request, CancellationToken cancellationToken)
@@ -39,10 +41,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                 if (document == null) throw new Exception($"Document with id={req.Id} not found");
 
                 var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == req.InstitutionId, cancellationToken);
-                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");
-
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == req.Username, cancellationToken);
-                if (user == null) throw new Exception($"User with username '{req.Username}' not found");
+                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");                
 
                 var type = await _context.DocumentTypes.FirstOrDefaultAsync(dt => dt.Id == req.TypeId, cancellationToken);
                 if (type == null) throw new Exception($"Type with id={req.InstitutionId} not found");
@@ -56,7 +55,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                 document.InstitutionId = req.InstitutionId;
                 document.TypeId = req.TypeId;
                 document.ProjectId = req.ProjectId;
-                document.UserId = user.Id;
+                document.UserId = _currentUserService.UserId;
                 document.Name = req.Name;                          
                 document.AdditionalInfo = req.AdditionalInfo;
                 document.GroupingDate = req.GroupingDate;
