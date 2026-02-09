@@ -26,16 +26,14 @@ using ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjectBy;
 using ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjects;
 using ProgettoDocumentale.Application.Requests.Projects.ViewModels;
 using ProgettoDocumentale.Application.Requests.Roles.Queries;
+using ProgettoDocumentale.Domain.Enums;
 
 namespace ProgettoDocumentale.Presentation.Controllers
 {
     [Authorize(Roles = "CedacriOperator")]
     public class CedacriOperatorController : Controller
     {
-        private static readonly HashSet<string> AllowedExt = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".pdf", ".doc", ".docx", ".xlsx", ".png", ".jpg", ".jpeg" };
-        private const string ServReportCode = "SERV_REPORT";
-        private const string SlaReportCode = "SLA_REPORT";
-        private const string ProgettazioneCode = "PROGETTAZIONE";
+        private static readonly HashSet<string> AllowedExt = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".pdf", ".doc", ".docx", ".xlsx", ".png", ".jpg", ".jpeg" };        
         private const int MaxBytes = 50 * 1024 * 1024;
 
         private readonly IMediator _mediator;        
@@ -430,7 +428,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
             if (macroTypeId > 0)
             {
                 var selected = macroTypes.FirstOrDefault(x => x.Id == macroTypeId);
-                if (selected != null && selected.Code != SlaReportCode)
+                if (selected != null && selected.Code != MacroCode.SLA_REPORT.ToString())
                 {
                     var microTypes = await _mediator.Send(new GetDocumentMicroTypesByMacroIdAndNameQuery { MacroId = macroTypeId }, cancellationToken);
                     ViewBag.MicroTypes = new SelectList(microTypes, "Id", "Name", microTypeId);
@@ -456,8 +454,8 @@ namespace ProgettoDocumentale.Presentation.Controllers
             var macroTypes = await _mediator.Send(new GetMacroDocumentTypesIdNameCodeQuery(), cancellationToken);
             var selectedMacro = macroTypes.FirstOrDefault(x => x.Id == data.MacroTypeId);
             //TODO: Add enum for project types 
-            bool isSla = selectedMacro?.Code == SlaReportCode;
-            bool isPrj = selectedMacro?.Code == ProgettazioneCode;
+            bool isSla = selectedMacro?.Code == MacroCode.SLA_REPORT.ToString();
+            bool isPrj = selectedMacro?.Code == MacroCode.PROGETTAZIONE.ToString();
 
             if (isSla)
             {
@@ -477,9 +475,9 @@ namespace ProgettoDocumentale.Presentation.Controllers
             var docType = await _mediator.Send(new GetDocumentTypeByIdQuery { Id = data.TypeId });
             if (docType == null) return false;
 
-            bool isSla = docType.Code == SlaReportCode;
-            bool isServ = docType.Code == ServReportCode;
-            bool isPrj = docType.Code == ProgettazioneCode;
+            bool isSla = docType.Code == MacroCode.SLA_REPORT.ToString();
+            bool isServ = docType.Code == MacroCode.SERV_REPORT.ToString();
+            bool isPrj = docType.Code == MacroCode.PROGETTAZIONE.ToString();
 
             if (isSla)
             {                

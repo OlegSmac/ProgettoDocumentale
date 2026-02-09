@@ -533,6 +533,10 @@
       <Project>{b43554cf-d59e-433b-8ad6-5e42205ba010}</Project>
       <Name>ProgettoDocumentale.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProgettoDocumentale.Domain\ProgettoDocumentale.Domain.csproj">
+      <Project>{844A75CC-CFD6-419F-888C-E46CEDEE1FA6}</Project>
+      <Name>ProgettoDocumentale.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProgettoDocumentale.Infrastructure\ProgettoDocumentale.Infrastructure.csproj">
       <Project>{06bd9c68-d861-4202-af2b-5bbfb22b3967}</Project>
       <Name>ProgettoDocumentale.Infrastructure</Name>
