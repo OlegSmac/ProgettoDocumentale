@@ -21,7 +21,7 @@
 </div>
 
 <script>
-    (function () {        
+    (function () {
         if ($.fn.DataTable.isDataTable('#UsersDatatable')) {
             $('#UsersDatatable').DataTable().destroy();
             $('#UsersDatatable').empty();
@@ -36,8 +36,8 @@
             order: [[1, 'asc']],
             lengthMenu: [[10, 15, 25, 50, 100], [10, 15, 25, 50, 100]],
             dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
             ajax: {
                 url: "/Admin/UserTable",
                 type: "POST",
@@ -104,6 +104,15 @@
         $.contextMenu({
             selector: '#UsersDatatable tbody tr',
             trigger: 'right',
+            events: {
+                show: function (opt) {
+                    usersTable.$('tr.selected').removeClass('selected');
+                    $(opt.$trigger).addClass('selected');
+                },
+                hide: function () {
+                    usersTable.$('tr.selected').removeClass('selected');
+                }
+            },
             callback: function (key, options) {
                 var row = usersTable.row(options.$trigger);
                 if (!row.any()) return;
@@ -134,3 +143,10 @@
         window.usersTable = usersTable;
     })();
 </script>
+
+<style>
+    #UsersDatatable tbody tr.selected td {
+        background-color: #e7f1ff !important;
+    }
+</style>
+

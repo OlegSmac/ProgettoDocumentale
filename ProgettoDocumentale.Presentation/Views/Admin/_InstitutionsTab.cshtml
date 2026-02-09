@@ -64,6 +64,15 @@
         $.contextMenu({
             selector: '#InstitutionsDatatable tbody tr',
             trigger: 'right',
+            events: {
+                show: function (opt) {
+                    institutionsTable.$('tr.selected').removeClass('selected');
+                    $(opt.$trigger).addClass('selected');
+                },
+                hide: function () {
+                    institutionsTable.$('tr.selected').removeClass('selected');
+                }
+            },
             callback: function (key, options) {
                 var row = institutionsTable.row(options.$trigger);
                 if (!row.any()) return;
@@ -88,3 +97,9 @@
         window.institutionsTable = institutionsTable;
     })();
 </script>
+
+<style>
+    #InstitutionsDatatable tbody tr.selected td {
+        background-color: #e7f1ff !important;
+    }
+</style>

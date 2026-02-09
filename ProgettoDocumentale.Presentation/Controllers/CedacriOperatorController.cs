@@ -453,7 +453,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         {
             var macroTypes = await _mediator.Send(new GetMacroDocumentTypesIdNameCodeQuery(), cancellationToken);
             var selectedMacro = macroTypes.FirstOrDefault(x => x.Id == data.MacroTypeId);
-            //TODO: Add enum for project types 
+            
             bool isSla = selectedMacro?.Code == MacroCode.SLA_REPORT.ToString();
             bool isPrj = selectedMacro?.Code == MacroCode.PROGETTAZIONE.ToString();
 

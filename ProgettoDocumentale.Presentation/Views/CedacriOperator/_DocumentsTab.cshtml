@@ -34,18 +34,18 @@
 </div>
 
 <script>
-    (function () {        
+    (function () {
         window.docInstitutionId = null;
         window.docYear = null;
         window.docMacroTypeId = null;
-        
+
         if ($.fn.DataTable.isDataTable('#DocumentsDatatable')) {
             $('#DocumentsDatatable').DataTable().destroy();
             $('#DocumentsDatatable').empty();
         }
 
         try { $.contextMenu('destroy', '#DocumentsDatatable tbody tr'); } catch (e) { }
-        
+
         var documentsTable = $('#DocumentsDatatable').DataTable({
             serverSide: true,
             processing: true,
@@ -72,7 +72,7 @@
                 {
                     data: "UploadDate",
                     title: "Upload date",
-                    name: "UploadDate",                    
+                    name: "UploadDate",
                     render: function (data, type, row) {
                         if (type === "display" || type === "filter") {
                             return row.UploadDateString;
@@ -95,7 +95,7 @@
                 }
             }
         });
-        
+
         $('#DocumentsDatatable tbody')
             .off('dblclick', 'tr')
             .on('dblclick', 'tr', function () {
@@ -107,10 +107,19 @@
                     url: '/CedacriOperator/GetDocumentDetails'
                 });
             });
-        
+
         $.contextMenu({
             selector: '#DocumentsDatatable tbody tr',
             trigger: 'right',
+            events: {
+                show: function (opt) {
+                    documentsTable.$('tr.selected').removeClass('selected');
+                    $(opt.$trigger).addClass('selected');
+                },
+                hide: function () {
+                    documentsTable.$('tr.selected').removeClass('selected');
+                }
+            },
             callback: function (key, options) {
                 var row = documentsTable.row(options.$trigger);
                 if (!row.any()) return;
@@ -139,9 +148,9 @@
                 "Remove": { name: "Remove" }
             }
         });
-        
+
         loadDocumentsHierarchy();
-        
+
         $(document)
             .off('shown.bs.collapse hidden.bs.collapse', '#documentsHierarchy .collapse')
             .on('shown.bs.collapse hidden.bs.collapse', '#documentsHierarchy .collapse', function () {
@@ -153,7 +162,14 @@
                     icon.removeClass('bi-dash-square').addClass('bi-plus-square');
                 }
             });
-        
+
         window.documentsTable = documentsTable;
     })();
 </script>
+
+<style>
+    #DocumentsDatatable tbody tr.selected td {
+        background-color: #e7f1ff !important;
+    }
+</style>
+
