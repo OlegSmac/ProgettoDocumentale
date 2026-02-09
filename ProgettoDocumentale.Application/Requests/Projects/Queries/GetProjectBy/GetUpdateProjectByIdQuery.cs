@@ -38,6 +38,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjectBy
                         Id = p.Id,
                         InstitutionId = p.Institution.Id,
                         UserId = p.User.Id,
+                        Username = p.User.UserName,
                         Name = p.Name,
                         DateFrom = p.DateFrom,
                         DateTill = p.DateTill,
