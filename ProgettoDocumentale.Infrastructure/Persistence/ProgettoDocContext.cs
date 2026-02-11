@@ -23,6 +23,16 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
             _currentUserService = currentUserService;
         }
 
+        public ProgettoDocContext(string connectionString) : base(connectionString)
+        { }
+        
+        public ProgettoDocContext(string connectionString, IDateTime dateTime, ICurrentUserService currentUserService)
+            : base(connectionString)
+        {
+            _dateTime = dateTime;
+            _currentUserService = currentUserService;
+        }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserToRole> UserToRoles { get; set; }

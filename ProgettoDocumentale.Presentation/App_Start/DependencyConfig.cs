@@ -65,7 +65,9 @@ namespace ProgettoDocumentale.Presentation.App_Start
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<Configuration>().As<Application.Common.Interfaces.IConfiguration>().SingleInstance();
+            builder.RegisterType<Configuration>()
+                .As<Application.Common.Interfaces.IConfiguration>()
+                .SingleInstance();
 
             var container = builder.Build();
 

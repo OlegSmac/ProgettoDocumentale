@@ -204,6 +204,7 @@
     <Compile Include="Requests\DocumentTypes\Queries\GetMacroTypeFromMicroQuery.cs" />
     <Compile Include="Requests\Institutions\DTOs\InstitutionDTO.cs" />
     <Compile Include="Requests\Institutions\Queries\GetInstitutionBy\GetUpdateInstitutionByIdQuery.cs" />
+    <Compile Include="Requests\Institutions\Queries\GetInstitutions\GetAllInstitutionsQuery.cs" />
     <Compile Include="Requests\Institutions\ViewModels\CreateInstitutionValidator.cs" />
     <Compile Include="Requests\Institutions\ViewModels\UpdateInstitutionValidator.cs" />
     <Compile Include="Requests\Projects\Commands\CreateProjectCommand.cs" />
