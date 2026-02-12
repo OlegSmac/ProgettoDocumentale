@@ -44,12 +44,24 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            int userId;
+
+            try
             {
+                userId = _currentUserService?.UserId ?? 0;
+            }
+            catch (TypeLoadException)
+            {
+                userId = 0;
+            }
+            if (userId <= 0) userId = 1; //1 is admin id
+
+            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            {               
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.CreatedBy = _currentUserService.UserId;
+                        entry.Entity.CreatedBy = userId;
                         entry.Entity.Created = _dateTime.Now;
                         break;
 
@@ -57,7 +69,31 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
                         entry.Property(x => x.CreatedBy).IsModified = false;
                         entry.Property(x => x.Created).IsModified = false;
 
-                        entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                        entry.Entity.LastModifiedBy = userId;
+                        entry.Entity.LastModified = _dateTime.Now;
+                        break;
+                }
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<int> SaveChangesBaseAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedBy = 1; //1 is admin id
+                        entry.Entity.Created = _dateTime.Now;
+                        break;
+
+                    case EntityState.Modified:
+                        entry.Property(x => x.CreatedBy).IsModified = false;
+                        entry.Property(x => x.Created).IsModified = false;
+
+                        entry.Entity.LastModifiedBy = 1;
                         entry.Entity.LastModified = _dateTime.Now;
                         break;
                 }

@@ -202,6 +202,7 @@
     <Compile Include="Requests\DocumentTypes\Queries\GetMacroDocumentTypesIdAndNameQuery.cs" />
     <Compile Include="Requests\DocumentTypes\Queries\GetMacroDocumentTypesIdNameCodeQuery.cs" />
     <Compile Include="Requests\DocumentTypes\Queries\GetMacroTypeFromMicroQuery.cs" />
+    <Compile Include="Requests\Institutions\Commands\AddInstitutionsListCommand.cs" />
     <Compile Include="Requests\Institutions\DTOs\InstitutionDTO.cs" />
     <Compile Include="Requests\Institutions\Queries\GetInstitutionBy\GetUpdateInstitutionByIdQuery.cs" />
     <Compile Include="Requests\Institutions\Queries\GetInstitutions\GetAllInstitutionsQuery.cs" />
