@@ -21,6 +21,5 @@ namespace ProgettoDocumentale.Application.Common.Interfaces
         DbSet<Project> Projects { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-        Task<int> SaveChangesBaseAsync(CancellationToken cancellationToken);
     }
 }

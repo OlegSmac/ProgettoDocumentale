@@ -78,30 +78,6 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
             return await base.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<int> SaveChangesBaseAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.CreatedBy = 1; //1 is admin id
-                        entry.Entity.Created = _dateTime.Now;
-                        break;
-
-                    case EntityState.Modified:
-                        entry.Property(x => x.CreatedBy).IsModified = false;
-                        entry.Property(x => x.Created).IsModified = false;
-
-                        entry.Entity.LastModifiedBy = 1;
-                        entry.Entity.LastModified = _dateTime.Now;
-                        break;
-                }
-            }
-
-            return await base.SaveChangesAsync(cancellationToken);
-        }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.AddFromAssembly(Assembly.GetExecutingAssembly());
