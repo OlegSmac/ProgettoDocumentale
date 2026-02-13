@@ -11,29 +11,26 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
 {
     public class CreateDocumentWithStreamCommand : IRequest<Unit>
     {
-        public CreateDocumentWithStreamRequestData DocumentRequest { get; set; }
+        public CreateDocumentWithoutFileRequestData DocumentRequest { get; set; }
+        public Stream FileStream { get; set; }
+        public string FileName { get; set; }              
     }
 
     public class CreateDocumentWithStreamCommandHandler : IRequestHandler<CreateDocumentWithStreamCommand, Unit>
     {
         private readonly IProgettoDocContext _context;
-        private readonly IConfiguration _configuration;
-        private readonly ICurrentUserService _currentUserService;
+        private readonly IConfiguration _configuration;        
 
         public CreateDocumentWithStreamCommandHandler(
             IProgettoDocContext context,
-            IConfiguration configuration,
-            ICurrentUserService currentUserService)
+            IConfiguration configuration)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));            
         }
 
         private string SaveStreamToFile(Stream stream, string originalFileName)
         {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-
             var configRoot = _configuration.UploadsRootPhysical;
             if (string.IsNullOrWhiteSpace(configRoot)) throw new Exception("Uploads root is not configured.");
 
@@ -49,8 +46,6 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                 stream.CopyTo(outFs);
             }
 
-            if (stream.CanSeek) stream.Position = 0;
-
             return storedFileName;
         }
 
@@ -64,7 +59,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                 if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");
 
                 var type = await _context.DocumentTypes.FirstOrDefaultAsync(dt => dt.Id == req.TypeId, cancellationToken);
-                if (type == null) throw new Exception($"Type with id={req.InstitutionId} not found");
+                if (type == null) throw new Exception($"Type with id={req.TypeId} not found");
 
                 if (req.ProjectId.HasValue)
                 {
@@ -72,8 +67,8 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                     if (project == null) throw new Exception($"Project with id={req.ProjectId} not found");
                 }
 
-                if (req.FileStream == null) throw new Exception("File stream is null.");
-                req.SavedPath = SaveStreamToFile(req.FileStream, req.FileName);
+                if (request.FileStream == null) throw new Exception("File stream is null.");
+                req.SavedPath = SaveStreamToFile(request.FileStream, request.FileName);
 
                 var document = new Document
                 {
@@ -83,9 +78,9 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                     ProjectId = req.ProjectId,
                     Name = req.Name,
                     SavedPath = req.SavedPath,
-                    UploadDate = req.UploadDate,
+                    UploadDate = DateTime.Now,
                     AdditionalInfo = req.AdditionalInfo,
-                    GroupingDate = req.GroupingDate
+                    GroupingDate = req.GroupingDate == null ? DateTime.Now : req.GroupingDate
                 };
                 
                 _context.Documents.Add(document);

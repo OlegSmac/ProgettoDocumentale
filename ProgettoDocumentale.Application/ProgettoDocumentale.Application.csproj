@@ -196,7 +196,7 @@
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetSLAReportsHierarchyQuery.cs" />
     <Compile Include="Requests\Documents\ViewModels\CreateDocumentRequestData.cs" />
     <Compile Include="Requests\Documents\ViewModels\CreateDocumentValidator.cs" />
-    <Compile Include="Requests\Documents\ViewModels\CreateDocumentWithStreamRequestData.cs" />
+    <Compile Include="Requests\Documents\ViewModels\CreateDocumentWithoutFileRequestData.cs" />
     <Compile Include="Requests\Documents\ViewModels\UpdateDocumentRequestData.cs" />
     <Compile Include="Requests\Documents\ViewModels\UpdateDocumentValidator.cs" />
     <Compile Include="Requests\DocumentTypes\DTOs\DocumentTypeDTO.cs" />

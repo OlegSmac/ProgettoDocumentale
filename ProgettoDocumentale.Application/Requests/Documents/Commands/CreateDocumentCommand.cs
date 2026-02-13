@@ -54,7 +54,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                 if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");                
 
                 var type = await _context.DocumentTypes.FirstOrDefaultAsync(dt => dt.Id == req.TypeId, cancellationToken);
-                if (type == null) throw new Exception($"Type with id={req.InstitutionId} not found");
+                if (type == null) throw new Exception($"Type with id={req.TypeId} not found");
 
                 if (req.ProjectId.HasValue)
                 {

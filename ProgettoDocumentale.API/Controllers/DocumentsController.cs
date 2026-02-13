@@ -38,25 +38,25 @@ namespace ProgettoDocumentale.API.Controllers
                 return BadRequest("Missing 'metadata' form field containing JSON array of documents.");
             }
 
-            List<CreateDocumentWithStreamRequestData>? documents;
+            List<CreateDocumentWithoutFileRequestData>? documents;
             try
             {
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };                
                 if (Request?.Form != null && Request.Form.TryGetValue("metadata", out StringValues values) && values.Count > 1)
-                {                    
+                {
                     var joined = "[" + string.Join(",", values.Select(v => v.Trim())) + "]";
                     metadata = joined;
                 }
 
-                var json = metadata?.Trim() ?? string.Empty;                
+                var json = metadata?.Trim() ?? string.Empty;
                 if (json.Length > 0 && json[0] == '{')
                 {
-                    var single = JsonSerializer.Deserialize<CreateDocumentWithStreamRequestData>(json, options);
-                    documents = single != null ? new List<CreateDocumentWithStreamRequestData> { single } : new List<CreateDocumentWithStreamRequestData>();
+                    var single = JsonSerializer.Deserialize<CreateDocumentWithoutFileRequestData>(json, options);
+                    documents = single != null ? new List<CreateDocumentWithoutFileRequestData> { single } : new List<CreateDocumentWithoutFileRequestData>();
                 }
                 else
                 {
-                    documents = JsonSerializer.Deserialize<List<CreateDocumentWithStreamRequestData>>(json, options) ?? new List<CreateDocumentWithStreamRequestData>();
+                    documents = JsonSerializer.Deserialize<List<CreateDocumentWithoutFileRequestData>>(json, options) ?? new List<CreateDocumentWithoutFileRequestData>();
                 }
             }
             catch (JsonException jex)
@@ -79,25 +79,22 @@ namespace ProgettoDocumentale.API.Controllers
                 var docMeta = documents[i];
                 var file = files[i];
 
-                if (file == null || file.Length == 0) return BadRequest($"File at index {i} is empty or missing.");                
-                
-                docMeta.FileStream = file.OpenReadStream();
-                docMeta.FileName = file.FileName;
-                docMeta.ContentType = file.ContentType;
-                docMeta.FileLength = file.Length;
+                if (file == null || file.Length == 0) return BadRequest($"File at index {i} is empty or missing.");                                
                 
                 try
                 {
-                    await _mediator.Send(new CreateDocumentWithStreamCommand { DocumentRequest = docMeta });
+                    await using var stream = file.OpenReadStream();
+
+                    await _mediator.Send(new CreateDocumentWithStreamCommand { 
+                        DocumentRequest = docMeta,
+                        FileStream = stream,
+                        FileName = file.FileName
+                    });
                 }
                 catch (Exception e)
                 {
                     failures.Add((i, e.Message));                    
                     continue;
-                }
-                finally
-                {                    
-                    (docMeta.FileStream as System.IDisposable)?.Dispose();
                 }
             }
 
