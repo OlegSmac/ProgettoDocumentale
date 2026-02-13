@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using MediatR;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.Common.Mappers;
-using ProgettoDocumentale.Application.Requests.Documents.DTOs;
 using ProgettoDocumentale.Application.Requests.Documents.ViewModels;
 using ProgettoDocumentale.Domain.Models;
 

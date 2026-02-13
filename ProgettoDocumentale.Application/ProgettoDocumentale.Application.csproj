@@ -178,6 +178,7 @@
     <Compile Include="Common\TableParameters\DataTableSearch.cs" />
     <Compile Include="Common\DTOs\IdNameDTO.cs" />
     <Compile Include="Requests\Documents\Commands\CreateDocumentCommand.cs" />
+    <Compile Include="Requests\Documents\Commands\CreateDocumentWithStreamCommand.cs" />
     <Compile Include="Requests\Documents\Commands\RemoveDocumentByIdCommand.cs" />
     <Compile Include="Requests\Documents\Commands\UpdateDocumentCommand.cs" />
     <Compile Include="Requests\Documents\DTOs\DocumentDTO.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Requests\Documents\DTOs\SLAReportsTreeDTO.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocumentBy\GetDocumentByIdQuery.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocumentBy\GetUpdateDocumentById.cs" />
+    <Compile Include="Requests\Documents\Queries\GetDocuments\GetAllDocumentsQuery.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetDocumentsHierarchyQuery.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetPagedDocumentsQuery.cs" />
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetProjectsWithDocumentsHierarchyQuery.cs" />
@@ -194,6 +196,7 @@
     <Compile Include="Requests\Documents\Queries\GetDocuments\GetSLAReportsHierarchyQuery.cs" />
     <Compile Include="Requests\Documents\ViewModels\CreateDocumentRequestData.cs" />
     <Compile Include="Requests\Documents\ViewModels\CreateDocumentValidator.cs" />
+    <Compile Include="Requests\Documents\ViewModels\CreateDocumentWithStreamRequestData.cs" />
     <Compile Include="Requests\Documents\ViewModels\UpdateDocumentRequestData.cs" />
     <Compile Include="Requests\Documents\ViewModels\UpdateDocumentValidator.cs" />
     <Compile Include="Requests\DocumentTypes\DTOs\DocumentTypeDTO.cs" />
