@@ -32,7 +32,8 @@ namespace ProgettoDocumentale.Application.Common.Mappers
         public static Project CreateProjectRequestDataToProject(CreateProjectRequestData req)
         {
             return new Project
-            {                
+            {
+                InstitutionId = req.InstitutionId,
                 Name = req.Name,
                 DateFrom = req.DateFrom,
                 DateTill = req.DateTill,

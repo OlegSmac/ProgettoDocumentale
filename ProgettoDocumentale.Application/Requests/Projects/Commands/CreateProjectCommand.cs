@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.Common.Mappers;
-using ProgettoDocumentale.Application.Requests.Projects.DTOs;
 using ProgettoDocumentale.Application.Requests.Projects.ViewModels;
 using ProgettoDocumentale.Domain.Models;
 
@@ -40,8 +36,6 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
                 if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");                
 
                 Project project = ProjectMapper.CreateProjectRequestDataToProject(req);
-                project.InstitutionId = institution.Id;                                
-                project.UserId = _currentUserService.UserId;
 
                 _context.Projects.Add(project);
                 await _context.SaveChangesAsync(cancellationToken);

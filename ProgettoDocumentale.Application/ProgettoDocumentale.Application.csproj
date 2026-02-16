@@ -211,6 +211,7 @@
     <Compile Include="Requests\Institutions\Queries\GetInstitutions\GetAllInstitutionsQuery.cs" />
     <Compile Include="Requests\Institutions\ViewModels\CreateInstitutionValidator.cs" />
     <Compile Include="Requests\Institutions\ViewModels\UpdateInstitutionValidator.cs" />
+    <Compile Include="Requests\Projects\Commands\AddProjectsListCommand.cs" />
     <Compile Include="Requests\Projects\Commands\CreateProjectCommand.cs" />
     <Compile Include="Requests\Projects\Commands\RemoveProjectByIdCommand.cs" />
     <Compile Include="Requests\Projects\Commands\UpdateProjectCommand.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Requests\Projects\DTOs\ProjectDTO.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjectBy\GetProjectByIdQuery.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjectBy\GetUpdateProjectByIdQuery.cs" />
+    <Compile Include="Requests\Projects\Queries\GetProjects\GetAllProjectsQuery.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjects\GetProjectsIdAndNameQuery.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjects\GetPagedProjectsQuery.cs" />
     <Compile Include="Requests\Projects\Queries\GetProjects\GetProjectsHierarchyQuery.cs" />

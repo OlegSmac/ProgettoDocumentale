@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using ProgettoDocumentale.Application.Common.DTOs;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Application.Conmmon.Mappers;
 using ProgettoDocumentale.Application.Requests.Institutions.DTOs;
