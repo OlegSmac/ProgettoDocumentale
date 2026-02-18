@@ -5,6 +5,7 @@ using Microsoft.Extensions.Primitives;
 using ProgettoDocumentale.Application.Requests.Documents.Commands;
 using ProgettoDocumentale.Application.Requests.Documents.DTOs;
 using ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocuments;
+using ProgettoDocumentale.Application.Requests.Documents.ViewModels;
 
 namespace ProgettoDocumentale.API.Controllers
 {

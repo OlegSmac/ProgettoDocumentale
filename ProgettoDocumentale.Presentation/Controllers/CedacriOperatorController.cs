@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using FluentValidation;
 using MediatR;
@@ -33,7 +34,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
     [Authorize(Roles = "CedacriOperator")]
     public class CedacriOperatorController : Controller
     {
-        private static readonly HashSet<string> AllowedExt = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".pdf", ".doc", ".docx", ".xlsx", ".png", ".jpg", ".jpeg" };        
+        private static readonly HashSet<string> AllowedExt = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".txt", ".pdf", ".doc", ".docx", ".xlsx", ".png", ".jpg", ".jpeg" };        
         private const int MaxBytes = 50 * 1024 * 1024;
 
         private readonly IMediator _mediator;
@@ -141,7 +142,8 @@ namespace ProgettoDocumentale.Presentation.Controllers
             var document = await _mediator.Send(new GetDocumentByIdQuery { Id = id });
             if (document == null) return HttpNotFound();
 
-            var root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"]);
+            //var root = Server.MapPath(ConfigurationManager.AppSettings["UploadsRoot"]);
+            var root = _configuration.UploadsRootPhysical;
             var fullPath = Path.Combine(root, document.SavedPath ?? "");
             if (!System.IO.File.Exists(fullPath)) return HttpNotFound("File not found on disk");
 
