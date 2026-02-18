@@ -1,4 +1,4 @@
-﻿@model ProgettoDocumentale.Application.Requests.Documents.ViewModels.CreateDocumentRequestData
+﻿@model ProgettoDocumentale.Application.Requests.Documents.ViewModels.CreateDocumentWithoutFileRequestData       
 
 <div data-success="@(ViewBag.Success == true ? "1" : "0")">
     <div class="modal-header">
@@ -11,7 +11,7 @@
         <div class="modal-body">
             @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">                
+            <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 <div class="form-group row mb-2 px-4">
@@ -51,7 +51,7 @@
                         <select id="MacroTypeId" name="MacroTypeId" class="form-select">
                             <option value="">Select macro type</option>
                             @foreach (var mt in ViewBag.MacroTypesRaw)
-                            {                                
+                            {
                                 <option value="@mt.Id" data-code="@mt.Code" @(Model.MacroTypeId == (int)mt.Id ? "selected" : null)>@mt.Name</option>
                             }
                         </select>

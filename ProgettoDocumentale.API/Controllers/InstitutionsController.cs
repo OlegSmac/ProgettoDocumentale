@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProgettoDocumentale.Application.Requests.Institutions.Commands;
+using ProgettoDocumentale.Application.Requests.Institutions.DTOs;
 using ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInstitutions;
 using ProgettoDocumentale.Application.Requests.Institutions.ViewModels;
 
@@ -18,7 +19,7 @@ namespace ProgettoDocumentale.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetInstitutions()
+        public async Task<ActionResult<List<InstitutionDTO>>> GetInstitutions()
         {            
             var result = await _mediator.Send(new GetAllInstitutionsQuery());
 
@@ -26,7 +27,7 @@ namespace ProgettoDocumentale.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddInstitutionsList(List<CreateInstitutionRequestData> institutions)
+        public async Task<ActionResult> AddInstitutionsList(List<CreateInstitutionRequestData> institutions)
         {
             if (institutions == null || institutions.Count == 0)
             {

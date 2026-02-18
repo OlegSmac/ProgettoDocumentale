@@ -177,6 +177,10 @@
     <Compile Include="Migrations\202601271134163_OptionalProjectId.Designer.cs">
       <DependentUpon>202601271134163_OptionalProjectId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202602171409110_NullableCreatedBy.cs" />
+    <Compile Include="Migrations\202602171409110_NullableCreatedBy.Designer.cs">
+      <DependentUpon>202602171409110_NullableCreatedBy.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Persistence\Configurations\DocumentConfiguration.cs" />
     <Compile Include="Persistence\Configurations\DocumentTypeConfiguration.cs" />
@@ -217,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202601271134163_OptionalProjectId.resx">
       <DependentUpon>202601271134163_OptionalProjectId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202602171409110_NullableCreatedBy.resx">
+      <DependentUpon>202602171409110_NullableCreatedBy.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using ProgettoDocumentale.Application.Requests.Documents.Commands;
+using ProgettoDocumentale.Application.Requests.Documents.DTOs;
 using ProgettoDocumentale.Application.Requests.Documents.Queries.GetDocuments;
 
 namespace ProgettoDocumentale.API.Controllers
@@ -19,7 +20,7 @@ namespace ProgettoDocumentale.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDocuments()
+        public async Task<ActionResult<List<DocumentDTO>>> GetDocuments()
         {
             var result = await _mediator.Send(new GetAllDocumentsQuery());
 
@@ -31,7 +32,7 @@ namespace ProgettoDocumentale.API.Controllers
         // - "files" (file[])   -> files in the same order as metadata entries (index-based matching)
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> AddDocumentsList([FromForm] string metadata, [FromForm] List<IFormFile> files)
+        public async Task<ActionResult> AddDocumentsList([FromForm] string metadata, [FromForm] List<IFormFile> files)
         {
             if (string.IsNullOrWhiteSpace(metadata))
             {
@@ -85,7 +86,7 @@ namespace ProgettoDocumentale.API.Controllers
                 {
                     await using var stream = file.OpenReadStream();
 
-                    await _mediator.Send(new CreateDocumentWithStreamCommand { 
+                    await _mediator.Send(new CreateDocumentWithStreamCommand {
                         DocumentRequest = docMeta,
                         FileStream = stream,
                         FileName = file.FileName

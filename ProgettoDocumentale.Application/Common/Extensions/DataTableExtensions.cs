@@ -21,6 +21,7 @@ namespace ProgettoDocumentale.Application.Common.Extensions
             parameters.SetColumnName();
             var expression = source.Expression;
             var count = 0;
+            
             foreach (var item in parameters.Order)
             {
                 ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
@@ -34,6 +35,89 @@ namespace ProgettoDocumentale.Application.Common.Extensions
                 count++;
             }
             return count > 0 ? source.Provider.CreateQuery<T>(expression) : source;
+        }
+
+        public static IQueryable<T> SearchByDate<T>(this IQueryable<T> source, DataTableParameters parameters)
+        {
+            string searchText = parameters.Search.Value;
+            IEnumerable<string> columnNames = parameters.Columns.Where(x => x.Searchable).Select(x => x.Data);
+
+            if (string.IsNullOrWhiteSpace(searchText) || !columnNames.Any())
+            {
+                return source;
+            }
+
+            List<int> searchNumbers = new List<int>();
+            StringBuilder currentNumber = new StringBuilder();
+
+            foreach (char c in searchText)
+            {
+                if (char.IsDigit(c)) currentNumber.Append(c);
+                else
+                {
+                    if (currentNumber.Length > 0)
+                    {
+                        if (int.TryParse(currentNumber.ToString(), out int number))
+                        {
+                            searchNumbers.Add(number);
+                        }
+                        currentNumber.Clear();
+                    }
+                }
+            }
+
+            if (currentNumber.Length > 0)
+            {
+                if (int.TryParse(currentNumber.ToString(), out int number)) searchNumbers.Add(number);
+            }
+            if (!searchNumbers.Any()) return source;
+
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(T), "x");
+            Expression predicateBuilder = Expression.Constant(false);
+
+            foreach (string columnName in columnNames)
+            {
+                // (x.Member)
+                MemberExpression memberExpression = Expression.Property(parameterExpression, columnName);
+
+                if (memberExpression.Type != typeof(DateTime)) continue;
+
+                // For each number, check Day, Month, Year
+                foreach (int searchNumber in searchNumbers)
+                {
+                    ConstantExpression numberExpression = Expression.Constant(searchNumber);
+
+                    // (x.Member.Day)
+                    MemberExpression dayExpression = Expression.Property(memberExpression, nameof(DateTime.Day));
+                    Expression dayEqualsExpression = Expression.Equal(dayExpression, numberExpression);
+
+                    // (x.Member.Month)
+                    MemberExpression monthExpression = Expression.Property(memberExpression, nameof(DateTime.Month));
+                    Expression monthEqualsExpression = Expression.Equal(monthExpression, numberExpression);
+
+                    // (x.Member.Year)
+                    MemberExpression yearExpression = Expression.Property(memberExpression, nameof(DateTime.Year));                   
+                    Expression yearEqualsExpression = Expression.Equal(yearExpression, numberExpression);
+
+                    Expression combinedExpression = Expression.OrElse(dayEqualsExpression, monthEqualsExpression);
+                    combinedExpression = Expression.OrElse(combinedExpression, yearEqualsExpression);
+
+                    predicateBuilder = Expression.OrElse(predicateBuilder, combinedExpression);
+                }
+            }
+
+            LambdaExpression lambdaExpression = Expression.Lambda(predicateBuilder, parameterExpression);
+
+            Expression expression = source.Expression;
+            expression = Expression.Call(
+                typeof(Queryable),
+                nameof(Queryable.Where),
+                new Type[] { source.ElementType },
+                expression,
+                Expression.Quote(lambdaExpression));
+
+            IQueryable<T> query = source.Provider.CreateQuery<T>(expression);
+            return query;
         }
 
         public static IQueryable<T> Search<T>(this IQueryable<T> source, DataTableParameters parameters)
@@ -86,6 +170,14 @@ namespace ProgettoDocumentale.Application.Common.Extensions
 
             IQueryable<T> query = source.Provider.CreateQuery<T>(expression);
             return query;
+        }
+
+        public static IQueryable<T> SearchCombined<T>(this IQueryable<T> source, DataTableParameters parameters)
+        {
+            var stringSearchResult = source.Search(parameters);
+            var dateSearchResult = source.SearchByDate(parameters);
+
+            return stringSearchResult.Union(dateSearchResult);
         }
 
         public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, bool condition, Func<TSource, bool> predicate)

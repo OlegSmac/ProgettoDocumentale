@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProgettoDocumentale.Application.Requests.Institutions.Commands;
-using ProgettoDocumentale.Application.Requests.Institutions.Queries.GetInstitutions;
-using ProgettoDocumentale.Application.Requests.Institutions.ViewModels;
 using ProgettoDocumentale.Application.Requests.Projects.Commands;
+using ProgettoDocumentale.Application.Requests.Projects.DTOs;
 using ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjects;
 using ProgettoDocumentale.Application.Requests.Projects.ViewModels;
 
@@ -22,7 +19,7 @@ namespace ProgettoDocumentale.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProjects()
+        public async Task<ActionResult<List<ProjectDTO>>> GetProjects()
         {
             var result = await _mediator.Send(new GetAllProjectsQuery());
 
@@ -30,7 +27,7 @@ namespace ProgettoDocumentale.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProjectsList(List<CreateProjectRequestData> projects)
+        public async Task<ActionResult> AddProjectsList(List<CreateProjectRequestData> projects)
         {
             if (projects == null || projects.Count == 0)
             {

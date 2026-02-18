@@ -6,6 +6,7 @@ using System.Data.Entity;
 using MediatR;
 using ProgettoDocumentale.Application.Common.Interfaces;
 using ProgettoDocumentale.Domain.Models;
+using ProgettoDocumentale.Application.Requests.Documents.ViewModels;
 
 namespace ProgettoDocumentale.Application.Requests.Documents.Commands
 {
@@ -13,7 +14,8 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
     {
         public CreateDocumentWithoutFileRequestData DocumentRequest { get; set; }
         public Stream FileStream { get; set; }
-        public string FileName { get; set; }              
+        public string FileName { get; set; }
+        public int? UserId { get; set; }
     }
 
     public class CreateDocumentWithStreamCommandHandler : IRequestHandler<CreateDocumentWithStreamCommand, Unit>
@@ -73,7 +75,7 @@ namespace ProgettoDocumentale.Application.Requests.Documents.Commands
                 var document = new Document
                 {
                     InstitutionId = req.InstitutionId,
-                    UserId = 1, //1 is admin id
+                    UserId = request.UserId ?? 1,
                     TypeId = req.TypeId,
                     ProjectId = req.ProjectId,
                     Name = req.Name,

@@ -45,7 +45,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Queries.GetProjects
                     .Include(p => p.Institution)
                     .Include(p => p.User)
                     .Select(ProjectMapper.ToDtoExpr())
-                    .Search(request.Parameters)
+                    .SearchCombined(request.Parameters)
                     .OrderBy(request.Parameters)
                     .Page(request.Parameters);
 

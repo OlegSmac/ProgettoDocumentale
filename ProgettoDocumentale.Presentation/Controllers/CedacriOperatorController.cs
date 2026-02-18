@@ -36,21 +36,27 @@ namespace ProgettoDocumentale.Presentation.Controllers
         private static readonly HashSet<string> AllowedExt = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".pdf", ".doc", ".docx", ".xlsx", ".png", ".jpg", ".jpeg" };        
         private const int MaxBytes = 50 * 1024 * 1024;
 
-        private readonly IMediator _mediator;        
+        private readonly IMediator _mediator;
+        private readonly IConfiguration _configuration;
+        private readonly ICurrentUserService _currentUserService;
 
         private readonly IValidator<CreateProjectRequestData> _createProjectValidator;
         private readonly IValidator<UpdateProjectRequestData> _updateProjectValidator;
 
-        private readonly IValidator<CreateDocumentRequestData> _createDocumentValidator;
+        private readonly IValidator<CreateDocumentWithoutFileRequestData> _createDocumentValidator;
         private readonly IValidator<UpdateDocumentRequestData> _updateDocumentValidator;
 
         public CedacriOperatorController(IMediator mediator,
+            IConfiguration configuration,
+            ICurrentUserService currentUserService,
             IValidator<CreateProjectRequestData> createProjectValidator,
             IValidator<UpdateProjectRequestData> updateProjectValidator,
-            IValidator<CreateDocumentRequestData> createDocumentValidator,
+            IValidator<CreateDocumentWithoutFileRequestData> createDocumentValidator,
             IValidator<UpdateDocumentRequestData> updateDocumentValidator)
         {
-            _mediator = mediator;            
+            _mediator = mediator;
+            _configuration = configuration;
+            _currentUserService = currentUserService;
             _createProjectValidator = createProjectValidator;
             _updateProjectValidator = updateProjectValidator;
             _createDocumentValidator = createDocumentValidator;
@@ -100,7 +106,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAddDocument(CancellationToken cancellationToken)
         {
-            var model = new CreateDocumentRequestData();
+            var model = new CreateDocumentWithoutFileRequestData();
             await LoadInstitutionsTypesProjectsAsync(model.MacroTypeId, null, null, cancellationToken);
 
             return PartialView("_AddDocumentModal", model);
@@ -220,7 +226,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddDocument(CreateDocumentRequestData data, HttpPostedFileBase file, CancellationToken cancellationToken)
+        public async Task<ActionResult> AddDocument(CreateDocumentWithoutFileRequestData data, HttpPostedFileBase file, CancellationToken cancellationToken)
         {
             await CheckAndSetDocumentType(data, cancellationToken);
             await LoadInstitutionsTypesProjectsAsync(data.MacroTypeId, data.MicroTypeId, data.ProjectId, cancellationToken);
@@ -239,14 +245,19 @@ namespace ProgettoDocumentale.Presentation.Controllers
 
             try
             {
-                await _mediator.Send(new CreateDocumentCommand
+                using (var stream = file.InputStream)
                 {
-                    DocumentRequest = data,
-                    File = file
-                }, cancellationToken);
+                    await _mediator.Send(new CreateDocumentWithStreamCommand
+                    {
+                        DocumentRequest = data,
+                        FileStream = stream,
+                        FileName = file.FileName,
+                        UserId = _currentUserService.UserId 
+                    });
+                }
 
                 ViewBag.Success = true;
-                return PartialView("_AddDocumentModal", new CreateDocumentRequestData());
+                return PartialView("_AddDocumentModal", new CreateDocumentWithoutFileRequestData());
             }
             catch (Exception e)
             {
@@ -449,7 +460,7 @@ namespace ProgettoDocumentale.Presentation.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task CheckAndSetDocumentType(CreateDocumentRequestData data, CancellationToken cancellationToken)
+        public async Task CheckAndSetDocumentType(CreateDocumentWithoutFileRequestData data, CancellationToken cancellationToken)
         {
             var macroTypes = await _mediator.Send(new GetMacroDocumentTypesIdNameCodeQuery(), cancellationToken);
             var selectedMacro = macroTypes.FirstOrDefault(x => x.Id == data.MacroTypeId);
@@ -519,6 +530,19 @@ namespace ProgettoDocumentale.Presentation.Controllers
                 if (!AllowedExt.Contains(ext)) ModelState.AddModelError(nameof(file), "Allowed formats: pdf, doc/docx, xlsx, png, jpg.");
             }
         }
+
+        //private string SaveFile(HttpPostedFileBase file)
+        //{
+        //    string configRoot = _configuration.UploadsRootPhysical;
+        //    Directory.CreateDirectory(configRoot);
+
+        //    var ext = Path.GetExtension(file.FileName);
+        //    var storedFileName = $"{Guid.NewGuid():N}{ext}";
+        //    var fullPath = Path.Combine(configRoot, storedFileName);
+
+        //    file.SaveAs(fullPath);
+        //    return storedFileName;
+        //}
 
         #endregion
     }

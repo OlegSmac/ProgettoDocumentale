@@ -26,11 +26,9 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
         public ProgettoDocContext(string connectionString) : base(connectionString)
         { }
         
-        public ProgettoDocContext(string connectionString, IDateTime dateTime, ICurrentUserService currentUserService)
-            : base(connectionString)
+        public ProgettoDocContext(string connectionString, IDateTime dateTime) : base(connectionString)
         {
             _dateTime = dateTime;
-            _currentUserService = currentUserService;
         }
 
         public DbSet<User> Users { get; set; }
@@ -44,17 +42,14 @@ namespace ProgettoDocumentale.Infrastructure.Persistence
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            int userId;
+            int? userId = null;
 
             try
             {
-                userId = _currentUserService?.UserId ?? 0;
+                userId = _currentUserService?.UserId;
             }
             catch (TypeLoadException)
-            {
-                userId = 0;
-            }
-            if (userId <= 0) userId = 1; //1 is admin id
+            { }
 
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             {               

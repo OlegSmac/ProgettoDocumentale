@@ -1,7 +1,6 @@
 ﻿using System;
-using System.IO;
 
-namespace ProgettoDocumentale.Application.Requests.Documents.Commands
+namespace ProgettoDocumentale.Application.Requests.Documents.ViewModels
 {
     public class CreateDocumentWithoutFileRequestData
     {

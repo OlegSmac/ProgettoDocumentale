@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
+using ProgettoDocumentale.Application.Requests.Documents.Commands;
 
 namespace ProgettoDocumentale.Application.Requests.Documents.ViewModels
 {
-    public class CreateDocumentValidator : AbstractValidator<CreateDocumentRequestData>
+    public class CreateDocumentValidator : AbstractValidator<CreateDocumentWithoutFileRequestData>
     {
         public CreateDocumentValidator() {
             RuleFor(model => model.InstitutionId).NotNull().WithMessage("Institution cannot be null")

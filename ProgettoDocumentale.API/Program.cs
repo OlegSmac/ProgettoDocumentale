@@ -18,9 +18,8 @@ var connectionString = builder.Configuration.GetConnectionString("ProgettoDocume
 builder.Services.AddScoped<IProgettoDocContext>(sp =>
 {    
     var dateTime = sp.GetService<IDateTime>();
-    var currentUser = sp.GetService<ICurrentUserService>();
     
-    return new ProgettoDocContext(connectionString, dateTime, currentUser);
+    return new ProgettoDocContext(connectionString, dateTime);
 });
 
 builder.Services.AddMediatR(typeof(GetAllInstitutionsQuery).Assembly);

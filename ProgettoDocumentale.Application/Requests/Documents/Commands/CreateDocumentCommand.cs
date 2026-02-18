@@ -12,70 +12,52 @@ using ProgettoDocumentale.Domain.Models;
 
 namespace ProgettoDocumentale.Application.Requests.Documents.Commands
 {
-    public class CreateDocumentCommand : IRequest<Unit>
-    {
-        public CreateDocumentRequestData DocumentRequest { get; set; }
-        public HttpPostedFileBase File { get; set; }        
-    }
+    //public class CreateDocumentCommand : IRequest<Unit>
+    //{
+    //    public CreateDocumentRequestData DocumentRequest { get; set; }      
+    //}
 
-    public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, Unit>
-    {
-        private readonly IProgettoDocContext _context;
-        private readonly IConfiguration _configuration;
-        private readonly ICurrentUserService _currentUserService;
+    //public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, Unit>
+    //{
+    //    private readonly IProgettoDocContext _context;
+    //    private readonly ICurrentUserService _currentUserService;
 
-        public CreateDocumentCommandHandler(IProgettoDocContext context, IConfiguration configuration, ICurrentUserService currentUserService)
-        {
-            _context = context;
-            _configuration = configuration;
-            _currentUserService = currentUserService;
-        }
+    //    public CreateDocumentCommandHandler(IProgettoDocContext context, ICurrentUserService currentUserService)
+    //    {
+    //        _context = context;
+    //        _currentUserService = currentUserService;
+    //    }        
 
-        private string SaveFile(HttpPostedFileBase file)
-        {
-            string configRoot = _configuration.UploadsRootPhysical;
-            Directory.CreateDirectory(configRoot);
+    //    public async Task<Unit> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
+    //    {
+    //        try
+    //        {
+    //            var req = request.DocumentRequest;
 
-            var ext = Path.GetExtension(file.FileName);
-            var storedFileName = $"{Guid.NewGuid():N}{ext}";            
-            var fullPath = Path.Combine(configRoot, storedFileName);
+    //            var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == req.InstitutionId, cancellationToken);
+    //            if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");                
 
-            file.SaveAs(fullPath);
-            return storedFileName;
-        }
+    //            var type = await _context.DocumentTypes.FirstOrDefaultAsync(dt => dt.Id == req.TypeId, cancellationToken);
+    //            if (type == null) throw new Exception($"Type with id={req.TypeId} not found");
 
-        public async Task<Unit> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var req = request.DocumentRequest;
+    //            if (req.ProjectId.HasValue)
+    //            {
+    //                var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == req.ProjectId, cancellationToken);
+    //                if (project == null) throw new Exception($"Project with id={req.ProjectId} not found");
+    //            }                
 
-                var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Id == req.InstitutionId, cancellationToken);
-                if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");                
+    //            Document document = DocumentMapper.CreateDocumentRequestDataToDocument(req);
+    //            document.UserId = _currentUserService.UserId;
 
-                var type = await _context.DocumentTypes.FirstOrDefaultAsync(dt => dt.Id == req.TypeId, cancellationToken);
-                if (type == null) throw new Exception($"Type with id={req.TypeId} not found");
+    //            _context.Documents.Add(document);
+    //            await _context.SaveChangesAsync(cancellationToken);
 
-                if (req.ProjectId.HasValue)
-                {
-                    var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == req.ProjectId, cancellationToken);
-                    if (project == null) throw new Exception($"Project with id={req.ProjectId} not found");
-                }
-
-                req.SavedPath = SaveFile(request.File);
-
-                Document document = DocumentMapper.CreateDocumentRequestDataToDocument(req);
-                document.UserId = _currentUserService.UserId;
-
-                _context.Documents.Add(document);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                return Unit.Value;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-    }
+    //            return Unit.Value;
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            throw new Exception(e.Message);
+    //        }
+    //    }
+    //}
 }
