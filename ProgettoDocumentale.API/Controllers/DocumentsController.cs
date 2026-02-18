@@ -22,10 +22,8 @@ namespace ProgettoDocumentale.API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<DocumentDTO>>> GetDocuments()
-        {
-            var result = await _mediator.Send(new GetAllDocumentsQuery());
-
-            return Ok(result);
+        {           
+            return await _mediator.Send(new GetAllDocumentsQuery());
         }
 
         // Expect multipart/form-data with:

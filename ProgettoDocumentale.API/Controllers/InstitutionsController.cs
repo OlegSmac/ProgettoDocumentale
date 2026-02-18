@@ -21,9 +21,7 @@ namespace ProgettoDocumentale.API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<InstitutionDTO>>> GetInstitutions()
         {            
-            var result = await _mediator.Send(new GetAllInstitutionsQuery());
-
-            return Ok(result);
+            return await _mediator.Send(new GetAllInstitutionsQuery());
         }
 
         [HttpPost]
