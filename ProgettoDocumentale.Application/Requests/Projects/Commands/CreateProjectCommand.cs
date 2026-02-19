@@ -36,6 +36,7 @@ namespace ProgettoDocumentale.Application.Requests.Projects.Commands
                 if (institution == null) throw new Exception($"Institution with id={req.InstitutionId} not found");                
 
                 Project project = ProjectMapper.CreateProjectRequestDataToProject(req);
+                project.UserId = _currentUserService.UserId;
 
                 _context.Projects.Add(project);
                 await _context.SaveChangesAsync(cancellationToken);
